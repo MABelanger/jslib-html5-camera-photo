@@ -4,7 +4,7 @@ The first objective of this package comes from the need to have a js library tha
 
 Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs/) and [jpeg_camera](https://github.com/amw/jpeg_camera) but i need to switch easily from camera `environment` and `user`. You need to build the constraint of getUserMedia()... Another need is to have a `sizeFactor` instead of a fixing 'width' and 'height' that can not fit with the ratio of the resolution that camera can pick.
 
-## supported browsers
+## supported browsers (getUserMedia)
 [https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
 ![alt text](./docs/caniuse.png)
 
@@ -30,6 +30,7 @@ You can use it with pure JavaScript, Jquery or React.
 
 ### Example vanilla Js with HTML
 
+#### HTML
 ```html
 <div id="divId">
   <video id="videoId" autoplay="true"></video>
@@ -39,6 +40,7 @@ You can use it with pure JavaScript, Jquery or React.
 </div>
 ```
 
+#### JavaScript
 ```js
 import CameraPhoto from 'lib-html5-camera-photo';
 
@@ -62,10 +64,10 @@ function takePhoto() {
 
 function stopCamera() {
   cameraPhoto.stopCamera()
-  .then(()=>{
+  .then( () => {
     console.log('Camera stoped!')
   })
-  .catch((error)=>{
+  .catch( (error) => {
     console.log('No camera to stop!:', error)
   })
 }
@@ -74,7 +76,5 @@ takePhotoButtonElement.onclick = takePhoto;
 stopCameraButtonElement.onclick = stopCamera;
 
 ```
-
-
 
 ### With React
