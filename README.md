@@ -6,7 +6,12 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 
 ## supported browsers (getUserMedia)
 [https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
-![alt text](./docs/caniuse.png)
+![alt caniuse](./docs/caniuse.png)
+
+
+## Available facingModes
+![alt facingModes](./docs/camera-names-exp.svg)
+src : [w3.org](https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum)
 
 ## LiveDemo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)

@@ -1,7 +1,36 @@
 import CameraPhoto from '../lib';
 import './styles.css';
 
-function stopCamera (e) {
+// get video and image elements
+let videoElement = document.getElementById('videoId');
+let imgElement = document.getElementById('imgId');
+
+// get buttons elements
+let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
+let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
+
+// instantiate CameraPhoto with the videoElement
+let cameraPhoto = new CameraPhoto(videoElement);
+
+// start the camera with prefered environment facingMode.
+// if the environment facingMode is not avalible, it will fallback
+// to the default camera avalible.
+cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT)
+  .then(() => {
+    console.log('Camera started !');
+  })
+  .catch((error) => {
+    console.error('Camera not started!', error);
+  });
+
+
+// function called by the buttons.
+function takePhoto () {
+  let dataUri = cameraPhoto.getDataUri();
+  imgElement.src = dataUri;
+}
+
+function stopCamera () {
   cameraPhoto.stopCamera()
     .then(() => {
       console.log('Camera stoped!');
@@ -11,45 +40,6 @@ function stopCamera (e) {
     });
 }
 
-function _startCamera (idealFacingMode) {
-  cameraPhoto.startCamera(idealFacingMode)
-    .then(() => {
-      console.log('Camera started !');
-    })
-    .catch((error) => {
-      console.error('Camera not started!', error);
-    });
-}
-
-function startDefaultCamera (e) {
-  console.log('startDefaultCamera');
-  _startCamera();
-}
-
-function startEnvironmentCamera (e) {
-  console.log('startEnvironmentCamera');
-  _startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT);
-}
-
-function startUserCamera (e) {
-  console.log('startUserCamera');
-  _startCamera(cameraPhoto.FACING_MODES.USER);
-}
-
-function takePhoto () {
-  let dataUri = cameraPhoto.getDataUri();
-  imgElement.src = dataUri;
-}
-
-document.getElementById('stopCameraButtonId').onclick = stopCamera;
-document.getElementById('startDefaultCameraButtonId').onclick = startDefaultCamera;
-document.getElementById('startEnvironmentCameraButtonId').onclick = startEnvironmentCamera;
-document.getElementById('startUserCameraButtonId').onclick = startUserCamera;
-document.getElementById('takePhotoButtonId').onclick = takePhoto;
-
-let videoElement = document.getElementById('videoId');
-let imgElement = document.getElementById('imgId');
-
-let cameraPhoto = new CameraPhoto(videoElement);
-
-cameraPhoto.startCamera();
+// bind the buttons to the right functions.
+takePhotoButtonElement.onclick = takePhoto;
+stopCameraButtonElement.onclick = stopCamera;
