@@ -1,6 +1,6 @@
 import MediaServices from './MediaServices';
 
-class CameraHelper {
+class CameraPhoto {
   constructor (videoElement) {
     this.videoElement = videoElement;
     this.stream = null;
@@ -21,7 +21,7 @@ class CameraHelper {
           resolve(stream);
         })
         .catch((error) => {
-          this.stopDevice();
+          this.stopCamera();
           reject(error);
         });
     });
@@ -42,9 +42,9 @@ class CameraHelper {
     this._setVideoSrc(stream);
   }
 
-  startDevice (idealFacingMode = {}, idealResolution = {}) {
+  startCamera (idealFacingMode = {}, idealResolution = {}) {
     // stop the stream before playing it.
-    this.stopDevice().catch(() => {});
+    this.stopCamera().catch(() => {});
     return this._getStreamDevice(idealFacingMode, idealResolution);
   }
 
@@ -53,7 +53,7 @@ class CameraHelper {
     return dataUri;
   }
 
-  stopDevice () {
+  stopCamera () {
     return new Promise((resolve, reject) => {
       if (this.stream) {
         this.stream.getTracks().forEach(function (track) {
@@ -72,4 +72,4 @@ class CameraHelper {
   }
 }
 
-export default CameraHelper;
+export default CameraPhoto;

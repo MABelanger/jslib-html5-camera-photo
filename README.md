@@ -1,9 +1,12 @@
 # jslib-html5-camera-photo
 
-The first objective of this package comes from the need to have a react component that can capture picture from mobile or desktop camera through the browser with the HTML5 video and canvas elements.
+The first objective of this package comes from the need to have a js library that can help me to capture picture from mobile or desktop camera through the browser with the HTML5 video and canvas elements.
 
-## Requirement
-React
+Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs/) and [jpeg_camera](https://github.com/amw/jpeg_camera) but i need to switch easily from camera `environment` and `user`. You need to build the constraint of getUserMedia()... Another need is to have a `sizeFactor` instead of a fixing 'width' and 'height' that can not fit with the ratio of the resolution that camera can pick.
+
+## supported browsers
+[https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
+![alt text](./docs/caniuse.png)
 
 ## LiveDemo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
@@ -20,92 +23,58 @@ yarn add jslib-html5-camera-photo
 
 Both Yarn and npm download packages from the npm registry.
 
-## Getting started
+## API
 
-The component need at minimum 3 parameters `ref`, `onCameraError` and `autoPlay`.
+### Geting started
+You can use it with pure JavaScript, Jquery or React.
 
-parameter | Description
---- | ---
-**ref:** | The reference used to get the image URI with the call of getDataUri()
-**onCameraError:** | The function called when error while opening the camera. Often the permission.
-**autoPlay:** | Boolean value to start the first camera automatically when the component is loaded.
+### Example vanilla Js with HTML
 
-**Minimum ES6 example**
-```js
-import React, { Component } from 'react';
-import Camera from 'jslib-html5-camera-photo';
-
-class App extends Component {
-
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      dataUri: ""
-    };
-  }
-
-  onCameraError = (error) => {
-    console.error(error)
-  }
-
-  setDataUri = () => {
-    let dataUri = this.refs.camera.getDataUri();
-    this.setState({dataUri});
-  }
-
-  render() {
-    return (
-      <div>
-        <Camera
-          ref="camera"
-          onCameraError={this.onCameraError}
-          autoPlay={true}
-        />
-
-        <button
-          onClick={(e) => {
-            this.setDataUri();
-          }}
-        >Photo</button>
-
-        <img alt="camera" src={this.state.dataUri}/>
-      </div>
-    );
-  }
-}
-
-export default App;
+```html
+<div id="divId">
+  <video id="videoId" autoplay="true"></video>
+  <img alt="imgId" id="imgId">
+  <button id="takePhotoButtonId">takePhoto</button>
+  <button id="stopCameraButtonId">stopCamera</button>
+</div>
 ```
 
-For more complex example checkout the demo [/src/demo/AppStandardUsage.js](./src/demo/AppStandardUsage.js):
+```js
+import CameraPhoto from 'lib-html5-camera-photo';
 
-## API
-Function accessible by the `refs` ex:. "camera"
+// get videoElement from the dom.
+let videoElement = document.getElementById('videoId');
+let imgElement = document.getElementById('imgId');
+let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
+let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 
-### Public API with refs
-function | Description
---- | ---
-**this.refs.camera.playFirstDevice():** | Function that start the camera with the first camera available often camera front.
-**this.refs.camera.playLastDevice():** | Function that start the camera with the last camera available often camera back.
-**this.refs.camera.getDataUri([sizeFactor]):** | Function that return the dataUri of the current frame of the camera. The sizeFactor is used to get a desired resolution. Example, a sizeFactor of 1 get the same resolution of the camera while sizeFactor of 0.5 get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
-**this.refs.camera.stopStreams():** | Function that stop the camera.
+// instantiate CameraPhoto with the videoElement
+let cameraPhoto = new CameraPhoto(videoElement);
 
-### PropTypes
-Properties | Type | Description
---- | --- | ---
-**ref:** (optional) | string | The reference used to call the internal functions as [playFirstDevice(), getDataUri(), stopStreams()]
-**onCameraError(error):** (required) | Event | Callback called with the error object as parameter when error occur while opening the camera. Often the permission.
-**onCameraStop():** (optional) | Event | Callback called when the camera is stopped.
-**onCameraStart():** (optional) | Event | Callback called when the camera is started.
-**onVideoClick():** (optional) | Event | Callback called when the video is clicked.
-**autoPlay:**  (optional, defaults to false) | boolean | Boolean value to start the first camera automatically when the component is loaded.
+// start the camera
+cameraPhoto.startCamera();
 
-## ToDo
-1. Select camera (front or back), right now it take by default the first camera available.
-2. Get a list of supported resolution.
-3. Force a resolution.
-4. Use redux instead of refs ?
 
-## FAQ
-1. <b>What if i want to improve the code or add functionalities?</b>
-  * Please take a look into the [CONTRIBUTING.md](CONTRIBUTING.md)
+function takePhoto() {
+  let dataUri = cameraPhoto.getDataUri();
+  imgElement.src = dataUri;
+}
+
+function stopCamera() {
+  cameraPhoto.stopCamera()
+  .then(()=>{
+    console.log('Camera stoped!')
+  })
+  .catch((error)=>{
+    console.log('No camera to stop!:', error)
+  })
+}
+
+takePhotoButtonElement.onclick = takePhoto;
+stopCameraButtonElement.onclick = stopCamera;
+
+```
+
+
+
+### With React
