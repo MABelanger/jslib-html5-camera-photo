@@ -48,12 +48,15 @@ You can use it with pure JavaScript, Jquery or React.
 
 #### HTML
 ```html
-<div id="divId">
-  <video id="videoId" autoplay="true"></video>
-  <img alt="imgId" id="imgId">
-  <button id="takePhotoButtonId">takePhoto</button>
-  <button id="stopCameraButtonId">stopCamera</button>
-</div>
+<!-- needed to by the camera stream -->
+<video id="videoId" autoplay="true"></video>
+
+<!-- needed if you want to display the image when you take a photo -->
+<img alt="imgId" id="imgId">
+
+<!--buttons to trigger the actions -->
+<button id="takePhotoButtonId">takePhoto</button>
+<button id="stopCameraButtonId">stopCamera</button>
 ```
 
 #### JavaScript
@@ -71,23 +74,31 @@ let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
 
-// start the camera
-cameraPhoto.startCamera();
+// start the camera with prefered environment facingMode ie. ()
+// if the environment facingMode is not avalible, it will fallback
+// to the default camera avalible.
+cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT)
+  .then(() => {
+    console.log('Camera started !');
+  })
+  .catch((error) => {
+    console.error('Camera not started!', error);
+  });
 
 // function called by the buttons.
-function takePhoto() {
+function takePhoto () {
   let dataUri = cameraPhoto.getDataUri();
   imgElement.src = dataUri;
 }
 
-function stopCamera() {
+function stopCamera () {
   cameraPhoto.stopCamera()
-    .then( () => {
-      console.log('Camera stoped!')
+    .then(() => {
+      console.log('Camera stoped!');
     })
-    .catch( (error) => {
-      console.log('No camera to stop!:', error)
-    })
+    .catch((error) => {
+      console.log('No camera to stop!:', error);
+    });
 }
 
 // bind the buttons to the right functions.
