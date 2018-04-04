@@ -87,8 +87,8 @@ class MediaServices {
     return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
   }
 
-  static getIdealConstraints (idealFacingMode = {}, idealResolution = {}) {
-    var idealConstraints = {
+  static getIdealConstraints (idealFacingMode = {}, idealResolution = {}, isMaxResolution = false) {
+    let idealConstraints = {
       audio: false,
       video: {}
     };
@@ -98,14 +98,28 @@ class MediaServices {
       idealConstraints.video.facingMode = { ideal: idealFacingMode };
     }
 
-    // set width
-    if (idealResolution.width) {
-      idealConstraints.video.width = { ideal: idealResolution.width };
-    }
+    // if is MaxResolution, try to get the maximum resolution of the camera.
+    // it will try from 640 to 2560px width.
+    if (isMaxResolution) {
+      const supports = navigator.mediaDevices.getSupportedConstraints();
+      if (!supports.width || !supports.height) {
+        console.log('error');
+      }
+      // 1080x720
+      // 640x480
+      // width of 7680 = 8k
+      idealConstraints.video.width = {min: 640, ideal: 7680};
+      idealConstraints.video.width.advanced = [ {width: 7680} ];
+    } else {
+      // set width
+      if (idealResolution.width) {
+        idealConstraints.video.width = { ideal: idealResolution.width };
+      }
 
-    // set height
-    if (idealResolution.height) {
-      idealConstraints.video.height = { ideal: idealResolution.height };
+      // set height
+      if (idealResolution.height) {
+        idealConstraints.video.height = { ideal: idealResolution.height };
+      }
     }
 
     return idealConstraints;

@@ -39,6 +39,20 @@ function stopCamera () {
     });
 }
 
+function startCameraMaxResolution () {
+  cameraPhoto.startCameraMaxResolution(cameraPhoto.FACING_MODES.ENVIRONMENT)
+    .then(() => {
+      console.log('Camera started with maximum resoluton !');
+    })
+    .catch((error) => {
+      console.error('Camera not started!', error);
+    });
+}
+
 // bind the buttons to the right functions.
 takePhotoButtonElement.onclick = takePhoto;
 stopCameraButtonElement.onclick = stopCamera;
+
+setTimeout(() => {
+  startCameraMaxResolution();
+}, 5000);

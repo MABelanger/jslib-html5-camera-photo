@@ -75,7 +75,7 @@ let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 let cameraPhoto = new CameraPhoto(videoElement);
 
 /*
- * start the camera with preferred environment facingMode
+ * Start the camera with preferred environment facingMode
  * if the environment facingMode is not available, it will fallback
  * to the default camera available.
  */

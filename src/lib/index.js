@@ -10,10 +10,10 @@ class CameraPhoto {
     this.mediaDevices = MediaServices.getNavigatorMediaDevices();
   }
 
-  _getStreamDevice (idealFacingMode, idealResolution) {
+  _getStreamDevice (idealFacingMode, idealResolution, isMaxResolution) {
     return new Promise((resolve, reject) => {
       let idealConstraints =
-        MediaServices.getIdealConstraints(idealFacingMode, idealResolution);
+          MediaServices.getIdealConstraints(idealFacingMode, idealResolution, isMaxResolution);
 
       this.mediaDevices.getUserMedia(idealConstraints)
         .then((stream) => {
@@ -21,7 +21,6 @@ class CameraPhoto {
           resolve(stream);
         })
         .catch((error) => {
-          this.stopCamera();
           reject(error);
         });
     });
@@ -45,7 +44,16 @@ class CameraPhoto {
   startCamera (idealFacingMode = {}, idealResolution = {}) {
     // stop the stream before playing it.
     this.stopCamera().catch(() => {});
-    return this._getStreamDevice(idealFacingMode, idealResolution);
+    let isMaxResolution = false;
+    return this._getStreamDevice(idealFacingMode, idealResolution, isMaxResolution);
+  }
+
+  startCameraMaxResolution (idealFacingMode = {}) {
+    // stop the stream before playing it.
+    this.stopCamera().catch(() => {});
+    let idealResolution = {};
+    let isMaxResolution = true;
+    return this._getStreamDevice(idealFacingMode, idealResolution, isMaxResolution);
   }
 
   getDataUri (sizeFactor = 1) {
