@@ -1,38 +1,34 @@
 const SUPPORTED_FACING_MODES = ['user', 'environment', 'left', 'right'];
 
 const FACING_MODES = {
-  'USER' : 'user',
+  'USER': 'user',
   'ENVIRONMENT': 'environment',
   'LEFT': 'left',
   'RIGHT': 'right'
-}
-
-function _getImageSize(videoWidth, videoHeight, sizeFactor){
-
-  console.log('videoWidth, videoHeight:', videoWidth, videoHeight);
-
-  // calc the imageWidth
-  let imageWidth = videoWidth * parseFloat(sizeFactor);
-  // calc the ratio
-  let ratio = videoWidth / imageWidth;
-  // calc the imageHeight
-  let imageHeight = videoHeight / ratio;
-
-  console.log('imageWidth, imageHeight, sizeFactor:', imageWidth, imageHeight, sizeFactor);
-
-  return {
-    imageWidth,
-    imageHeight
-  };
-}
+};
 
 class MediaServices {
+  _getImageSize (videoWidth, videoHeight, sizeFactor) {
+    console.log('videoWidth, videoHeight:', videoWidth, videoHeight);
 
+    // calc the imageWidth
+    let imageWidth = videoWidth * parseFloat(sizeFactor);
+    // calc the ratio
+    let ratio = videoWidth / imageWidth;
+    // calc the imageHeight
+    let imageHeight = videoHeight / ratio;
 
+    console.log('imageWidth, imageHeight, sizeFactor:', imageWidth, imageHeight, sizeFactor);
 
-  static getDataUri = (videoElement, sizeFactor) => {
+    return {
+      imageWidth,
+      imageHeight
+    };
+  }
+
+  static getDataUri (videoElement, sizeFactor) {
     let {videoWidth, videoHeight} = videoElement;
-    let {imageWidth, imageHeight} = _getImageSize(videoWidth, videoHeight, sizeFactor);
+    let {imageWidth, imageHeight} = MediaServices._getImageSize(videoWidth, videoHeight, sizeFactor);
 
     // Build the canvas size et draw the image to context from videoElement
     let canvas = document.createElement('canvas');
@@ -46,8 +42,7 @@ class MediaServices {
     return dataUri;
   }
 
-
-  static getWindowURL = () => {
+  static getWindowURL () {
     let windowURL = window.URL || window.webkitURL || window.mozURL || window.msURL;
     return windowURL;
   }
@@ -55,23 +50,22 @@ class MediaServices {
   /*
   Inspiration : https://github.com/jhuckaby/webcamjs/blob/master/webcam.js
   */
-  static getNavigatorMediaDevices = () => {
+  static getNavigatorMediaDevices () {
     let NMDevice = null;
     let isNewAPI = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
     let isOldAPI = !!(navigator.mozGetUserMedia || navigator.webkitGetUserMedia);
 
-    if(isNewAPI) {
+    if (isNewAPI) {
       NMDevice = navigator.mediaDevices;
-
-    } else if(isOldAPI){
+    } else if (isOldAPI) {
       let NMDeviceOld = navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
       // Setup getUserMedia, with polyfill for older browsers
-  		// Adapted from: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+      // Adapted from: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 
       let polyfillGetUserMedia = {
-        getUserMedia: function(c) {
-          return new Promise(function(y, n) {
-            NMDeviceOld.call(navigator, c, y, n);
+        getUserMedia: function (constraint) {
+          return new Promise(function (resolve, reject) {
+            NMDeviceOld.call(navigator, constraint, resolve, reject);
           });
         }
       };
@@ -88,40 +82,38 @@ class MediaServices {
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Media_Streams_API/Constraints
-  static isSupportedFacingMode = () => {
-     // navigator.mediaDevices
-     return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
+  static isSupportedFacingMode () {
+    // navigator.mediaDevices
+    return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
   }
 
-  static getIdealConstraints = (idealFacingMode={}, idealResolution={}) => {
-
+  static getIdealConstraints (idealFacingMode = {}, idealResolution = {}) {
     var idealConstraints = {
       audio: false,
       video: {}
     };
 
     // set facingMode
-    if(SUPPORTED_FACING_MODES.indexOf(idealFacingMode) > -1) {
+    if (SUPPORTED_FACING_MODES.indexOf(idealFacingMode) > -1) {
       idealConstraints.video.facingMode = { ideal: idealFacingMode };
     }
 
     // set width
-    if(idealResolution.width){
+    if (idealResolution.width) {
       idealConstraints.video.width = { ideal: idealResolution.width };
     }
 
     // set height
-    if(idealResolution.height){
+    if (idealResolution.height) {
       idealConstraints.video.height = { ideal: idealResolution.height };
     }
 
     return idealConstraints;
   }
 
-  static get FACING_MODES() {
+  static get FACING_MODES () {
     return FACING_MODES;
   }
-
 }
 
 export default MediaServices;
