@@ -44,9 +44,11 @@ You can use it with pure JavaScript, Jquery or React.
 ```js
 import CameraPhoto from 'lib-html5-camera-photo';
 
-// get videoElement from the dom.
+// get video and image elements
 let videoElement = document.getElementById('videoId');
 let imgElement = document.getElementById('imgId');
+
+// get buttons elements
 let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
 let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 
@@ -56,7 +58,7 @@ let cameraPhoto = new CameraPhoto(videoElement);
 // start the camera
 cameraPhoto.startCamera();
 
-
+// function called by the buttons.
 function takePhoto() {
   let dataUri = cameraPhoto.getDataUri();
   imgElement.src = dataUri;
@@ -64,14 +66,15 @@ function takePhoto() {
 
 function stopCamera() {
   cameraPhoto.stopCamera()
-  .then( () => {
-    console.log('Camera stoped!')
-  })
-  .catch( (error) => {
-    console.log('No camera to stop!:', error)
-  })
+    .then( () => {
+      console.log('Camera stoped!')
+    })
+    .catch( (error) => {
+      console.log('No camera to stop!:', error)
+    })
 }
 
+// bind the buttons to the right functions.
 takePhotoButtonElement.onclick = takePhoto;
 stopCameraButtonElement.onclick = stopCamera;
 
