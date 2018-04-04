@@ -22,7 +22,7 @@ right | The source is facing to the right of the user.
 
 ![alt facingModes](./docs/camera-names-exp.svg)
 
-src : [w3.org](https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum)
+src : [https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum](https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum)
 
 ## LiveDemo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
