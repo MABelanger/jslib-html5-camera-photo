@@ -18,7 +18,8 @@ environment	| The source is facing away from the user (viewing the environment).
 left | The source is facing to the left of the user.
 right | The source is facing to the right of the user.
 
-Below is an illustration of the video facing modes in relation to the user.
+#### Below is an illustration of the video facing modes in relation to the user.
+
 ![alt facingModes](./docs/camera-names-exp.svg)
 
 src : [w3.org](https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum)
