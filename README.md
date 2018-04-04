@@ -63,11 +63,11 @@ You can use it with pure JavaScript, Jquery or React.
 ```js
 import CameraPhoto from 'lib-html5-camera-photo';
 
-// get video and image elements
+// get video and image elements from the html
 let videoElement = document.getElementById('videoId');
 let imgElement = document.getElementById('imgId');
 
-// get buttons elements
+// get buttons elements from the html
 let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
 let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 
