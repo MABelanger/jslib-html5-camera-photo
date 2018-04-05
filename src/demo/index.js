@@ -8,6 +8,7 @@ let imgElement = document.getElementById('imgId');
 // get buttons elements
 let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
 let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
+let startMaxResolutionButtonElement = document.getElementById('startMaxResolutionId');
 
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
@@ -52,7 +53,8 @@ function startCameraMaxResolution () {
 // bind the buttons to the right functions.
 takePhotoButtonElement.onclick = takePhoto;
 stopCameraButtonElement.onclick = stopCamera;
+startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
 
-setTimeout(() => {
-  startCameraMaxResolution();
-}, 5000);
+// setTimeout(() => {
+//   startCameraMaxResolution();
+// }, 5000);

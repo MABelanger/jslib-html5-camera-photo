@@ -4,24 +4,57 @@ class CameraPhoto {
   constructor (videoElement) {
     this.videoElement = videoElement;
     this.stream = null;
+    this.numberOfMaxResolutionTry = 1;
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
     this.mediaDevices = MediaServices.getNavigatorMediaDevices();
   }
 
-  _getStreamDevice (idealFacingMode, idealResolution, isMaxResolution) {
+  _getStreamDevice (idealFacingMode, idealResolution) {
     return new Promise((resolve, reject) => {
-      let idealConstraints =
-          MediaServices.getIdealConstraints(idealFacingMode, idealResolution, isMaxResolution);
+      let constraints =
+          MediaServices.getIdealConstraints(idealFacingMode, idealResolution);
 
-      this.mediaDevices.getUserMedia(idealConstraints)
+      this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
+          console.log('ok');
           this._gotStream(stream);
           resolve(stream);
         })
         .catch((error) => {
+          // let {name, constraint, message} = error;
+          // window.alert(name + ' ' + constraint + ' ' + message);
           reject(error);
+        });
+    });
+  }
+
+  _getStreamDeviceMaxResolution (idealFacingMode) {
+    let constraints =
+        MediaServices.getMaxResolutionConstraints(idealFacingMode, this.numberOfMaxResolutionTry);
+
+    // all the trying is done...
+    if (constraints == null) {
+      let idealResolution = {};
+      return this._getStreamDevice(idealFacingMode, idealResolution);
+    }
+
+    return new Promise((resolve, reject) => {
+      this.mediaDevices.getUserMedia(constraints)
+        .then((stream) => {
+          console.log('ok max');
+          this._gotStream(stream);
+          resolve(stream);
+        })
+        .catch((error) => {
+          let {name, constraint, message} = error;
+          console.log(name + ' ' + constraint + ' ' + message);
+          // retry...
+          setTimeout(() => {
+            this.numberOfMaxResolutionTry += 1;
+            this._getStreamDeviceMaxResolution(idealFacingMode);
+          }, 20);
         });
     });
   }
@@ -43,17 +76,24 @@ class CameraPhoto {
 
   startCamera (idealFacingMode = {}, idealResolution = {}) {
     // stop the stream before playing it.
-    this.stopCamera().catch(() => {});
-    let isMaxResolution = false;
-    return this._getStreamDevice(idealFacingMode, idealResolution, isMaxResolution);
+    return this.stopCamera()
+      .then(() => {})
+      .catch(() => {})
+      // Always called (when the promise is done)
+      .then(() => {
+        return this._getStreamDevice(idealFacingMode, idealResolution);
+      });
   }
 
   startCameraMaxResolution (idealFacingMode = {}) {
     // stop the stream before playing it.
-    this.stopCamera().catch(() => {});
-    let idealResolution = {};
-    let isMaxResolution = true;
-    return this._getStreamDevice(idealFacingMode, idealResolution, isMaxResolution);
+    return this.stopCamera()
+      .then(() => {})
+      .catch(() => {})
+      // Always called (when the promise is done)
+      .then(() => {
+        return this._getStreamDeviceMaxResolution(idealFacingMode);
+      });
   }
 
   getDataUri (sizeFactor = 1) {

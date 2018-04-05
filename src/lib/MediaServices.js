@@ -1,3 +1,7 @@
+// https://github.com/webrtc/adapter
+// https://webrtchacks.github.io/WebRTC-Camera-Resolution/
+// https://webrtchacks.com/getusermedia-resolutions-3/
+// https://github.com/addyosmani/getUserMedia.js
 const SUPPORTED_FACING_MODES = ['user', 'environment', 'left', 'right'];
 
 const FACING_MODES = {
@@ -87,42 +91,59 @@ class MediaServices {
     return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
   }
 
-  static getIdealConstraints (idealFacingMode = {}, idealResolution = {}, isMaxResolution = false) {
+  static getIdealConstraints (idealFacingMode = {}, idealResolution = {}) {
+    // default idealConstraints
     let idealConstraints = {
       audio: false,
       video: {}
     };
 
-    // set facingMode
+    const supports = navigator.mediaDevices.getSupportedConstraints();
+    if (!supports.width || !supports.height || !supports.facingMode) {
+      return idealConstraints;
+    }
+
     if (SUPPORTED_FACING_MODES.indexOf(idealFacingMode) > -1) {
       idealConstraints.video.facingMode = { ideal: idealFacingMode };
     }
 
-    // if is MaxResolution, try to get the maximum resolution of the camera.
-    // it will try from 640 to 2560px width.
-    if (isMaxResolution) {
-      const supports = navigator.mediaDevices.getSupportedConstraints();
-      if (!supports.width || !supports.height) {
-        console.log('error');
-      }
-      // 1080x720
-      // 640x480
-      // width of 7680 = 8k
-      idealConstraints.video.width = {min: 640, ideal: 7680};
-      idealConstraints.video.width.advanced = [ {width: 7680} ];
-    } else {
-      // set width
-      if (idealResolution.width) {
-        idealConstraints.video.width = { ideal: idealResolution.width };
-      }
-
-      // set height
-      if (idealResolution.height) {
-        idealConstraints.video.height = { ideal: idealResolution.height };
-      }
+    if (idealResolution.width) {
+      idealConstraints.video.width.ideal = idealResolution.width;
     }
 
+    if (idealResolution.height) {
+      idealConstraints.video.height.ideal = idealResolution.height;
+    }
+
+    console.log('idealConstraints', idealConstraints);
+
     return idealConstraints;
+  }
+
+  static getMaxResolutionConstraints (idealFacingMode = {}, numberOfMaxResolutionTry) {
+    let constraints = MediaServices.getIdealConstraints(idealFacingMode);
+
+    const VIDEO_ADVANCED_CONSTRANTS = [
+      {'width': {'min': 640}},
+      {'width': {'min': 800}},
+      {'width': {'min': 900}},
+      {'width': {'min': 1024}},
+      {'width': {'min': 1080}},
+      {'width': {'min': 1280}},
+      {'width': {'min': 1920}},
+      {'width': {'min': 2560}}
+    ];
+
+    if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
+      return null;
+    }
+
+    let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
+    constraints.video.advanced = advanced;
+
+    console.log('constraints', constraints);
+
+    return constraints;
   }
 
   static get FACING_MODES () {
