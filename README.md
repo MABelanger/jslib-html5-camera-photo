@@ -81,7 +81,7 @@ cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {});
 cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {});
 ```
 
-### Start with preferred facing Mode & preferred resolution
+### Start with preferred (facing Mode & resolution)
 ```js
 // example of preferred resolution 640 x 480
 cameraPhoto.startCamera(fm, {width: 640, height: 480});
