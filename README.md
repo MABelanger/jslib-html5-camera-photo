@@ -4,7 +4,7 @@ The first objective of this package comes from the need to have a js library tha
 
 Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs/) and [jpeg_camera](https://github.com/amw/jpeg_camera) but i need to switch easily from camera `environment` and `user`. You need to build the constraint of getUserMedia()... Another need is to have a `sizeFactor` instead of a fixing 'width' and 'height' that can not fit with the ratio of the resolution that camera can pick.
 
-I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the `video.optional:[{minWidth: 640}, ...]` is obsolete so i use instead the new `video.advanced:[{'width': {'min': 640}}, ...]` constraint to get the maximum resolution. I had problem with some mobile browser so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight ? So it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced` array. If you have better solution please contribute :)
+I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the `**video.optional:[{minWidth: 640}, ...]**` is obsolete so i use instead the new `**video.advanced:[{'width': {'min': 640}}, ...]**` constraint to get the maximum resolution. I had problem with some mobile browser so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight ? So it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced[...]` array. If you have better solution please contribute :)
 
 ## Features of the library.
 1. Choose between environment or user camera, fall back to the default camera.
@@ -13,9 +13,9 @@ I tried to figure it out how to get the maximum of camera resolution. Not an eas
 
 
 ## supported browsers (getUserMedia)
-(April 2018):
 [https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
 ![alt caniuse](./docs/caniuse.png)
+..(April 2018)
 
 
 ## Available camera facingModes
