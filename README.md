@@ -113,7 +113,7 @@ let dataUri = cameraPhoto.getDataUri(sizeFactor);
 ```
 
 ### Stop the camera
-Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we use startCamera(), it internally using this stop function to be able to apply new constraints.
+Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we start the camera, it internally using this stop function to be able to apply new constraints.
 ```js
 // It stop the camera
 cameraPhoto.stopCamera()
