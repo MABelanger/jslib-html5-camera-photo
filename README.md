@@ -19,7 +19,7 @@ video.advanced: [
   ...
 ]
 ```
- to get the maximum resolution. I had problem with some mobile browser so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight ? So it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced[...]` array. If you have better solution please contribute :)
+But i had problem with some mobile browser so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight ? So it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced[...]` array. If you have better solution please contribute :)
 
 ## Features of the library.
 1. Choose between environment or user camera, fall back to the default camera.
