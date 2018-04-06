@@ -136,7 +136,7 @@ cameraPhoto.stopCamera()
 
 Both Yarn and npm download packages from the npm registry.
 
-### Full example vanilla Js with HTML
+### Full example vanilla Js & HTML
 
 #### HTML
 ```html
@@ -201,5 +201,5 @@ stopCameraButtonElement.onclick = stopCamera;
 
 ```
 
-### With React
+### Full example with React
 TODO
