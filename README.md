@@ -84,8 +84,17 @@ cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {});
 ### Start with preferred (facing Mode & resolution)
 ```js
 // example of preferred resolution 640 x 480
-cameraPhoto.startCamera(fm, {width: 640, height: 480});
+cameraPhoto.startCamera(facingMode, {width: 640, height: 480});
 ```
+
+### Start with the maximum resolution
+it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]px` to take the maximum width of `2560` if it can't, `1280` and so on ... until the fall back of the default value of the camera.
+```js
+// It will try the best to get the maximum resolution.
+cameraPhoto.startCameraMaxResolution(facingMode);
+```
+
+
 
 
 ## Installation
