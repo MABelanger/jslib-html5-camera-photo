@@ -53,6 +53,41 @@ src : [https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum](http
 ## LiveDemo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
 
+## Usage
+
+### Constructor
+```js
+import CameraPhoto from 'lib-html5-camera-photo';
+
+// get your video element with his corresponding id from the html
+let videoElement = document.getElementById('videoId');
+
+// pass it to the constructor.
+let cameraPhoto = new CameraPhoto(videoElement);
+```
+
+### Start the default mode (facing Mode & resolution)
+If you do not specify any prefer resolution and facing mode, the default is used.
+```js
+cameraPhoto.startCamera();
+```
+
+### Start with preferred facing Mode and default resolution
+```js
+// environment (camera point to environment)
+cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {});
+
+// OR user (camera point to the user)
+cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {});
+```
+
+### Start with preferred facing Mode and preferred resolution
+```js
+// example of preferred resolution 640 x 480
+cameraPhoto.startCamera(fm, {width: 640, height: 480});
+```
+
+
 ## Installation
 
 ```bash
