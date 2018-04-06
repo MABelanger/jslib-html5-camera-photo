@@ -90,12 +90,16 @@ cameraPhoto.startCamera(facingMode, {width: 640, height: 480});
 ### Start with the maximum resolution
 it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `2560`px if it can't, `1280`px and so on ... until the fall back of the default value of the camera.
 ```js
-// It will try the best to get the maximum resolution.
+// It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(facingMode);
 ```
 
-
-
+### Get the data URI (image)
+Function that return the dataUri of the current frame of the camera. The sizeFactor is used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
+```js
+// By default the sizeFactor is 1
+let dataUri = cameraPhoto.getDataUri([sizeFactor]);
+```
 
 ## Installation
 
