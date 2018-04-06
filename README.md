@@ -4,7 +4,7 @@ The first objective of this package comes from the need to have a js library tha
 
 Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs/) and [jpeg_camera](https://github.com/amw/jpeg_camera) but i need to switch easily from camera `environment` and `user`. You need to build the constraint of getUserMedia()... Another need is to have a `sizeFactor` instead of a fixing 'width' and 'height' that can not fit with the ratio of the resolution that camera can pick.
 
-I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the constraint **video.optional[]** is obsolete :
+I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the constraint `video.optional[]` is obsolete :
 
 ```js
 video.optional: [
@@ -12,7 +12,7 @@ video.optional: [
   ...
 ]
 ```
-so i use instead the new constraint **video.advanced[]**:
+So i use instead the new constraint `video.advanced[]`:
 ```js
 video.advanced: [
   { 'width': {'min': 640} },
