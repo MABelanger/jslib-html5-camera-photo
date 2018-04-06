@@ -23,8 +23,8 @@ But i had problem with some mobile browser so when we use the maximum resolution
 
 ## Features of the library.
 1. Choose between `environment` or `user` camera, fall back to the default camera.
-2. Set preferred resolution, fall back to the default resolution.
-3. Try to get the maximum resolution of the camera, fall back to the default resolution.
+2. Set `preferred resolution`, fall back to the default resolution.
+3. Get the `maximum resolution` of the camera, fall back to the default resolution.
 
 
 ## supported browsers (getUserMedia)
