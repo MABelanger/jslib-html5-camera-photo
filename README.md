@@ -67,31 +67,42 @@ let cameraPhoto = new CameraPhoto(videoElement);
 ```
 
 ### Start the default mode (facing Mode & resolution)
-If you do not specify any prefer resolution and facing mode, the default is used.
+If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream if you want to use it. If it fail, it will give you the error.
 ```js
-cameraPhoto.startCamera();
+// default camera and resolution
+cameraPhoto.startCamera()
+  .then((stream)=>{ /* ... */})
+  .catch((error)=>{/* ... */});
 ```
 
 ### Start with preferred facing Mode & default resolution
 ```js
 // environment (camera point to environment)
-cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {});
+cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {})
+  .then((stream)=>{ /* ... */})
+  .catch((error)=>{/* ... */});
 
 // OR user (camera point to the user)
-cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {});
+cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {})
+  .then((stream)=>{ /* ... */})
+  .catch((error)=>{/* ... */});
 ```
 
 ### Start with preferred (facing Mode & resolution)
 ```js
 // example of preferred resolution 640 x 480
-cameraPhoto.startCamera(facingMode, {width: 640, height: 480});
+cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
+  .then((stream)=>{ /* ... */})
+  .catch((error)=>{/* ... */});
 ```
 
 ### Start with the maximum resolution
 it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `2560`px if it can't, `1280`px and so on ... until the fall back of the default value of the camera.
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
-cameraPhoto.startCameraMaxResolution(facingMode);
+cameraPhoto.startCameraMaxResolution(facingMode)
+  .then((stream)=>{ /* ... */})
+  .catch((error)=>{/* ... */});
 ```
 
 ### Get the data URI (image)
@@ -100,6 +111,8 @@ Function that return the dataUri of the current frame of the camera. The sizeFac
 // By default the sizeFactor is 1
 let dataUri = cameraPhoto.getDataUri([sizeFactor]);
 ```
+
+
 
 ## Installation
 
