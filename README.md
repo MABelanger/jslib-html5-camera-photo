@@ -71,7 +71,7 @@ If you do not specify any prefer resolution and facing mode, the default is used
 ```js
 // default camera and resolution
 cameraPhoto.startCamera()
-  .then((stream)=>{ /* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
@@ -79,12 +79,12 @@ cameraPhoto.startCamera()
 ```js
 // environment (camera point to environment)
 cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {})
-  .then((stream)=>{ /* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 
 // OR user (camera point to the user)
 cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {})
-  .then((stream)=>{ /* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
@@ -92,7 +92,7 @@ cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {})
 ```js
 // example of preferred resolution 640 x 480
 cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
-  .then((stream)=>{ /* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
@@ -101,7 +101,7 @@ it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, de
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(facingMode)
-  .then((stream)=>{ /* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
