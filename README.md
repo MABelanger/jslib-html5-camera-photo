@@ -53,9 +53,22 @@ src : [https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum](http
 ## LiveDemo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
 
-## Usage
+### Geting started
+You can use it with pure JavaScript, Jquery or React.
 
-### Constructor
+### Installation
+
+```bash
+npm install --save jslib-html5-camera-photo
+```
+
+```bash
+yarn add jslib-html5-camera-photo
+```
+
+### Usage
+
+#### Constructor
 ```js
 import CameraPhoto from 'lib-html5-camera-photo';
 
@@ -66,7 +79,7 @@ let videoElement = document.getElementById('videoId');
 let cameraPhoto = new CameraPhoto(videoElement);
 ```
 
-### Start the default mode (facing Mode & resolution)
+#### Start the default mode (facing Mode & resolution)
 If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream if you want to use it. If it fail, it will give you the error.
 ```js
 // default camera and resolution
@@ -75,7 +88,7 @@ cameraPhoto.startCamera()
   .catch((error)=>{/* ... */});
 ```
 
-### Start with preferred facing Mode & default resolution
+#### Start with preferred facing Mode & default resolution
 ```js
 // environment (camera point to environment)
 cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {})
@@ -88,7 +101,7 @@ cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {})
   .catch((error)=>{/* ... */});
 ```
 
-### Start with preferred (facing Mode & resolution)
+#### Start with preferred (facing Mode & resolution)
 ```js
 // example of preferred resolution 640 x 480
 cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
@@ -96,7 +109,7 @@ cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
   .catch((error)=>{/* ... */});
 ```
 
-### Start with the maximum resolution
+#### Start with the maximum resolution
 it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `2560`px if it can't, `1280`px and so on ... until the fall back of the default value of the camera. The facingMode is optional.
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
@@ -105,14 +118,14 @@ cameraPhoto.startCameraMaxResolution(facingMode)
   .catch((error)=>{/* ... */});
 ```
 
-### Get the data URI (image)
+#### Get the data URI (image)
 Function that return the dataUri of the current frame of the camera. The sizeFactor is used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
 ```js
 // By default the sizeFactor is 1
 let dataUri = cameraPhoto.getDataUri(sizeFactor);
 ```
 
-### Stop the camera
+#### Stop the camera
 Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we start the camera, it internally using this stop function to be able to apply new constraints.
 ```js
 // It stop the camera
@@ -121,24 +134,9 @@ cameraPhoto.stopCamera()
   .catch((error)=>{/* ... */});
 ```
 
-## Installation
-
-```bash
-npm install --save jslib-html5-camera-photo
-```
-
-```bash
-yarn add jslib-html5-camera-photo
-```
-
 Both Yarn and npm download packages from the npm registry.
 
-## API
-
-### Geting started
-You can use it with pure JavaScript, Jquery or React.
-
-### Example vanilla Js with HTML
+### Full example vanilla Js with HTML
 
 #### HTML
 ```html
@@ -204,3 +202,4 @@ stopCameraButtonElement.onclick = stopCamera;
 ```
 
 ### With React
+TODO
