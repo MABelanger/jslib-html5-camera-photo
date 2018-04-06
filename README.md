@@ -62,7 +62,7 @@ import CameraPhoto from 'lib-html5-camera-photo';
 // get your video element with his corresponding id from the html
 let videoElement = document.getElementById('videoId');
 
-// pass it to the constructor.
+// pass the video element to the constructor.
 let cameraPhoto = new CameraPhoto(videoElement);
 ```
 
@@ -97,7 +97,7 @@ cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
 ```
 
 ### Start with the maximum resolution
-it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `2560`px if it can't, `1280`px and so on ... until the fall back of the default value of the camera.
+it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `2560`px if it can't, `1280`px and so on ... until the fall back of the default value of the camera. The facingMode is optional.
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(facingMode)
@@ -109,10 +109,17 @@ cameraPhoto.startCameraMaxResolution(facingMode)
 Function that return the dataUri of the current frame of the camera. The sizeFactor is used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
 ```js
 // By default the sizeFactor is 1
-let dataUri = cameraPhoto.getDataUri([sizeFactor]);
+let dataUri = cameraPhoto.getDataUri(sizeFactor);
 ```
 
-
+### Stop the camera
+Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we use startCamera(), it internally using this stop function to be able to apply new constraints.
+```js
+// It stop the camera
+cameraPhoto.stopCamera()
+  .then(()=>{/* ... */})
+  .catch((error)=>{/* ... */});
+```
 
 ## Installation
 
