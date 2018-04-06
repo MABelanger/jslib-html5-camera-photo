@@ -11,9 +11,8 @@ Please do the following:
 
 1. run `npm install`
 2. run `npm start`
-3. Make a coffee :)
-4. write your code in ES6
-5. push your changes
-6. create a PR with a link to the original issue
+3. write your code in ES6
+4. push your changes
+5. create a PR with a link to the original issue
 
 That's it! Thank you for your contribution!
