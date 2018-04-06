@@ -72,7 +72,7 @@ If you do not specify any prefer resolution and facing mode, the default is used
 cameraPhoto.startCamera();
 ```
 
-### Start with preferred facing Mode and default resolution
+### Start with preferred facing Mode & default resolution
 ```js
 // environment (camera point to environment)
 cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {});
@@ -81,7 +81,7 @@ cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {});
 cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {});
 ```
 
-### Start with preferred facing Mode and preferred resolution
+### Start with preferred facing Mode & preferred resolution
 ```js
 // example of preferred resolution 640 x 480
 cameraPhoto.startCamera(fm, {width: 640, height: 480});
