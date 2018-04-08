@@ -9,6 +9,7 @@ let imgElement = document.getElementById('imgId');
 let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
 let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 let startMaxResolutionButtonElement = document.getElementById('startMaxResolutionId');
+let cameraSettingElement = document.getElementById('cameraSettingsId');
 
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
@@ -30,6 +31,23 @@ function takePhoto () {
   imgElement.src = dataUri;
 }
 
+function showSettings () {
+  let settings = cameraPhoto.getSettings();
+
+  // by default is no camera...
+  let innerHTML = 'No camera';
+  if (settings) {
+    let {aspectRatio, frameRate, height, width} = settings;
+    innerHTML = `
+      aspectRatio:${aspectRatio}
+      frameRate: ${frameRate}
+      height: ${height}
+      width: ${width}
+    `;
+  }
+  cameraSettingElement.innerHTML = innerHTML;
+}
+
 function stopCamera () {
   cameraPhoto.stopCamera()
     .then(() => {
@@ -49,6 +67,10 @@ function startCameraMaxResolution () {
       console.error('Camera not started!', error);
     });
 }
+
+setInterval(() => {
+  showSettings();
+}, 500);
 
 // bind the buttons to the right functions.
 takePhotoButtonElement.onclick = takePhoto;

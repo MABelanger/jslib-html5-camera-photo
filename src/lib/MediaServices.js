@@ -133,7 +133,7 @@ class MediaServices {
       {'width': {'min': 1280}},
       {'width': {'min': 1920}},
       {'width': {'min': 2560}},
-      {'width': {'min': 3840}},
+      {'width': {'min': 3840}}
 
     ];
 

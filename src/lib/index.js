@@ -5,6 +5,7 @@ class CameraPhoto {
     this.videoElement = videoElement;
     this.stream = null;
     this.numberOfMaxResolutionTry = 1;
+    this.settings = null;
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -69,9 +70,22 @@ class CameraPhoto {
     }
   }
 
+  _setSettings (stream) {
+    if (stream) {
+      this.settings = this.stream.getTracks()[0].getSettings();
+    } else {
+      this.settings = null;
+    }
+  }
+
   _gotStream (stream) {
     this.stream = stream;
+    this._setSettings(stream);
     this._setVideoSrc(stream);
+  }
+
+  getSettings () {
+    return this.settings;
   }
 
   startCamera (idealFacingMode = {}, idealResolution = {}) {
@@ -109,6 +123,7 @@ class CameraPhoto {
         });
         this.videoElement.src = '';
         this.stream = null;
+        this._setSettings(null);
         resolve();
       }
       reject(Error('no stream to stop!'));
