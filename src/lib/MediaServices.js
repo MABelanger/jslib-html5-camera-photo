@@ -1,7 +1,3 @@
-// https://github.com/webrtc/adapter
-// https://webrtchacks.github.io/WebRTC-Camera-Resolution/
-// https://webrtchacks.com/getusermedia-resolutions-3/
-// https://github.com/addyosmani/getUserMedia.js
 const SUPPORTED_FACING_MODES = ['user', 'environment', 'left', 'right'];
 
 const FACING_MODES = {
@@ -120,7 +116,7 @@ class MediaServices {
       idealConstraints.video.height.ideal = idealResolution.height;
     }
 
-    console.log('idealConstraints', idealConstraints);
+    console.log('ideal Constraints:', idealConstraints);
 
     return idealConstraints;
   }
@@ -136,7 +132,9 @@ class MediaServices {
       {'width': {'min': 1080}},
       {'width': {'min': 1280}},
       {'width': {'min': 1920}},
-      {'width': {'min': 2560}}
+      {'width': {'min': 2560}},
+      {'width': {'min': 3840}},
+
     ];
 
     if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
@@ -147,7 +145,7 @@ class MediaServices {
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
 
-    console.log('Max Width constraints', constraints);
+    console.log('Max Width constraints:', constraints);
 
     return constraints;
   }

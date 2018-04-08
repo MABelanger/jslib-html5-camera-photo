@@ -109,7 +109,7 @@ cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
 ```
 
 #### Start with the maximum resolution
-it will try the range of width `[2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `2560`px (8k) if it can't, `1920`px (4k) and so on ... until the fall back of the default value of the camera. The facingMode is optional.
+it will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `3840`px if it can't, `2560`px and so on ... until the fall back of the default value of the camera. The facingMode is optional.
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(facingMode)
@@ -285,5 +285,13 @@ class App extends React.Component {
 export default App;
 ```
 
-### Developpement
+### Development
 I choose the env dev of create-react-app even if it is vanilla js library because it's simple to use and really efficient to develop but you don't necessarily need react to use it.
+
+### Documentations
+[Auto scan resolution camera](https://webrtchacks.github.io/WebRTC-Camera-Resolution/)
+[Great info of new API](https://webrtchacks.com/getusermedia-resolutions-3/)
+
+### Other interesting projects
+[webrtc/adapter](https://github.com/webrtc/adapter)
+[getUserMedia.js](https://github.com/addyosmani/getUserMedia.js)
