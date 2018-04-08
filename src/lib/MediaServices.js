@@ -95,7 +95,10 @@ class MediaServices {
     // default idealConstraints
     let idealConstraints = {
       audio: false,
-      video: {}
+      video: {
+        width: {},
+        height: {}
+      }
     };
 
     const supports = navigator.mediaDevices.getSupportedConstraints();
