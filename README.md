@@ -9,7 +9,7 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 2. Set `ideal resolution`, fall back to the default resolution.
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
 
-I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the constraint `video.optional[]` is obsolete :
+I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the constraint `video.optional[]` was working but is obsolete :
 
 ```js
 video.optional: [
@@ -24,7 +24,7 @@ video.advanced: [
   ...
 ]
 ```
-But with the new constraint `video.advanced[]`, i had problem with my `samsung galaxy S4 environment camera` and not with the user one, so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight? So instead of crashing and doing nothing, it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced[...]` array. If you have better solution please [contribute](./CONTRIBUTING.md) :)
+But with the new constraint `video.advanced[]`, i had problem with my `samsung galaxy S4 environment camera` but not with the `user` environment, so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight? So instead of crashing and doing nothing, it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced[...]` array. It's a hack, If you have better solution please [contribute](./CONTRIBUTING.md) :)
 
 ## supported browsers (getUserMedia)
 [https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
@@ -211,7 +211,8 @@ class App extends React.Component {
 
   componentDidMount () {
     // We need to instantiate CameraPhoto inside componentDidMount because we
-    // need the refs.video to get the videoElement.
+    // need the refs.video to get the videoElement so the component has to be
+    // mounted.
     this.cameraPhoto = new CameraPhoto(this.refs.video);
   }
 
@@ -256,7 +257,7 @@ class App extends React.Component {
           let facingMode = this.cameraPhoto.FACING_MODES.ENVIRONMENT;
           let idealResolution = { width: 640, height: 480 };
           this.startCamera(facingMode, idealResolution);
-        }}> Start environment facingMode resolution ideal 640x480 </button>
+        }}> Start environment facingMode resolution ideal 640 by 480 </button>
 
         <button onClick={ () => {
           let facingMode = this.cameraPhoto.FACING_MODES.USER;
@@ -282,8 +283,7 @@ class App extends React.Component {
 }
 
 export default App;
-
 ```
 
 ### Developpement
-I choose the env dev of create-react-app because it's simple and really efficient but it probably better if we can remove react into the dependency. Any way, is a nice to have, if you know how please please [contribute](./CONTRIBUTING.md) :)
+I choose the env dev of create-react-app even if it is vanilla js library because it's simple to use and really efficient to develop but you don't necessarily need react to use it.
