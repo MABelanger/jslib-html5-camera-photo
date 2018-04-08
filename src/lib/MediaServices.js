@@ -103,9 +103,11 @@ class MediaServices {
 
     const supports = navigator.mediaDevices.getSupportedConstraints();
     if (!supports.width || !supports.height || !supports.facingMode) {
+      console.log('Constraint width height or facingMode not supported!');
       return idealConstraints;
     }
 
+    // If is valid facingMode
     if (SUPPORTED_FACING_MODES.indexOf(idealFacingMode) > -1) {
       idealConstraints.video.facingMode = { ideal: idealFacingMode };
     }
@@ -141,10 +143,11 @@ class MediaServices {
       return null;
     }
 
+    // each number of try, we remove the last value of the array (the bigger minim width)
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
 
-    console.log('constraints', constraints);
+    console.log('Max Width constraints', constraints);
 
     return constraints;
   }
