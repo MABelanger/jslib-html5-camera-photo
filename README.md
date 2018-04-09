@@ -124,6 +124,20 @@ Function that return the `dataUri` of the current frame of the camera. The `size
 let dataUri = cameraPhoto.getDataUri(sizeFactor);
 ```
 
+#### Get the camera settings
+the function return null if no stream exist (camera not started) or an object with the camera settings attributes of (aspectRatio, frameRate, height, width).
+```js
+let cameraSettigs = cameraPhoto.getCameraSettings();
+if (cameraSettigs) {
+  let {aspectRatio, frameRate, height, width} = cameraSettigs;
+  let settingsStr =
+    `aspectRatio:${aspectRatio}` +
+    `frameRate: ${frameRate}` +
+    `height: ${height}` +
+    `width: ${width}`;
+  console.log(settingsStr);
+}
+```
 #### Stop the camera
 Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we start the camera, it internally using this stop function to be able to apply new constraints.
 ```js
