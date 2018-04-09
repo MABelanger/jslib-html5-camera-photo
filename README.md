@@ -131,10 +131,10 @@ let cameraSettigs = cameraPhoto.getCameraSettings();
 if (cameraSettigs) {
   let {aspectRatio, frameRate, height, width} = cameraSettigs;
   let settingsStr =
-    `aspectRatio:${aspectRatio}` +
-    `frameRate: ${frameRate}` +
-    `height: ${height}` +
-    `width: ${width}`;
+      `aspectRatio:${aspectRatio} ` +
+      `frameRate: ${frameRate} ` +
+      `height: ${height} ` +
+      `width: ${width}`;
   console.log(settingsStr);
 }
 ```
