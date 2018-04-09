@@ -82,7 +82,7 @@ class CameraPhoto {
     this._setVideoSrc(stream);
   }
 
-  getSettings () {
+  getCameraSettings () {
     return this.settings;
   }
 

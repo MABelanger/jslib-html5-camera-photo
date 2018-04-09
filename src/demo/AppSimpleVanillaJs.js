@@ -54,8 +54,8 @@ function takePhoto () {
   imgElement.src = dataUri;
 }
 
-function showSettings () {
-  let settings = cameraPhoto.getSettings();
+function showCameraSettings () {
+  let settings = cameraPhoto.getCameraSettings();
 
   // by default is no camera...
   let innerHTML = 'No camera';
@@ -92,12 +92,15 @@ function startCameraMaxResolution () {
     });
 }
 
-setInterval(() => {
-  showSettings();
-}, 500);
+document.addEventListener('DOMContentLoaded', function () {
+  // update camera setting
+  setInterval(() => {
+    showCameraSettings();
+  }, 500);
 
-// bind the buttons to the right functions.
-takePhotoButtonElement.onclick = takePhoto;
-stopCameraButtonElement.onclick = stopCamera;
-startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
-startDefaultResolutionButtonElement.onclick = startCameraDefaultResolution;
+  // bind the buttons to the right functions.
+  takePhotoButtonElement.onclick = takePhoto;
+  stopCameraButtonElement.onclick = stopCamera;
+  startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
+  startDefaultResolutionButtonElement.onclick = startCameraDefaultResolution;
+});
