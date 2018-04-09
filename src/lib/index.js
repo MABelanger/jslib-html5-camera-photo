@@ -19,7 +19,6 @@ class CameraPhoto {
 
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
-          console.log('ok');
           this._gotStream(stream);
           resolve(stream);
         })
@@ -44,7 +43,6 @@ class CameraPhoto {
     return new Promise((resolve, reject) => {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
-          console.log('ok max');
           this._gotStream(stream);
           resolve(stream);
         })

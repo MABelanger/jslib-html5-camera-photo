@@ -289,9 +289,9 @@ export default App;
 I choose the env dev of create-react-app even if it is vanilla js library because it's simple to use and really efficient to develop but you don't necessarily need react to use it.
 
 ### Documentations
-[Auto scan resolution camera](https://webrtchacks.github.io/WebRTC-Camera-Resolution/)
-[Great info of new API](https://webrtchacks.com/getusermedia-resolutions-3/)
+- [Auto scan resolution camera](https://webrtchacks.github.io/WebRTC-Camera-Resolution/)
+- [Great info of new API](https://webrtchacks.com/getusermedia-resolutions-3/)
 
 ### Other interesting projects
-[webrtc/adapter](https://github.com/webrtc/adapter)
-[getUserMedia.js](https://github.com/addyosmani/getUserMedia.js)
+- [webrtc/adapter](https://github.com/webrtc/adapter)
+- [getUserMedia.js](https://github.com/addyosmani/getUserMedia.js)

@@ -6,24 +6,47 @@ let videoElement = document.getElementById('videoId');
 let imgElement = document.getElementById('imgId');
 
 // get buttons elements
-let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
-let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
-let startMaxResolutionButtonElement = document.getElementById('startMaxResolutionId');
-let cameraSettingElement = document.getElementById('cameraSettingsId');
+let facingModeSelectElement =
+    document.getElementById('facingModeSelectId');
+let startDefaultResolutionButtonElement =
+    document.getElementById('startDefaultResolutionButtonId');
+let takePhotoButtonElement =
+    document.getElementById('takePhotoButtonId');
+let stopCameraButtonElement =
+    document.getElementById('stopCameraButtonId');
+let startMaxResolutionButtonElement =
+    document.getElementById('startMaxResolutionId');
+let cameraSettingElement =
+    document.getElementById('cameraSettingsId');
 
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
 
-// start the camera with prefered environment facingMode ie. ()
-// if the environment facingMode is not avalible, it will fallback
-// to the default camera avalible.
-cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT)
+// example, at the loading page, start the default camera with the default resolution.
+cameraPhoto.startCamera()
   .then(() => {
-    console.log('Camera started !');
+    console.log('Camera started with default facingMode and default resolutions !');
   })
   .catch((error) => {
     console.error('Camera not started!', error);
   });
+
+// start the camera with prefered environment facingMode ie. ()
+// if the environment facingMode is not avalible, it will fallback
+// to the default camera avalible.
+function startCameraDefaultResolution () {
+  let facingMode = facingModeSelectElement.value;
+  cameraPhoto.startCamera(cameraPhoto.FACING_MODES[facingMode])
+    .then(() => {
+      let log =
+          `Camera started with default resolution and` +
+          `prefered facingMode : ${facingMode}`;
+      console.log(log);
+    })
+    .catch((error) => {
+      console.error('Camera not started!', error);
+    });
+}
 
 // function called by the buttons.
 function takePhoto () {
@@ -39,10 +62,10 @@ function showSettings () {
   if (settings) {
     let {aspectRatio, frameRate, height, width} = settings;
     innerHTML = `
-      aspectRatio:${aspectRatio}
-      frameRate: ${frameRate}
-      height: ${height}
-      width: ${width}
+        aspectRatio:${aspectRatio}
+        frameRate: ${frameRate}
+        height: ${height}
+        width: ${width}
     `;
   }
   cameraSettingElement.innerHTML = innerHTML;
@@ -59,7 +82,8 @@ function stopCamera () {
 }
 
 function startCameraMaxResolution () {
-  cameraPhoto.startCameraMaxResolution(cameraPhoto.FACING_MODES.ENVIRONMENT)
+  let facingMode = facingModeSelectElement.value;
+  cameraPhoto.startCameraMaxResolution(cameraPhoto.FACING_MODES[facingMode])
     .then(() => {
       console.log('Camera started with maximum resoluton !');
     })
@@ -76,7 +100,4 @@ setInterval(() => {
 takePhotoButtonElement.onclick = takePhoto;
 stopCameraButtonElement.onclick = stopCamera;
 startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
-
-// setTimeout(() => {
-//   startCameraMaxResolution();
-// }, 5000);
+startDefaultResolutionButtonElement.onclick = startCameraDefaultResolution;

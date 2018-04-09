@@ -116,8 +116,6 @@ class MediaServices {
       idealConstraints.video.height.ideal = idealResolution.height;
     }
 
-    console.log('ideal Constraints:', idealConstraints);
-
     return idealConstraints;
   }
 
