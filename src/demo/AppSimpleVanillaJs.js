@@ -22,15 +22,6 @@ let cameraSettingElement =
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
 
-// example, at the loading page, start the default camera with the default resolution.
-cameraPhoto.startCamera()
-  .then(() => {
-    console.log('Camera started with default facingMode and default resolutions !');
-  })
-  .catch((error) => {
-    console.error('Camera not started!', error);
-  });
-
 // start the camera with prefered environment facingMode ie. ()
 // if the environment facingMode is not avalible, it will fallback
 // to the default camera avalible.
