@@ -44,7 +44,7 @@ right | The source is facing to the right of the user. ***
 
 #### Below is an illustration of the video facing modes in relation to the user.
 
-![alt facingModes](./docs/camera-names-exp.svg)
+![alt facingModes](./docs/camera-names-exp.png)
 
 src : [https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum](https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum)
 
