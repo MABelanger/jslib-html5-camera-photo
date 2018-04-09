@@ -132,7 +132,6 @@ class MediaServices {
       {'width': {'min': 1920}},
       {'width': {'min': 2560}},
       {'width': {'min': 3840}}
-
     ];
 
     if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
