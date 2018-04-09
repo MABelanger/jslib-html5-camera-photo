@@ -291,7 +291,8 @@ I choose the env dev of create-react-app even if it is vanilla js library becaus
 ### Documentations
 - [Auto scan resolution camera](https://webrtchacks.github.io/WebRTC-Camera-Resolution/)
 - [Great info of new API](https://webrtchacks.com/getusermedia-resolutions-3/)
+- [W3 specs](https://www.w3.org/TR/mediacapture-streams/)
 
 ### Other interesting projects
-- [webrtc/adapter](https://github.com/webrtc/adapter)
-- [getUserMedia.js](https://github.com/addyosmani/getUserMedia.js)
+- [Webrtc/adapter](https://github.com/webrtc/adapter)
+- [GetUserMedia.js](https://github.com/addyosmani/getUserMedia.js)
