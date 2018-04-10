@@ -9,23 +9,6 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 2. Set `ideal resolution`, fall back to the default resolution.
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
 
-I tried to figure it out how to get the maximum of camera resolution. Not an easy solution, i found that the constraint `video.optional[]` was working but is obsolete :
-
-```js
-video.optional: [
-  { minWidth: 640 },
-  ...
-]
-```
-So the lib use instead the new constraint `video.advanced[]`:
-```js
-video.advanced: [
-  { 'width': {'min': 640} },
-  ...
-]
-```
-But with the new constraint `video.advanced[]`, i had problem with my `samsung galaxy S4 environment camera` but not with the `user` environment, so when we use the maximum resolution and the camera won't start it get error of `trackStartError` because the resolution is to hight? So instead of crashing and doing nothing, it fall back to default resolution by trying multiples `minimum width` until they is no more `video.advanced[...]` array. It's a hack, If you have better solution please [contribute](./CONTRIBUTING.md) :)
-
 ## supported browsers (getUserMedia)
 [https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
 ![alt caniuse](./docs/caniuse.png)
@@ -300,7 +283,7 @@ export default App;
 ```
 
 ### Development
-I choose the env dev of create-react-app even if it is vanilla js library because it's simple to use and really efficient to develop but you don't necessarily need react to use it.
+I choose the env dev of create-react-app even if it is vanilla js library because it's simple to use and really efficient to develop but you don't necessarily need react to use it. If you want to fix bug or add functionalities please [contribute](./CONTRIBUTING.md) :)
 
 ### Documentations
 - [Auto scan resolution camera](https://webrtchacks.github.io/WebRTC-Camera-Resolution/)
