@@ -9,6 +9,9 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 2. Set `ideal resolution`, fall back to the default resolution.
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
 
+## Simple Live Demo
+[https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
+
 ## supported browsers (getUserMedia)
 [https://caniuse.com/#search=getUserMedia](https://caniuse.com/#search=getUserMedia)
 ![alt caniuse](./docs/caniuse.png)
@@ -30,9 +33,6 @@ right | The source is facing to the right of the user. ***
 ![alt facingModes](./docs/camera-names-exp.png)
 
 src : [https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum](https://www.w3.org/TR/mediacapture-streams/#dom-videofacingmodeenum)
-
-## LiveDemo
-[https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
 
 ### Getting started
 You can use the library with vanilla JavaScript, React, Jquery, Angular...
