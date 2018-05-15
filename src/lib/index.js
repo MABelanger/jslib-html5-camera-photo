@@ -48,7 +48,7 @@ class CameraPhoto {
         })
         .catch((error) => {
           let {name, constraint, message} = error;
-          console.log(name + ' ' + constraint + ' ' + message);
+          console.error(name + ' ' + constraint + ' ' + message);
           // retry...
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;

@@ -8,16 +8,12 @@ const FACING_MODES = {
 };
 
 function _getImageSize (videoWidth, videoHeight, sizeFactor) {
-  console.log('videoWidth, videoHeight:', videoWidth, videoHeight);
-
   // calc the imageWidth
   let imageWidth = videoWidth * parseFloat(sizeFactor);
   // calc the ratio
   let ratio = videoWidth / imageWidth;
   // calc the imageHeight
   let imageHeight = videoHeight / ratio;
-
-  console.log('imageWidth, imageHeight, sizeFactor:', imageWidth, imageHeight, sizeFactor);
 
   return {
     imageWidth,
@@ -99,7 +95,7 @@ class MediaServices {
 
     const supports = navigator.mediaDevices.getSupportedConstraints();
     if (!supports.width || !supports.height || !supports.facingMode) {
-      console.log('Constraint width height or facingMode not supported!');
+      console.error('Constraint width height or facingMode not supported!');
       return idealConstraints;
     }
 
@@ -141,8 +137,6 @@ class MediaServices {
     // each number of try, we remove the last value of the array (the bigger minim width)
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
-
-    console.log('Max Width constraints:', constraints);
 
     return constraints;
   }
