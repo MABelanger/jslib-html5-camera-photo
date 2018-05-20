@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
-import Camera from '../lib';
+import { Component } from 'react';
+
 import './AppStandardUsage.css';
 
-const IMAGE_THUMB_SIZE_FACTOR = .1;
+const IMAGE_THUMB_SIZE_FACTOR = 0.1;
 
 const Image = ({ dataUri }) => {
   // if no dataUri or dataUri is data empty, use gif blank 1px
-  let dataUriImage = (!dataUri || dataUri === "data:,")
-    ? "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+  let dataUriImage = (!dataUri || dataUri === 'data:,')
+    ? 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='
     : dataUri;
-  return(
-      <img alt="camera" src={dataUriImage}/>
+  return (
+    <img alt="camera" src={dataUriImage}/>
   );
-}
+};
 
 export const Images = ({ dataUris }) => {
-  return(
+  return (
     dataUris.reverse().map((dataUri, index) => {
-      return <Image key={index} dataUri={dataUri}/>
+      return <Image key={index} dataUri={dataUri}/>;
     })
   );
-}
+};
 
 const Buttons = ({ onStopCamera, onStartCamera, onGetDataUri, onClearPhotos }) => {
-  return(
+  return (
     <div>
       <button
         onClick={(e) => {
@@ -50,11 +50,10 @@ const Buttons = ({ onStopCamera, onStartCamera, onGetDataUri, onClearPhotos }) =
       >Clear</button>
     </div>
   );
-}
+};
 
 class App extends Component {
-
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context);
     this.state = {
       dataUris: [],
@@ -62,20 +61,20 @@ class App extends Component {
     };
   }
 
-  setDataUri = () => {
+  setDataUri () {
     let dataUri = this.refs.camera.getDataUri(IMAGE_THUMB_SIZE_FACTOR);
     this.setState({
       dataUris: this.state.dataUris.concat(dataUri)
     });
   }
 
-  onClearPhotos = () => {
+  onClearPhotos () {
     this.setState({
       dataUris: []
     });
   }
 
-  onCameraError = (error) => {
+  onCameraError (error) {
     let {code, message, name} = error;
     let strError = `
       Camera Error:
@@ -85,25 +84,24 @@ class App extends Component {
     console.error(strError);
   }
 
-  onCameraStart = () => {
+  onCameraStart () {
     console.log('camera start');
     this.setState({
       isCameraRunning: true
     });
   }
 
-  onCameraStop = () => {
+  onCameraStop () {
     console.log('camera stop');
     this.setState({
       isCameraRunning: false
     });
   }
 
-  render() {
-
-  let infoCamera = this.state.isCameraRunning
-    ? <div className="txt-green"> Camera ON </div>
-    : <div className="txt-red"> Camera OFF </div>
+  render () {
+    let infoCamera = this.state.isCameraRunning
+      ? <div className="txt-green"> Camera ON </div>
+      : <div className="txt-red"> Camera OFF </div>;
 
     return (
       <div className="App">
@@ -115,16 +113,16 @@ class App extends Component {
             autoStart={false}
             onCameraStart = {this.onCameraStart}
             onCameraStop = {this.onCameraStop}
-            onVideoClick = {()=>{this.setDataUri()}}
+            onVideoClick = {() => { this.setDataUri(); }}
           />
 
           { infoCamera }
 
           <Buttons
-            onStopCamera = {()=>{this.refs.camera.stopCamera()}}
-            onStartCamera = {()=>{this.refs.camera.startCamera()}}
-            onGetDataUri = {()=>{this.setDataUri()}}
-            onClearPhotos = {()=>{this.onClearPhotos()}}
+            onStopCamera = {() => { this.refs.camera.stopCamera(); }}
+            onStartCamera = {() => { this.refs.camera.startCamera(); }}
+            onGetDataUri = {() => { this.setDataUri(); }}
+            onClearPhotos = {() => { this.onClearPhotos(); }}
           />
         </div>
 

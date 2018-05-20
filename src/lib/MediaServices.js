@@ -26,12 +26,12 @@ const SUPPORTED_IMAGE_TYPES = [JPG, PNG];
 const IMAGE_TYPES = {
   'PNG': PNG,
   'JPG': JPG
-}
+};
 
 const FORMAT_TYPES = {
-  [JPG] : 'image/jpeg',
-  [PNG] : 'image/png'
-}
+  [JPG]: 'image/jpeg',
+  [PNG]: 'image/png'
+};
 
 /*
  * Private fct
@@ -51,27 +51,25 @@ function _getImageSize (videoWidth, videoHeight, sizeFactor) {
 }
 
 function _validteImgParam (imageType, compression) {
-
-  if(! compression >=0 && compression <= 1 ) {
-    throw new Error ('invalid imageType, choose' + SUPPORTED_IMAGE_TYPES.join(', '));
+  if (!(compression >= 0 && compression <= 1)) {
+    throw new Error('invalid compression, choose between [0, 1]');
   }
 
-  if(! SUPPORTED_IMAGE_TYPES.includes(imageType) ) {
-    throw new Error ('invalid compression, choose between [0, 1]');
+  if (!SUPPORTED_IMAGE_TYPES.includes(imageType)) {
+    throw new Error('invalid imageType, choose: ' + SUPPORTED_IMAGE_TYPES.join(', '));
   }
   return true;
 }
 
-function _getImgParam(imageType, compression) {
+function _getImgParam (imageType, compression) {
   let imgParam = {};
   try {
     _validteImgParam(imageType, compression);
     imgParam.imageType = imageType;
     imgParam.compression = compression;
-
-  } catch(e) {
+  } catch (e) {
     console.error(e);
-    console.error('default value of' + PNG ' is used');
+    console.error('default value of ' + PNG + ' is used');
 
     imgParam.imageType = PNG;
     imgParam.compression = null;
@@ -80,10 +78,10 @@ function _getImgParam(imageType, compression) {
   return imgParam;
 }
 
-function _getDataUri(canvas, imageType, compression) {
+function _getDataUri (canvas, imageType, compression) {
   const imgParam = _getImgParam(imageType, compression);
 
-  if(imgParam.imageType === JPG ) {
+  if (imgParam.imageType === JPG) {
     return canvas.toDataURL(FORMAT_TYPES[JPG], compression);
   }
 
@@ -91,7 +89,7 @@ function _getDataUri(canvas, imageType, compression) {
 }
 
 class MediaServices {
-  static getDataUri (videoElement, sizeFactor, imageType=PNG, compression=null) {
+  static getDataUri (videoElement, sizeFactor, imageType, compression) {
     let {videoWidth, videoHeight} = videoElement;
     let {imageWidth, imageHeight} = _getImageSize(videoWidth, videoHeight, sizeFactor);
 
@@ -212,6 +210,10 @@ class MediaServices {
 
   static get FACING_MODES () {
     return FACING_MODES;
+  }
+
+  static get IMAGE_TYPES () {
+    return IMAGE_TYPES;
   }
 }
 

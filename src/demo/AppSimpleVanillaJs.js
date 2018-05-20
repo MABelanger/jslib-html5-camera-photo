@@ -41,7 +41,11 @@ function startCameraDefaultResolution () {
 
 // function called by the buttons.
 function takePhoto () {
-  let dataUri = cameraPhoto.getDataUri();
+  let sizeFactor = 1;
+  let imageType = cameraPhoto.IMAGE_TYPES.JPG;
+  let compression = -1;
+
+  let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
   imgElement.src = dataUri;
 }
 
