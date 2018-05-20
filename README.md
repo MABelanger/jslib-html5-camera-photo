@@ -106,7 +106,7 @@ Function that return the `dataUri` of the current frame of the camera.
 
 - The `imageType` is used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
 
-- The `compression` is used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `0.92`.
+- The `compression` is used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `0.92`, the default value of the browser.
 
 ## Available image type [IMAGE_TYPES constants]
 type  | Description
