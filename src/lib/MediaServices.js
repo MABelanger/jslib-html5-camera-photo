@@ -1,12 +1,41 @@
-const SUPPORTED_FACING_MODES = ['user', 'environment', 'left', 'right'];
+/*
+ * Constants
+ */
+
+// camera constants
+const USER = 'user';
+const ENVIRONMENT = 'environment';
+const LEFT = 'left';
+const RIGHT = 'right';
+
+const SUPPORTED_FACING_MODES = [USER, ENVIRONMENT, LEFT, RIGHT];
 
 const FACING_MODES = {
-  'USER': 'user',
-  'ENVIRONMENT': 'environment',
-  'LEFT': 'left',
-  'RIGHT': 'right'
+  'USER': USER,
+  'ENVIRONMENT': ENVIRONMENT,
+  'LEFT': LEFT,
+  'RIGHT': RIGHT
 };
 
+// Image constants
+const PNG = 'png';
+const JPG = 'jpg';
+
+const SUPPORTED_IMAGE_TYPES = [JPG, PNG];
+
+const IMAGE_TYPES = {
+  'PNG': PNG,
+  'JPG': JPG
+}
+
+const FORMAT_TYPES = {
+  [JPG] : 'image/jpeg',
+  [PNG] : 'image/png'
+}
+
+/*
+ * Private fct
+ */
 function _getImageSize (videoWidth, videoHeight, sizeFactor) {
   // calc the imageWidth
   let imageWidth = videoWidth * parseFloat(sizeFactor);
@@ -21,8 +50,48 @@ function _getImageSize (videoWidth, videoHeight, sizeFactor) {
   };
 }
 
+function _validteImgParam (imageType, compression) {
+
+  if(! compression >=0 && compression <= 1 ) {
+    throw new Error ('invalid imageType, choose' + SUPPORTED_IMAGE_TYPES.join(', '));
+  }
+
+  if(! SUPPORTED_IMAGE_TYPES.includes(imageType) ) {
+    throw new Error ('invalid compression, choose between [0, 1]');
+  }
+  return true;
+}
+
+function _getImgParam(imageType, compression) {
+  let imgParam = {};
+  try {
+    _validteImgParam(imageType, compression);
+    imgParam.imageType = imageType;
+    imgParam.compression = compression;
+
+  } catch(e) {
+    console.error(e);
+    console.error('default value of' + PNG ' is used');
+
+    imgParam.imageType = PNG;
+    imgParam.compression = null;
+  }
+
+  return imgParam;
+}
+
+function _getDataUri(canvas, imageType, compression) {
+  const imgParam = _getImgParam(imageType, compression);
+
+  if(imgParam.imageType === JPG ) {
+    return canvas.toDataURL(FORMAT_TYPES[JPG], compression);
+  }
+
+  return canvas.toDataURL(FORMAT_TYPES[imageType]);
+}
+
 class MediaServices {
-  static getDataUri (videoElement, sizeFactor) {
+  static getDataUri (videoElement, sizeFactor, imageType=PNG, compression=null) {
     let {videoWidth, videoHeight} = videoElement;
     let {imageWidth, imageHeight} = _getImageSize(videoWidth, videoHeight, sizeFactor);
 
@@ -34,7 +103,7 @@ class MediaServices {
     context.drawImage(videoElement, 0, 0, imageWidth, imageHeight);
 
     // Get dataUri from canvas
-    let dataUri = canvas.toDataURL('image/png');
+    let dataUri = _getDataUri(canvas, imageType, compression);
     return dataUri;
   }
 
