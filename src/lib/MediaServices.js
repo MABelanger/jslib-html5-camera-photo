@@ -50,13 +50,13 @@ function _getImageSize (videoWidth, videoHeight, sizeFactor) {
   };
 }
 
-function _validteImgParam (imageType, compression) {
+function _validateImgParam (imageType, compression) {
   if (!(compression >= 0 && compression <= 1)) {
-    throw new Error('invalid compression, choose between [0, 1]');
+    throw new Error(compression + ' is invalid compression, choose between: [0, 1]');
   }
 
   if (!SUPPORTED_IMAGE_TYPES.includes(imageType)) {
-    throw new Error('invalid imageType, choose: ' + SUPPORTED_IMAGE_TYPES.join(', '));
+    throw new Error(imageType + ' is invalid imageType, choose between: ' + SUPPORTED_IMAGE_TYPES.join(', '));
   }
   return true;
 }
@@ -64,7 +64,7 @@ function _validteImgParam (imageType, compression) {
 function _getImgParam (imageType, compression) {
   let imgParam = {};
   try {
-    _validteImgParam(imageType, compression);
+    _validateImgParam(imageType, compression);
     imgParam.imageType = imageType;
     imgParam.compression = compression;
   } catch (e) {
