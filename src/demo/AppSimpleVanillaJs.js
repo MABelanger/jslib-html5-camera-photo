@@ -30,7 +30,7 @@ function startCameraDefaultResolution () {
   cameraPhoto.startCamera(cameraPhoto.FACING_MODES[facingMode])
     .then(() => {
       let log =
-          `Camera started with default resolution and` +
+          `Camera started with default resolution and ` +
           `prefered facingMode : ${facingMode}`;
       console.log(log);
     })
@@ -43,7 +43,7 @@ function startCameraDefaultResolution () {
 function takePhoto () {
   let sizeFactor = 1;
   let imageType = cameraPhoto.IMAGE_TYPES.JPG;
-  let compression = -1;
+  let compression = 1;
 
   let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
   imgElement.src = dataUri;
@@ -80,7 +80,10 @@ function startCameraMaxResolution () {
   let facingMode = facingModeSelectElement.value;
   cameraPhoto.startCameraMaxResolution(cameraPhoto.FACING_MODES[facingMode])
     .then(() => {
-      console.log('Camera started with maximum resoluton !');
+      let log =
+          `Camera started with maximum resoluton and ` +
+          `prefered facingMode : ${facingMode}`;
+      console.log(log);
     })
     .catch((error) => {
       console.error('Camera not started!', error);
