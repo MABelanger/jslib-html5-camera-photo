@@ -118,6 +118,8 @@ PNG | set image `image/png` to the data URI (the default value)
 // Use all the default value
 let dataUri = cameraPhoto.getDataUri();
 
+// OR
+
 // Specify sizeFactor, imageType, compression
 let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
 ```
