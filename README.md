@@ -115,7 +115,10 @@ JPG | set image `image/jpeg` to the data URI
 PNG | set image `image/png` to the data URI (the default value)
 
 ```js
-// By default the sizeFactor is 1
+// Use all the default value
+let dataUri = cameraPhoto.getDataUri();
+
+// Specify sizeFactor, imageType, compression
 let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
 ```
 
