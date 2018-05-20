@@ -121,6 +121,9 @@ let dataUri = cameraPhoto.getDataUri();
 // OR
 
 // Specify sizeFactor, imageType, compression
+const sizeFactor = 1;
+const imageType = IMAGE_TYPES.JPG
+const compression = .95;
 let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
 ```
 
