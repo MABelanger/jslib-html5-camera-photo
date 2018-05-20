@@ -8,6 +8,8 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 1. Choose between `environment` or `user` camera, fall back to the default camera.
 2. Set `ideal resolution`, fall back to the default resolution.
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
+4. Choose dataURI compression type between `jpg` or `png`.
+5. Choose the compression format is the compression type is `jpg` between [0, 1]
 
 ## Simple Live Demo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
@@ -18,15 +20,11 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 ...(as April 2018)
 
 
-## Available camera facingModes
+## Available camera facingModes [FACING_MODES constants]
 VideoFacingModeEnum  | Description
 --- | ---
-user | The source is facing toward the user (a self-view camera).
-environment	| The source is facing away from the user (viewing the environment).
-left | The source is facing to the left of the user. ***
-right | The source is facing to the right of the user. ***
-
-*** : Not supported by this lib.
+USER | The source is facing toward the user (a self-view camera).
+ENVIRONMENT | The source is facing away from the user (viewing the environment).
 
 #### Below is an illustration of the video facing modes in relation to the user.
 
@@ -101,10 +99,24 @@ cameraPhoto.startCameraMaxResolution(facingMode)
 ```
 
 #### Get the data URI (image)
-Function that return the `dataUri` of the current frame of the camera. The `sizeFactor` is used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
+Function that return the `dataUri` of the current frame of the camera.
+
+##### Parameter
+- The `sizeFactor` is used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
+
+- The `imageType` is used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
+
+- The `compression` is used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `1`.
+
+## Available image type [IMAGE_TYPES constants]
+type  | Description
+--- | ---
+JPG | set image `image/jpeg` to the data URI
+PNG | set image `image/png` to the data URI (the default value)
+
 ```js
 // By default the sizeFactor is 1
-let dataUri = cameraPhoto.getDataUri(sizeFactor);
+let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
 ```
 
 #### Get the camera settings
