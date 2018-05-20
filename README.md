@@ -20,8 +20,8 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 ...(as April 2018)
 
 
-## Available camera facingModes [FACING_MODES constants]
-VideoFacingModeEnum  | Description
+## Available camera facingModes
+FACING_MODES []  | Description
 --- | ---
 USER | The source is facing toward the user (a self-view camera).
 ENVIRONMENT | The source is facing away from the user (viewing the environment).
@@ -108,8 +108,8 @@ Function that return the `dataUri` of the current frame of the camera.
 
 - The `compression` is used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `0.92`, the default value of the browser.
 
-## Available image type [IMAGE_TYPES constants]
-type  | Description
+## Available image types
+IMAGE_TYPES []  | Description
 --- | ---
 JPG | set image `image/jpeg` to the data URI
 PNG | set image `image/png` to the data URI (the default value)
@@ -122,7 +122,7 @@ let dataUri = cameraPhoto.getDataUri();
 
 // Specify sizeFactor, imageType, compression
 const sizeFactor = 1;
-const imageType = IMAGE_TYPES.JPG
+const imageType = cameraPhoto.IMAGE_TYPES.JPG
 const compression = .95;
 let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
 ```
