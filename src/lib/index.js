@@ -108,8 +108,8 @@ class CameraPhoto {
       });
   }
 
-  getDataUri (sizeFactor = 1) {
-    let dataUri = MediaServices.getDataUri(this.videoElement, sizeFactor);
+  getDataUri (sizeFactor = 1, imageType = MediaServices.IMAGE_TYPES.PNG, compression = null) {
+    let dataUri = MediaServices.getDataUri(this.videoElement, sizeFactor, imageType, compression);
     return dataUri;
   }
 
@@ -130,6 +130,10 @@ class CameraPhoto {
 
   get FACING_MODES () {
     return MediaServices.FACING_MODES;
+  }
+
+  get IMAGE_TYPES () {
+    return MediaServices.IMAGE_TYPES;
   }
 }
 

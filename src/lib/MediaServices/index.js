@@ -1,30 +1,15 @@
-const SUPPORTED_FACING_MODES = ['user', 'environment', 'left', 'right'];
+import {getImageSize, getDataUri} from './helper';
 
-const FACING_MODES = {
-  'USER': 'user',
-  'ENVIRONMENT': 'environment',
-  'LEFT': 'left',
-  'RIGHT': 'right'
-};
-
-function _getImageSize (videoWidth, videoHeight, sizeFactor) {
-  // calc the imageWidth
-  let imageWidth = videoWidth * parseFloat(sizeFactor);
-  // calc the ratio
-  let ratio = videoWidth / imageWidth;
-  // calc the imageHeight
-  let imageHeight = videoHeight / ratio;
-
-  return {
-    imageWidth,
-    imageHeight
-  };
-}
+import {
+  SUPPORTED_FACING_MODES,
+  FACING_MODES,
+  IMAGE_TYPES
+} from './constants';
 
 class MediaServices {
-  static getDataUri (videoElement, sizeFactor) {
+  static getDataUri (videoElement, sizeFactor, imageType, compression) {
     let {videoWidth, videoHeight} = videoElement;
-    let {imageWidth, imageHeight} = _getImageSize(videoWidth, videoHeight, sizeFactor);
+    let {imageWidth, imageHeight} = getImageSize(videoWidth, videoHeight, sizeFactor);
 
     // Build the canvas size et draw the image to context from videoElement
     let canvas = document.createElement('canvas');
@@ -34,7 +19,7 @@ class MediaServices {
     context.drawImage(videoElement, 0, 0, imageWidth, imageHeight);
 
     // Get dataUri from canvas
-    let dataUri = canvas.toDataURL('image/png');
+    let dataUri = getDataUri(canvas, imageType, compression);
     return dataUri;
   }
 
@@ -143,6 +128,10 @@ class MediaServices {
 
   static get FACING_MODES () {
     return FACING_MODES;
+  }
+
+  static get IMAGE_TYPES () {
+    return IMAGE_TYPES;
   }
 }
 
