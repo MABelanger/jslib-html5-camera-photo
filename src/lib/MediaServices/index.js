@@ -1,97 +1,15 @@
-/*
- * Constants
- */
+import {getImageSize, getDataUri} from './helper';
 
-// camera constants
-const USER = 'user';
-const ENVIRONMENT = 'environment';
-const LEFT = 'left';
-const RIGHT = 'right';
-
-const SUPPORTED_FACING_MODES = [USER, ENVIRONMENT, LEFT, RIGHT];
-
-const FACING_MODES = {
-  'USER': USER,
-  'ENVIRONMENT': ENVIRONMENT,
-  'LEFT': LEFT,
-  'RIGHT': RIGHT
-};
-
-// Image constants
-const PNG = 'png';
-const JPG = 'jpg';
-
-const SUPPORTED_IMAGE_TYPES = [JPG, PNG];
-
-const IMAGE_TYPES = {
-  'PNG': PNG,
-  'JPG': JPG
-};
-
-const FORMAT_TYPES = {
-  [JPG]: 'image/jpeg',
-  [PNG]: 'image/png'
-};
-
-/*
- * Private fct
- */
-function _getImageSize (videoWidth, videoHeight, sizeFactor) {
-  // calc the imageWidth
-  let imageWidth = videoWidth * parseFloat(sizeFactor);
-  // calc the ratio
-  let ratio = videoWidth / imageWidth;
-  // calc the imageHeight
-  let imageHeight = videoHeight / ratio;
-
-  return {
-    imageWidth,
-    imageHeight
-  };
-}
-
-function _validateImgParam (imageType, compression) {
-  if (!(compression >= 0 && compression <= 1)) {
-    throw new Error(compression + ' is invalid compression, choose between: [0, 1]');
-  }
-
-  if (!SUPPORTED_IMAGE_TYPES.includes(imageType)) {
-    throw new Error(imageType + ' is invalid imageType, choose between: ' + SUPPORTED_IMAGE_TYPES.join(', '));
-  }
-  return true;
-}
-
-function _getImgParam (imageType, compression) {
-  let imgParam = {};
-  try {
-    _validateImgParam(imageType, compression);
-    imgParam.imageType = imageType;
-    imgParam.compression = compression;
-  } catch (e) {
-    console.error(e);
-    console.error('default value of ' + PNG + ' is used');
-
-    imgParam.imageType = PNG;
-    imgParam.compression = null;
-  }
-
-  return imgParam;
-}
-
-function _getDataUri (canvas, imageType, compression) {
-  const imgParam = _getImgParam(imageType, compression);
-
-  if (imgParam.imageType === JPG) {
-    return canvas.toDataURL(FORMAT_TYPES[JPG], compression);
-  }
-
-  return canvas.toDataURL(FORMAT_TYPES[imageType]);
-}
+import {
+  SUPPORTED_FACING_MODES,
+  FACING_MODES,
+  IMAGE_TYPES
+} from './constants';
 
 class MediaServices {
   static getDataUri (videoElement, sizeFactor, imageType, compression) {
     let {videoWidth, videoHeight} = videoElement;
-    let {imageWidth, imageHeight} = _getImageSize(videoWidth, videoHeight, sizeFactor);
+    let {imageWidth, imageHeight} = getImageSize(videoWidth, videoHeight, sizeFactor);
 
     // Build the canvas size et draw the image to context from videoElement
     let canvas = document.createElement('canvas');
@@ -101,7 +19,7 @@ class MediaServices {
     context.drawImage(videoElement, 0, 0, imageWidth, imageHeight);
 
     // Get dataUri from canvas
-    let dataUri = _getDataUri(canvas, imageType, compression);
+    let dataUri = getDataUri(canvas, imageType, compression);
     return dataUri;
   }
 
