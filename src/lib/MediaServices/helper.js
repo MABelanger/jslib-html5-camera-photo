@@ -1,8 +1,7 @@
 import {
   SUPPORTED_IMAGE_TYPES,
   FORMAT_TYPES,
-  PNG,
-  JPG
+  IMAGE_TYPES
 } from './constants';
 
 function _validateImgParam (imageType, compression) {
@@ -26,9 +25,9 @@ function _getValidImgParam (imageType, compression) {
     imgParam.compression = compression;
   } catch (e) {
     console.error(e);
-    console.error('default value of ' + PNG + ' is used');
+    console.error('default value of ' + IMAGE_TYPES.PNG + ' is used');
 
-    imgParam.imageType = PNG;
+    imgParam.imageType = IMAGE_TYPES.PNG;
     imgParam.compression = null;
   }
 
@@ -52,11 +51,11 @@ export function getImageSize (videoWidth, videoHeight, sizeFactor) {
 export function getDataUri (canvas, imageType, compression) {
   const imgParam = _getValidImgParam(imageType, compression);
 
-  if (imgParam.imageType === JPG) {
+  if (imgParam.imageType === IMAGE_TYPES.JPG) {
     if(!compression) {
-      return canvas.toDataURL(FORMAT_TYPES[JPG]);
+      return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG]);
     }
-    return canvas.toDataURL(FORMAT_TYPES[JPG], compression);
+    return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG], compression);
   }
 
   return canvas.toDataURL(FORMAT_TYPES[imageType]);

@@ -1,21 +1,17 @@
 // camera constants
 const USER = 'user';
 const ENVIRONMENT = 'environment';
-const LEFT = 'left';
-const RIGHT = 'right';
 
-export const SUPPORTED_FACING_MODES = [USER, ENVIRONMENT, LEFT, RIGHT];
+export const SUPPORTED_FACING_MODES = [USER, ENVIRONMENT];
 
 export const FACING_MODES = {
   'USER': USER,
-  'ENVIRONMENT': ENVIRONMENT,
-  'LEFT': LEFT,
-  'RIGHT': RIGHT
+  'ENVIRONMENT': ENVIRONMENT
 };
 
 // Image constants
-export const PNG = 'png';
-export const JPG = 'jpg';
+const PNG = 'png';
+const JPG = 'jpg';
 
 export const SUPPORTED_IMAGE_TYPES = [JPG, PNG];
 
