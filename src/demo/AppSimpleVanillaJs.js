@@ -94,16 +94,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // update camera setting
   setInterval(() => {
     showCameraSettings();
-    let cameraSettigs = cameraPhoto.getCameraSettings();
-    if (cameraSettigs) {
-      let {aspectRatio, frameRate, height, width} = cameraSettigs;
-      let settingsStr =
-        `aspectRatio:${aspectRatio} ` +
-        `frameRate: ${frameRate} ` +
-        `height: ${height} ` +
-        `width: ${width}`;
-      console.log(settingsStr);
-    }
   }, 500);
 
   // bind the buttons to the right functions.
