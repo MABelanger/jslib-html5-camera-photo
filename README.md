@@ -101,12 +101,12 @@ cameraPhoto.startCameraMaxResolution(facingMode)
 #### Get the data URI (image)
 Function that return the `dataUri` of the current frame of the camera.
 
-##### Parameter
-- The `sizeFactor` is used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
+##### Parameters
+- `sizeFactor`: Used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
 
-- The `imageType` is used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
+- `imageType`: Used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
 
-- The `compression` is used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `0.92`, the default value of the browser.
+- `compression`: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `0.92`, the default value of the browser.
 
 ## Available image types
 IMAGE_TYPES []  | Description
