@@ -8,8 +8,8 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 1. Choose between `environment` or `user` camera, fall back to the default camera.
 2. Set `ideal resolution`, fall back to the default resolution.
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
-4. Choose dataURI compression type between `jpg` or `png`.
-5. Choose the compression format is the compression type is `jpg` between [0, 1]
+4. Choose dataURI `image format` type between `jpg` or `png`.
+5. If image format is `jpg`, choose the `compression value` is the  between [0, 1].
 
 ## Simple Live Demo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
@@ -106,7 +106,7 @@ Function that return the `dataUri` of the current frame of the camera.
 
 - **imageType**: Used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
 
-- **compression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`. The default compression is `0.92`, the default value of the browser.
+- **compression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value compression is `0.92`.
 
 ## Available image types
 IMAGE_TYPES []  | Description
