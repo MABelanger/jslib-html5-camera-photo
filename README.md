@@ -106,7 +106,7 @@ Function that return the `dataUri` of the current frame of the camera.
 
 - **imageType**: Used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
 
-- **compression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value compression is `0.92`.
+- **compression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value compression is `0.92`. 
 
 ## Available image types
 IMAGE_TYPES []  | Description
