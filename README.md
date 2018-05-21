@@ -167,7 +167,7 @@ cameraPhoto.stopCamera()
 
 #### JavaScript
 ```js
-import CameraPhoto from 'jslib-html5-camera-photo';
+import CameraPhoto, { FACING_MODES } from 'jslib-html5-camera-photo';
 
 // get video and image elements from the html
 let videoElement = document.getElementById('videoId');
@@ -185,7 +185,7 @@ let cameraPhoto = new CameraPhoto(videoElement);
  * if the environment facingMode is not available, it will fallback
  * to the default camera available.
  */
-cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT)
+cameraPhoto.startCamera(FACING_MODES.ENVIRONMENT)
   .then(() => {
     console.log('Camera started !');
   })
@@ -212,25 +212,28 @@ function stopCamera () {
 // bind the buttons to the right functions.
 takePhotoButtonElement.onclick = takePhoto;
 stopCameraButtonElement.onclick = stopCamera;
-
 ```
 ### Full example with React
 
 ```js
 import React from 'react';
-import CameraPhoto from 'jslib-html5-camera-photo';
+import CameraPhoto, { FACING_MODES } from 'jslib-html5-camera-photo';
 
 class App extends React.Component {
   constructor (props, context) {
     super(props, context);
     this.cameraPhoto = null;
+    this.videoRef = React.createRef();
+    this.state = {
+      dataUri: ''
+    }
   }
 
   componentDidMount () {
     // We need to instantiate CameraPhoto inside componentDidMount because we
     // need the refs.video to get the videoElement so the component has to be
     // mounted.
-    this.cameraPhoto = new CameraPhoto(this.refs.video);
+    this.cameraPhoto = new CameraPhoto(this.videoRef.current);
   }
 
   startCamera (idealFacingMode, idealResolution) {
@@ -257,6 +260,11 @@ class App extends React.Component {
     return this.cameraPhoto.getDataUri(sizeFactor);
   }
 
+  takePhoto () {
+    let dataUri = this.cameraPhoto.getDataUri();
+    this.setState({ dataUri });
+  }
+
   stopCamera () {
     this.cameraPhoto.stopCamera()
       .then(() => {
@@ -271,34 +279,41 @@ class App extends React.Component {
     return (
       <div>
         <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.ENVIRONMENT;
+          let facingMode = FACING_MODES.ENVIRONMENT;
           let idealResolution = { width: 640, height: 480 };
           this.startCamera(facingMode, idealResolution);
         }}> Start environment facingMode resolution ideal 640 by 480 </button>
 
         <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.USER;
+          let facingMode = FACING_MODES.USER;
           this.startCamera(facingMode, {});
         }}> Start user facingMode resolution default </button>
 
         <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.USER;
+          let facingMode = FACING_MODES.USER;
           this.startCameraMaxResolution(facingMode);
         }}> Start user facingMode resolution maximum </button>
+
+        <button onClick={ () => {
+          this.takePhoto();
+        }}> Take photo </button>
 
         <button onClick={ () => {
           this.stopCamera();
         }}> Stop </button>
 
         <video
-          ref="video"
+          ref={this.videoRef}
           autoPlay="true"
+        />
+        <img
+          alt="imgCamera"
+          src={this.state.dataUri}
         />
       </div>
     );
   }
 }
-
 export default App;
 ```
 
