@@ -85,7 +85,7 @@ class MediaServices {
     }
 
     // If is valid facingMode
-    if (SUPPORTED_FACING_MODES.indexOf(idealFacingMode) > -1) {
+    if (SUPPORTED_FACING_MODES.includes(idealFacingMode)) {
       idealConstraints.video.facingMode = { ideal: idealFacingMode };
     }
 
