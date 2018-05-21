@@ -52,7 +52,7 @@ export function getDataUri (canvas, imageType, compression) {
   const imgParam = _getValidImgParam(imageType, compression);
 
   if (imgParam.imageType === IMAGE_TYPES.JPG) {
-    if(!compression) {
+    if (!compression) {
       return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG]);
     }
     return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG], compression);
