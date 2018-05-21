@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 class MediaServices {
-  static getDataUri (videoElement, sizeFactor, imageType, compression) {
+  static getDataUri (videoElement, sizeFactor, imageType, imageCompression) {
     let {videoWidth, videoHeight} = videoElement;
     let {imageWidth, imageHeight} = getImageSize(videoWidth, videoHeight, sizeFactor);
 
@@ -19,7 +19,7 @@ class MediaServices {
     context.drawImage(videoElement, 0, 0, imageWidth, imageHeight);
 
     // Get dataUri from canvas
-    let dataUri = getDataUri(canvas, imageType, compression);
+    let dataUri = getDataUri(canvas, imageType, imageCompression);
     return dataUri;
   }
 

@@ -106,7 +106,7 @@ Function that return the `dataUri` of the current frame of the camera.
 
 - **imageType**: Used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
 
-- **compression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value compression is `0.92`. 
+- **imageCompression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value imageCompression is `0.92`.
 
 ## Available image types
 IMAGE_TYPES []  | Description
@@ -120,11 +120,11 @@ let dataUri = cameraPhoto.getDataUri();
 
 // OR
 
-// Specify sizeFactor, imageType, compression
+// Specify sizeFactor, imageType, imageCompression
 const sizeFactor = 1;
 const imageType = cameraPhoto.IMAGE_TYPES.JPG
-const compression = .95;
-let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
+const imageCompression = .95;
+let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, imageCompression);
 ```
 
 #### Get the camera settings

@@ -4,10 +4,10 @@ import {
   IMAGE_TYPES
 } from './constants';
 
-function _validateImgParam (imageType, compression) {
-  // validate the compression
-  if (!(compression >= 0 && compression <= 1)) {
-    throw new Error(compression + ' is invalid compression, choose between: [0, 1]');
+function _validateImgParam (imageType, imageCompression) {
+  // validate the imageCompression
+  if (!(imageCompression >= 0 && imageCompression <= 1)) {
+    throw new Error(imageCompression + ' is invalid imageCompression, choose between: [0, 1]');
   }
 
   // validate the imageType
@@ -17,18 +17,18 @@ function _validateImgParam (imageType, compression) {
   return true;
 }
 
-function _getValidImgParam (imageType, compression) {
+function _getValidImgParam (imageType, imageCompression) {
   let imgParam = {};
   try {
-    _validateImgParam(imageType, compression);
+    _validateImgParam(imageType, imageCompression);
     imgParam.imageType = imageType;
-    imgParam.compression = compression;
+    imgParam.imageCompression = imageCompression;
   } catch (e) {
     console.error(e);
     console.error('default value of ' + IMAGE_TYPES.PNG + ' is used');
 
     imgParam.imageType = IMAGE_TYPES.PNG;
-    imgParam.compression = null;
+    imgParam.imageCompression = null;
   }
 
   return imgParam;
@@ -48,14 +48,14 @@ export function getImageSize (videoWidth, videoHeight, sizeFactor) {
   };
 }
 
-export function getDataUri (canvas, imageType, compression) {
-  const imgParam = _getValidImgParam(imageType, compression);
+export function getDataUri (canvas, imageType, imageCompression) {
+  const imgParam = _getValidImgParam(imageType, imageCompression);
 
   if (imgParam.imageType === IMAGE_TYPES.JPG) {
-    if (!compression) {
+    if (!imageCompression) {
       return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG]);
     }
-    return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG], compression);
+    return canvas.toDataURL(FORMAT_TYPES[IMAGE_TYPES.JPG], imageCompression);
   }
 
   return canvas.toDataURL(FORMAT_TYPES[imageType]);

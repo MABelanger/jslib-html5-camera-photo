@@ -108,8 +108,8 @@ class CameraPhoto {
       });
   }
 
-  getDataUri (sizeFactor = 1, imageType = MediaServices.IMAGE_TYPES.PNG, compression = null) {
-    let dataUri = MediaServices.getDataUri(this.videoElement, sizeFactor, imageType, compression);
+  getDataUri (sizeFactor = 1, imageType = MediaServices.IMAGE_TYPES.PNG, imageCompression = null) {
+    let dataUri = MediaServices.getDataUri(this.videoElement, sizeFactor, imageType, imageCompression);
     return dataUri;
   }
 
@@ -127,14 +127,17 @@ class CameraPhoto {
       reject(Error('no stream to stop!'));
     });
   }
-
-  get FACING_MODES () {
-    return MediaServices.FACING_MODES;
-  }
-
-  get IMAGE_TYPES () {
-    return MediaServices.IMAGE_TYPES;
-  }
+  //
+  // get FACING_MODES () {
+  //   return MediaServices.FACING_MODES;
+  // }
+  //
+  // get IMAGE_TYPES () {
+  //   return MediaServices.IMAGE_TYPES;
+  // }
 }
+
+export const FACING_MODES = MediaServices.FACING_MODES;
+export const IMAGE_TYPES = MediaServices.IMAGE_TYPES;
 
 export default CameraPhoto;

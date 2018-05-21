@@ -1,4 +1,4 @@
-import CameraPhoto from '../lib';
+import CameraPhoto, { FACING_MODES, IMAGE_TYPES } from '../lib';
 import './styles.css';
 
 // get video and image elements
@@ -27,7 +27,7 @@ let cameraPhoto = new CameraPhoto(videoElement);
 // to the default camera avalible.
 function startCameraDefaultResolution () {
   let facingMode = facingModeSelectElement.value;
-  cameraPhoto.startCamera(cameraPhoto.FACING_MODES[facingMode])
+  cameraPhoto.startCamera(FACING_MODES[facingMode])
     .then(() => {
       let log =
           `Camera started with default resolution and ` +
@@ -42,10 +42,10 @@ function startCameraDefaultResolution () {
 // function called by the buttons.
 function takePhoto () {
   let sizeFactor = 1;
-  let imageType = cameraPhoto.IMAGE_TYPES.JPG;
-  let compression = 1;
+  let imageType = IMAGE_TYPES.JPG;
+  let imageCompression = 1;
 
-  let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, compression);
+  let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, imageCompression);
   imgElement.src = dataUri;
 }
 
@@ -78,7 +78,7 @@ function stopCamera () {
 
 function startCameraMaxResolution () {
   let facingMode = facingModeSelectElement.value;
-  cameraPhoto.startCameraMaxResolution(cameraPhoto.FACING_MODES[facingMode])
+  cameraPhoto.startCameraMaxResolution(FACING_MODES[facingMode])
     .then(() => {
       let log =
           `Camera started with maximum resoluton and ` +
