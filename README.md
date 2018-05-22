@@ -50,7 +50,7 @@ Both Yarn and npm download packages from the npm registry.
 
 #### Constructor
 ```js
-import CameraPhoto from 'jslib-html5-camera-photo';
+import CameraPhoto, { FACING_MODES, IMAGE_TYPES } from 'jslib-html5-camera-photo';
 
 // get your video element with his corresponding id from the html
 let videoElement = document.getElementById('videoId');
@@ -71,12 +71,12 @@ cameraPhoto.startCamera()
 #### Start with ideal facing Mode & default resolution
 ```js
 // environment (camera point to environment)
-cameraPhoto.startCamera(cameraPhoto.FACING_MODES.ENVIRONMENT, {})
+cameraPhoto.startCamera(FACING_MODES.ENVIRONMENT, {})
   .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 
 // OR user (camera point to the user)
-cameraPhoto.startCamera(cameraPhoto.FACING_MODES.USER, {})
+cameraPhoto.startCamera(FACING_MODES.USER, {})
   .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
@@ -98,7 +98,7 @@ cameraPhoto.startCameraMaxResolution(facingMode)
   .catch((error)=>{/* ... */});
 ```
 
-#### Get the data URI (image)
+#### getDataUri()
 Function that return the `dataUri` of the current frame of the camera.
 
 ##### Parameters
@@ -122,7 +122,7 @@ let dataUri = cameraPhoto.getDataUri();
 
 // Specify sizeFactor, imageType, imageCompression
 const sizeFactor = 1;
-const imageType = cameraPhoto.IMAGE_TYPES.JPG
+const imageType = IMAGE_TYPES.JPG
 const imageCompression = .95;
 let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, imageCompression);
 ```
