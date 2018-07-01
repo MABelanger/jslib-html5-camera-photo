@@ -100,6 +100,7 @@ cameraPhoto.startCameraMaxResolution(facingMode)
 
 #### getDataUri()
 Function that return the `dataUri` of the current frame of the camera.
+To use that function build the configuration object with the corresponding properties:
 
 ##### Parameters
 - **sizeFactor**: Used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
@@ -107,6 +108,8 @@ Function that return the `dataUri` of the current frame of the camera.
 - **imageType**: Used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
 
 - **imageCompression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value imageCompression is `0.92`.
+
+- **imageMirror**: Used to get the desired imageMirror when  is set to `true`, the result of the `dataUri` is the mirror of the actual camera data. Many software that use camera mirror like hangout. Please note if you want to enable this option for consistency with the camera video, you need to use css `transform: rotateY(180deg)` to the <video> tag to mirror the video because the stream is not mirrored, so it's apply only to the canvas dataUri. The default value is set to `false` (no mirror).
 
 ## Available image types
 IMAGE_TYPES []  | Description
@@ -120,11 +123,16 @@ let dataUri = cameraPhoto.getDataUri();
 
 // OR
 
-// Specify sizeFactor, imageType, imageCompression
-const sizeFactor = 1;
-const imageType = IMAGE_TYPES.JPG
-const imageCompression = .95;
-let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, imageCompression);
+// Specify sizeFactor, imageType, imageCompression, imageMirror
+
+const config = {
+  sizeFactor : 1;
+  imageType : IMAGE_TYPES.JPG
+  imageCompression : .95;
+  imageMirror : false;
+}
+
+let dataUri = cameraPhoto.getDataUri(config);
 ```
 
 #### Get the camera settings
@@ -256,12 +264,12 @@ class App extends React.Component {
       });
   }
 
-  getDataUri (sizeFactor) {
-    return this.cameraPhoto.getDataUri(sizeFactor);
-  }
-
   takePhoto () {
-    let dataUri = this.cameraPhoto.getDataUri();
+    const config = {
+      sizeFactor: 1
+    };
+
+    let dataUri = this.cameraPhoto.getDataUri(config);
     this.setState({ dataUri });
   }
 
