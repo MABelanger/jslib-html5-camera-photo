@@ -205,7 +205,8 @@ cameraPhoto.startCamera(FACING_MODES.ENVIRONMENT)
 
 // function called by the buttons.
 function takePhoto () {
-  let dataUri = cameraPhoto.getDataUri();
+  const config = {};
+  let dataUri = cameraPhoto.getDataUri(config);
   imgElement.src = dataUri;
 }
 
