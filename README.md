@@ -20,7 +20,6 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 ![alt caniuse](./docs/caniuse.png)
 ...(as April 2018)
 
-
 ## Available camera facingModes
 FACING_MODES []  | Description
 --- | ---
