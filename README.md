@@ -110,7 +110,7 @@ To use that function build the configuration object with the corresponding prope
 
 - **imageCompression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value imageCompression is `0.92`.
 
-- **imageMirror**: Used to get the desired imageMirror when  is set to `true`, the result of the `dataUri` is the mirror of the actual camera data. Many software that use camera mirror like hangout. Please note if you want to enable this option for consistency with the camera video, you need to use css `transform: rotateY(180deg)` to the <video> tag to mirror the video because the stream is not mirrored, so it's apply only to the canvas dataUri. The default value is set to `false` (no mirror).
+- **imageMirror**: Used to get an image mirror when is set to `true`, the result of the `dataUri` is the mirror of the actual camera data. Many software that use camera mirror like hangout etc... Please note if you want to enable this option, for consistency with the camera video, you need to use css `transform: rotateY(180deg)` to the <video> tag to mirror the video, because the stream is not mirrored. It's apply only to the canvas dataUri. The default value is set to `false` (no mirror).
 
 ## Available image types
 IMAGE_TYPES []  | Description
