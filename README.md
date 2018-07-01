@@ -10,6 +10,7 @@ Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
 4. Choose dataURI `image format` type between `jpg` or `png`.
 5. If image format is `jpg`, choose the `compression value` is the  between [0, 1].
+6. Choose dataURI `image mirror` if you want to get an mirror dataURI of the camera.
 
 ## Simple Live Demo
 [https://mabelanger.github.io/jslib-html5-camera-photo/](https://mabelanger.github.io/jslib-html5-camera-photo/)
