@@ -1,5 +1,12 @@
 import MediaServices from './MediaServices';
 
+import {
+  DEFAULT_SIZE_FACTOR,
+  DEFAULT_IMAGE_COMPRESSION,
+  DEFAULT_IMAGE_MIRROR } from './constants';
+
+const DEFAULT_IMAGE_TYPE = MediaServices.IMAGE_TYPES.PNG;
+
 class CameraPhoto {
   constructor (videoElement) {
     this.videoElement = videoElement;
@@ -108,8 +115,15 @@ class CameraPhoto {
       });
   }
 
-  getDataUri (sizeFactor = 1, imageType = MediaServices.IMAGE_TYPES.PNG, imageCompression = null) {
-    let dataUri = MediaServices.getDataUri(this.videoElement, sizeFactor, imageType, imageCompression);
+  getDataUri (userConfig) {
+    let config = {
+      sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
+      imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
+      imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
+      imageMirror: userConfig.imageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.imageMirror
+    };
+
+    let dataUri = MediaServices.getDataUri(this.videoElement, config);
     return dataUri;
   }
 

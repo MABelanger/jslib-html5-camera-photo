@@ -45,7 +45,13 @@ function takePhoto () {
   let imageType = IMAGE_TYPES.JPG;
   let imageCompression = 1;
 
-  let dataUri = cameraPhoto.getDataUri(sizeFactor, imageType, imageCompression);
+  let config = {
+    sizeFactor,
+    imageType,
+    imageCompression
+  };
+
+  let dataUri = cameraPhoto.getDataUri(config);
   imgElement.src = dataUri;
 }
 
