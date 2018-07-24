@@ -109,7 +109,7 @@ To use that function build the configuration object with the corresponding prope
 
 - **imageCompression**: Used to get the desired compression when `jpg` is selected. choose a compression between `[0, 1]`, 1 is maximum, 0 is minimum. The default value imageCompression is `0.92`.
 
-- **imageMirror**: Used to get an image mirror when is set to `true`, the result of the `dataUri` is the mirror of the actual camera data. Many software that use camera mirror like hangout etc... Please note if you want to enable this option, for consistency with the camera video, you need to use css `transform: rotateY(180deg)` to the **&lt;video&gt;** tag to mirror the stream, because the stream is not mirrored. It's only apply to the canvas dataUri. The default value is `false` (no mirror).
+- **isImageMirror**: Used to get an image mirror when is set to `true`, the result of the `dataUri` is the mirror of the actual camera data. Many software that use camera mirror like hangout etc... Please note if you want to enable this option, for consistency with the camera video, you need to use css `transform: rotateY(180deg)` to the **&lt;video&gt;** tag to mirror the stream, because the stream is not mirrored. It's only apply to the canvas dataUri. The default value is `false` (no mirror).
 
 ## Available image types
 IMAGE_TYPES []  | Description
@@ -124,13 +124,13 @@ let dataUri = cameraPhoto.getDataUri(config);
 
 // OR
 
-// Specify sizeFactor, imageType, imageCompression, imageMirror
+// Specify sizeFactor, imageType, imageCompression, isImageMirror
 
 const config = {
   sizeFactor : 1;
   imageType : IMAGE_TYPES.JPG
   imageCompression : .95;
-  imageMirror : false;
+  isImageMirror : false;
 }
 
 let dataUri = cameraPhoto.getDataUri(config);

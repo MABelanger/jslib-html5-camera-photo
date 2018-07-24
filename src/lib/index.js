@@ -120,7 +120,7 @@ class CameraPhoto {
       sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
       imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
       imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
-      imageMirror: userConfig.imageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.imageMirror
+      isImageMirror: userConfig.isImageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.isImageMirror
     };
 
     let dataUri = MediaServices.getDataUri(this.videoElement, config);

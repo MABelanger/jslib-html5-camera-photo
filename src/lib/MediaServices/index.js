@@ -8,7 +8,7 @@ import {
 
 class MediaServices {
   static getDataUri (videoElement, config) {
-    let { sizeFactor, imageType, imageCompression, imageMirror } = config;
+    let { sizeFactor, imageType, imageCompression, isImageMirror } = config;
 
     let {videoWidth, videoHeight} = videoElement;
     let {imageWidth, imageHeight} = getImageSize(videoWidth, videoHeight, sizeFactor);
@@ -20,7 +20,7 @@ class MediaServices {
     let context = canvas.getContext('2d');
 
     // Flip horizontally (as css transform: rotateY(180deg))
-    if (imageMirror) {
+    if (isImageMirror) {
       context.setTransform(-1, 0, 0, 1, canvas.width, 0);
     }
 
