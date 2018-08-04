@@ -60,3 +60,11 @@ export function getDataUri (canvas, imageType, imageCompression) {
 
   return canvas.toDataURL(FORMAT_TYPES[imageType]);
 }
+
+export function isEmptyObject (obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) { return false; }
+  }
+
+  return true;
+}

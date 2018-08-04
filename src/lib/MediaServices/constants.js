@@ -24,3 +24,8 @@ export const FORMAT_TYPES = {
   [JPG]: 'image/jpeg',
   [PNG]: 'image/png'
 };
+
+export const MINIMUM_CONSTRAINTS = {
+  audio: false,
+  video: true
+};

@@ -1,9 +1,10 @@
-import {getImageSize, getDataUri} from './helper';
+import {getImageSize, getDataUri, isEmptyObject} from './helper';
 
 import {
   SUPPORTED_FACING_MODES,
   FACING_MODES,
-  IMAGE_TYPES
+  IMAGE_TYPES,
+  MINIMUM_CONSTRAINTS
 } from './constants';
 
 class MediaServices {
@@ -86,10 +87,15 @@ class MediaServices {
       }
     };
 
+    if (isEmptyObject(idealFacingMode) && isEmptyObject(idealResolution)) {
+      console.log('MINIMUM_CONSTRAINTS', MINIMUM_CONSTRAINTS);
+      return MINIMUM_CONSTRAINTS;
+    }
+
     const supports = navigator.mediaDevices.getSupportedConstraints();
     if (!supports.width || !supports.height || !supports.facingMode) {
       console.error('Constraint width height or facingMode not supported!');
-      return idealConstraints;
+      return MINIMUM_CONSTRAINTS;
     }
 
     // If is valid facingMode

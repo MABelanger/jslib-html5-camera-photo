@@ -5,22 +5,35 @@ import './styles.css';
 let videoElement = document.getElementById('videoId');
 let imgElement = document.getElementById('imgId');
 
-// get buttons elements
+// get select and buttons elements
 let facingModeSelectElement =
     document.getElementById('facingModeSelectId');
+let startCameraDefaultAllButtonElement =
+    document.getElementById('startDefaultAllButtonId');
 let startDefaultResolutionButtonElement =
     document.getElementById('startDefaultResolutionButtonId');
+let startMaxResolutionButtonElement =
+    document.getElementById('startMaxResolutionId');
 let takePhotoButtonElement =
     document.getElementById('takePhotoButtonId');
 let stopCameraButtonElement =
     document.getElementById('stopCameraButtonId');
-let startMaxResolutionButtonElement =
-    document.getElementById('startMaxResolutionId');
 let cameraSettingElement =
     document.getElementById('cameraSettingsId');
 
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
+
+function startCameraDefaultAll () {
+  cameraPhoto.startCamera()
+    .then(() => {
+      let log = `Camera started with default All`;
+      console.log(log);
+    })
+    .catch((error) => {
+      console.error('Camera not started!', error);
+    });
+}
 
 // start the camera with prefered environment facingMode ie. ()
 // if the environment facingMode is not avalible, it will fallback
@@ -103,8 +116,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }, 500);
 
   // bind the buttons to the right functions.
+  startCameraDefaultAllButtonElement.onclick = startCameraDefaultAll;
+  startDefaultResolutionButtonElement.onclick = startCameraDefaultResolution;
+  startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
   takePhotoButtonElement.onclick = takePhoto;
   stopCameraButtonElement.onclick = stopCamera;
-  startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
-  startDefaultResolutionButtonElement.onclick = startCameraDefaultResolution;
 });
