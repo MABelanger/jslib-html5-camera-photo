@@ -61,10 +61,18 @@ export function getDataUri (canvas, imageType, imageCompression) {
   return canvas.toDataURL(FORMAT_TYPES[imageType]);
 }
 
-export function isEmptyObject (obj) {
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) { return false; }
+function _isEmptyObject (obj) {
+  if (typeof obj === 'object') {
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        return false;
+      }
+    }
   }
 
   return true;
+}
+
+export function isMinimumConstraints (idealFacingMode, idealResolution) {
+  return !(idealFacingMode || (idealResolution && !_isEmptyObject(idealResolution)));
 }

@@ -93,7 +93,7 @@ class CameraPhoto {
     return this.settings;
   }
 
-  startCamera (idealFacingMode = {}, idealResolution = {}) {
+  startCamera (idealFacingMode, idealResolution) {
     // stop the stream before playing it.
     return this.stopCamera()
       .then(() => {})
@@ -141,14 +141,6 @@ class CameraPhoto {
       reject(Error('no stream to stop!'));
     });
   }
-  //
-  // get FACING_MODES () {
-  //   return MediaServices.FACING_MODES;
-  // }
-  //
-  // get IMAGE_TYPES () {
-  //   return MediaServices.IMAGE_TYPES;
-  // }
 }
 
 export const FACING_MODES = MediaServices.FACING_MODES;

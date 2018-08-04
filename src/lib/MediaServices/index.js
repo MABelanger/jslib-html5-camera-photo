@@ -1,4 +1,4 @@
-import {getImageSize, getDataUri, isEmptyObject} from './helper';
+import {getImageSize, getDataUri, isMinimumConstraints} from './helper';
 
 import {
   SUPPORTED_FACING_MODES,
@@ -77,38 +77,37 @@ class MediaServices {
     return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
   }
 
-  static getIdealConstraints (idealFacingMode = {}, idealResolution = {}) {
+  static getIdealConstraints (idealFacingMode, idealResolution) {
     // default idealConstraints
     let idealConstraints = {
       audio: false,
-      video: {
-        width: {},
-        height: {}
-      }
+      video: {}
     };
 
-    if (isEmptyObject(idealFacingMode) && isEmptyObject(idealResolution)) {
-      console.log('MINIMUM_CONSTRAINTS', MINIMUM_CONSTRAINTS);
+    if (isMinimumConstraints(idealFacingMode, idealResolution)) {
       return MINIMUM_CONSTRAINTS;
     }
 
     const supports = navigator.mediaDevices.getSupportedConstraints();
+    /* eslint-env browser */
+    // alert(JSON.stringify(supports));
     if (!supports.width || !supports.height || !supports.facingMode) {
       console.error('Constraint width height or facingMode not supported!');
       return MINIMUM_CONSTRAINTS;
     }
 
     // If is valid facingMode
-    if (SUPPORTED_FACING_MODES.includes(idealFacingMode)) {
-      idealConstraints.video.facingMode = { ideal: idealFacingMode };
+    if (idealFacingMode && SUPPORTED_FACING_MODES.includes(idealFacingMode)) {
+      // idealConstraints.video.facingMode = { ideal: idealFacingMode };
+      idealConstraints.video.facingMode = idealFacingMode;
     }
 
-    if (idealResolution.width) {
-      idealConstraints.video.width.ideal = idealResolution.width;
+    if (idealResolution && idealResolution.width) {
+      idealConstraints.video.width = idealResolution.width;
     }
 
-    if (idealResolution.height) {
-      idealConstraints.video.height.ideal = idealResolution.height;
+    if (idealResolution && idealResolution.height) {
+      idealConstraints.video.height = idealResolution.height;
     }
 
     return idealConstraints;
