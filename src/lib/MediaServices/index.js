@@ -115,17 +115,18 @@ class MediaServices {
 
   static getMaxResolutionConstraints (idealFacingMode = {}, numberOfMaxResolutionTry) {
     let constraints = MediaServices.getIdealConstraints(idealFacingMode);
+    const facingMode = constraints.video.facingMode;
 
     const VIDEO_ADVANCED_CONSTRANTS = [
-      {'width': {'min': 640}},
-      {'width': {'min': 800}},
-      {'width': {'min': 900}},
-      {'width': {'min': 1024}},
-      {'width': {'min': 1080}},
-      {'width': {'min': 1280}},
-      {'width': {'min': 1920}},
-      {'width': {'min': 2560}},
-      {'width': {'min': 3840}}
+      {'width': {'min': 640}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 800}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 900}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 1024}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 1080}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 1280}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 1920}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 2560}, 'ideal': {'facingMode': facingMode}},
+      {'width': {'min': 3840}, 'ideal': {'facingMode': facingMode}}
     ];
 
     if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
@@ -135,6 +136,8 @@ class MediaServices {
     // each number of try, we remove the last value of the array (the bigger minim width)
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
+
+    console.log('constraints', constraints);
 
     return constraints;
   }
