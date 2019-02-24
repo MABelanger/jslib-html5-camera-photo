@@ -137,8 +137,6 @@ class MediaServices {
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
 
-    console.log('constraints', constraints);
-
     return constraints;
   }
 
