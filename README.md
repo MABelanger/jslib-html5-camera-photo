@@ -94,7 +94,23 @@ it will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 6
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(facingMode)
-  .then((stream)=>{/* ... */})
+  .then(()=>{/* ... */})
+  .catch((error)=>{/* ... */});
+```
+
+#### pausing and resuming the video
+
+You can call the pauseCamera and resumeCamera methods if you need to pause and resume the camera stream in your project.
+
+```js
+// It will pause the camera
+cameraPhoto.pauseCamera()
+  .then(()=>{/* ... */})
+  .catch((error)=>{/* ... */});
+
+// It will resume the camera
+cameraPhoto.pauseCamera()
+  .then(()=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 

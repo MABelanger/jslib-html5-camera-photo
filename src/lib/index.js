@@ -55,11 +55,15 @@ class CameraPhoto {
         })
         .catch((error) => {
           let {name, constraint, message} = error;
-          console.error(name + ' ' + constraint + ' ' + message);
+          //console.error(name + ' ' + constraint + ' ' + message);
           // retry...
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;
-            this._getStreamDeviceMaxResolution(idealFacingMode);
+            this._getStreamDeviceMaxResolution(idealFacingMode)
+              .then(() => {resolve()})
+              .catch(() => {
+                reject(error)
+              });
           }, 20);
         });
     });
@@ -139,6 +143,26 @@ class CameraPhoto {
         resolve();
       }
       reject(Error('no stream to stop!'));
+    });
+  }
+
+  pauseCamera () {
+    return new Promise((resolve, reject) => {
+      if (this.stream) {
+        this.videoElement.pause();
+        resolve();
+      }
+      reject(Error('no stream to pause!'));
+    });
+  }
+
+  resumeCamera () {
+    return new Promise((resolve, reject) => {
+      if (this.stream) {
+        this.videoElement.play();
+        resolve();
+      }
+      reject(Error('no stream to resume!'));
     });
   }
 }
