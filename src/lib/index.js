@@ -61,7 +61,7 @@ class CameraPhoto {
             this.numberOfMaxResolutionTry += 1;
             this._getStreamDeviceMaxResolution(idealFacingMode)
               .then(() => {
-                resolve(error);
+                resolve();
               })
               .catch(() => {
                 reject(error);
