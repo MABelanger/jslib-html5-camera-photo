@@ -2,6 +2,9 @@
 
 ### Bug Fixes
 
+#### 3.1.2
+- \#9 fix startCameraMaxResolution console error when permission denied
+
 #### 3.1.1
 - Fix this.stream.getTracks(...)[0].getSettings is not a function for old browser
 

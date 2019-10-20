@@ -54,12 +54,18 @@ class CameraPhoto {
           resolve(stream);
         })
         .catch((error) => {
-          let {name, constraint, message} = error;
-          console.error(name + ' ' + constraint + ' ' + message);
+          // let {name, constraint, message} = error;
+          // console.log(name + ' ' + constraint + ' ' + message);
           // retry...
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;
-            this._getStreamDeviceMaxResolution(idealFacingMode);
+            this._getStreamDeviceMaxResolution(idealFacingMode)
+              .then(() => {
+                resolve(error);
+              })
+              .catch(() => {
+                reject(error);
+              });
           }, 20);
         });
     });
