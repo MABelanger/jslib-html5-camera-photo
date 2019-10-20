@@ -60,9 +60,6 @@ class CameraPhoto {
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;
             this._getStreamDeviceMaxResolution(idealFacingMode)
-              .then(() => {
-                resolve();
-              })
               .catch(() => {
                 reject(error);
               });
