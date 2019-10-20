@@ -78,8 +78,12 @@ class CameraPhoto {
   _setSettings (stream) {
     // default setting is null
     this.settings = null;
-    if (stream) {
-      this.settings = this.stream.getTracks()[0].getSettings();
+    const tracks = (stream && stream.getTracks)
+      ? stream.getTracks()
+      : [];
+
+    if (tracks.length > 0 && tracks[0].getSettings) {
+      this.settings = tracks[0].getSettings();
     }
   }
 
