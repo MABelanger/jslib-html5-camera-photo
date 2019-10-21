@@ -330,9 +330,9 @@ class App extends React.Component {
 export default App;
 ```
 
-### Run in a browser
+### import the UMD module with HTML script tag
 
-You can build the dist with :
+You can build the dist and then serve it with :
 
 ```sh
 $ npm run buildBrowser
