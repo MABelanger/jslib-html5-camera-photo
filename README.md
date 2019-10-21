@@ -225,6 +225,8 @@ stopCameraButtonElement.onclick = stopCamera;
 ```
 ### Full example with React
 
+A project with react is build with this library [react-html5-camera-photo](https://github.com/mabelanger/react-html5-camera-photo)
+
 ```js
 import React from 'react';
 import CameraPhoto, { FACING_MODES } from 'jslib-html5-camera-photo';
@@ -327,6 +329,30 @@ class App extends React.Component {
 
 export default App;
 ```
+
+### Run in a browser
+
+You can build the dist with :
+
+```sh
+$ npm run buildBrowser
+$ npm run serve:dist
+```
+
+Or you can copy the [dist](./dist) folder of the repo.
+
+Example :
+
+```html
+<script src="/jslib-html5-camera-photo.min.js"></script>
+<script>
+  ...
+  var FACING_MODES = JslibHtml5CameraPhoto.FACING_MODES;
+  var cameraPhoto = new JslibHtml5CameraPhoto.default(videoElement);
+  ...
+</script
+```
+
 
 ### Development
 I choose the env dev of create-react-app even if it is vanilla js library because it's simple to use and really efficient to develop but you don't necessarily need react to use it. If you want to fix bug or add functionalities please [contribute](./CONTRIBUTING.md) :)
