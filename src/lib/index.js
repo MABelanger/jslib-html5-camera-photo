@@ -100,16 +100,18 @@ class CameraPhoto {
     this.captureDevice = new window.ImageCapture(videoDevice);
 
     this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => {
-      alert(`light modes: ${JSON.stringify(c.fillLightMode)}`)
+      // alert(`light modes: ${JSON.stringify(c.fillLightMode)}`)
       return c.fillLightMode
     })
 
+    alert(`fns: ${JSON.stringify(Object.getOwnPropertyNames(window.ImageCapture.prototype))}`)
+
 
     this.availableFillLightModes.then(o => {
-      alert(`setOptions? ${typeof this.captureDevice.setOptions}`)
+      // alert(`setOptions? ${typeof this.captureDevice.setOptions}`)
 
       if (this.captureDevice.setOptions && o.includes("flash")) {
-        alert("setting options")
+        // alert("setting options")
         this.captureDevice.setOptions({ fillLightMode: "flash" }).catch(err => alert(`setOptions() failed: ${err.message}`));
       } else {
         alert("not setting options")
