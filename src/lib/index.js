@@ -102,13 +102,13 @@ class CameraPhoto {
     this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => c.fillLightMode)
 
     try {
-      this.captureDevice.getPhotoCapabilities().then(c => console.log("caps", c));
+      this.captureDevice.getPhotoCapabilities().then(c => alert(JSON.stringify(c)));
     } catch (e) {
       console.error(e)
     }
 
     try {
-      this.captureDevice.getPhotoSettings().then(s => console.log("settings", s));
+      this.captureDevice.getPhotoSettings().then(s => alert(JSON.stringify(s)));
     } catch(e) {
       console.error(e)
     }
