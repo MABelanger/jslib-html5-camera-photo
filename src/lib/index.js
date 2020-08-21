@@ -1,5 +1,5 @@
 import MediaServices from './MediaServices';
-import 'image-capture';
+// import 'image-capture';
 
 import {
   DEFAULT_SIZE_FACTOR,
