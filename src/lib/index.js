@@ -99,7 +99,10 @@ class CameraPhoto {
     const videoDevice = stream.getVideoTracks()[0];
     this.captureDevice = new window.ImageCapture(videoDevice);
 
-    this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => c.fillLightMode)
+    this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => {
+      alert(JSON.stringify(c.fillLightMode))
+      return c.fillLightMode
+    })
 
     try {
       this.captureDevice.getPhotoCapabilities().then(c => alert(JSON.stringify(c)));
