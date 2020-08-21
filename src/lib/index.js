@@ -104,6 +104,15 @@ class CameraPhoto {
       return c.fillLightMode
     })
 
+    alert(`setOptions? ${typeof imageCapture.setOptions} / light modes: ${this.availableFillLightModes}`)
+
+    if (imageCapture.setOptions && this.availableFillLightModes.includes("flash")) {
+      alert("setting options")
+      imageCapture.setOptions({ fillLightMode: "flash" }).catch(err => alert('setOptions(' + JSON.stringify(imageCaptureConfig) + ') failed: ', err));
+    } else {
+      alert("not setting options")
+    }
+
     try {
       this.captureDevice.getPhotoCapabilities().then(c => alert(JSON.stringify(c)));
     } catch (e) {
@@ -157,7 +166,7 @@ class CameraPhoto {
 
     // let dataUri = MediaServices.getDataUri(this.videoElement, config);
     return this.availableFillLightModes.then(fm => this.captureDevice.takePhoto({
-      fillLightMode: fm.includes("auto") ? "auto" : fm.includes("flash") ? "flash" : undefined
+      fillLightMode: "flash"
     }))
     // return dataUri;
   }
