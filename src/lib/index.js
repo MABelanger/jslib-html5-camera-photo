@@ -100,30 +100,34 @@ class CameraPhoto {
     this.captureDevice = new window.ImageCapture(videoDevice);
 
     this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => {
-      alert(JSON.stringify(c.fillLightMode))
+      alert(`light modes: ${JSON.stringify(c.fillLightMode)}`)
       return c.fillLightMode
     })
 
-    alert(`setOptions? ${typeof imageCapture.setOptions} / light modes: ${this.availableFillLightModes}`)
 
-    if (imageCapture.setOptions && this.availableFillLightModes.includes("flash")) {
-      alert("setting options")
-      imageCapture.setOptions({ fillLightMode: "flash" }).catch(err => alert('setOptions(' + JSON.stringify(imageCaptureConfig) + ') failed: ', err));
-    } else {
-      alert("not setting options")
-    }
+    this.availableFillLightModes.then(o => {
+      alert(`setOptions? ${typeof this.captureDevice.setOptions}`)
 
-    try {
-      this.captureDevice.getPhotoCapabilities().then(c => alert(JSON.stringify(c)));
-    } catch (e) {
-      console.error(e)
-    }
+      if (this.captureDevice.setOptions && o.includes("flash")) {
+        alert("setting options")
+        this.captureDevice.setOptions({ fillLightMode: "flash" }).catch(err => alert(`setOptions() failed: ${err.message}`));
+      } else {
+        alert("not setting options")
+      }
+    })
 
-    try {
-      this.captureDevice.getPhotoSettings().then(s => alert(JSON.stringify(s)));
-    } catch(e) {
-      console.error(e)
-    }
+
+    // try {
+    //   this.captureDevice.getPhotoCapabilities().then(c => alert(JSON.stringify(c)));
+    // } catch (e) {
+    //   console.error(e)
+    // }
+
+    // try {
+    //   this.captureDevice.getPhotoSettings().then(s => alert(JSON.stringify(s)));
+    // } catch(e) {
+    //   console.error(e)
+    // }
 
 
     this._setSettings(stream);
@@ -166,7 +170,7 @@ class CameraPhoto {
 
     // let dataUri = MediaServices.getDataUri(this.videoElement, config);
     return this.availableFillLightModes.then(fm => this.captureDevice.takePhoto({
-      fillLightMode: "flash"
+      fillLightMode: fm.includes("flash") ? "flash" : undefined
     }))
     // return dataUri;
   }
