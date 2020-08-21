@@ -97,48 +97,7 @@ class CameraPhoto {
     this.stream = stream;
 
     const videoDevice = stream.getVideoTracks()[0];
-    this.captureDevice = new window.ImageCapture(videoDevice);
-
-    this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => {
-      // alert(`light modes: ${JSON.stringify(c.fillLightMode)}`)
-      return c.fillLightMode
-    })
-
-    alert(`fns: ${JSON.stringify(Object.getOwnPropertyNames(window.ImageCapture.prototype))}`)
-
-    if (typeof this.captureDevice.track !== 'undefined') {
-      this.captureDevice.track.applyConstraints({torch: true})
-      .then(r => alert(`applied ${r}`))
-      .catch(e => alert(`unable to apply constraints: ${err.message}`))
-    } else {
-      alert('track not available')
-    }
-
-
-    this.availableFillLightModes.then(o => {
-      // alert(`setOptions? ${typeof this.captureDevice.setOptions}`)
-
-      if (this.captureDevice.setOptions && o.includes("flash")) {
-        // alert("setting options")
-        this.captureDevice.setOptions({ fillLightMode: "flash" }).catch(err => alert(`setOptions() failed: ${err.message}`));
-      } else {
-        alert("not setting options")
-      }
-    })
-
-
-    // try {
-    //   this.captureDevice.getPhotoCapabilities().then(c => alert(JSON.stringify(c)));
-    // } catch (e) {
-    //   console.error(e)
-    // }
-
-    // try {
-    //   this.captureDevice.getPhotoSettings().then(s => alert(JSON.stringify(s)));
-    // } catch(e) {
-    //   console.error(e)
-    // }
-
+    this.captureDevice = new ImageCapture(videoDevice, stream);
 
     this._setSettings(stream);
     this._setVideoSrc(stream);
@@ -171,18 +130,11 @@ class CameraPhoto {
   }
 
   getDataUri (userConfig) {
-    // let config = {
-    //   sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
-    //   imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
-    //   imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
-    //   isImageMirror: userConfig.isImageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.isImageMirror
-    // };
+    const t = typeof this.captureDevice.track !== 'undefined' ? this.captureDevice.track : this.captureDevice.videoStreamTrack;
 
-    // let dataUri = MediaServices.getDataUri(this.videoElement, config);
-    return this.availableFillLightModes.then(fm => this.captureDevice.takePhoto({
-      fillLightMode: fm.includes("flash") ? "flash" : undefined
-    }))
-    // return dataUri;
+    return t.applyConstraints({ advanced: [{ torch: userConfig.torch || false }] })
+      .catch(e => console.error(`unable to apply constraints: ${e.message}`))
+      .then(() => this.captureDevice.takePhoto())
   }
 
   stopCamera () {
