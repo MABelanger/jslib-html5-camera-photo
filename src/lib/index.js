@@ -1,4 +1,5 @@
 import MediaServices from './MediaServices';
+import 'image-capture';
 
 import {
   DEFAULT_SIZE_FACTOR,
@@ -13,6 +14,8 @@ class CameraPhoto {
     this.stream = null;
     this.numberOfMaxResolutionTry = 1;
     this.settings = null;
+    this.captureDevice = null;
+    this.availableFillLightModes = [];
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -92,6 +95,25 @@ class CameraPhoto {
 
   _gotStream (stream) {
     this.stream = stream;
+
+    const videoDevice = stream.getVideoTracks()[0];
+    this.captureDevice = new window.ImageCapture(videoDevice);
+
+    this.availableFillLightModes = this.captureDevice.getPhotoCapabilities().then(c => c.fillLightMode)
+
+    try {
+      this.captureDevice.getPhotoCapabilities().then(c => console.log("caps", c));
+    } catch (e) {
+      console.error(e)
+    }
+
+    try {
+      this.captureDevice.getPhotoSettings().then(s => console.log("settings", s));
+    } catch(e) {
+      console.error(e)
+    }
+
+
     this._setSettings(stream);
     this._setVideoSrc(stream);
   }
@@ -123,15 +145,18 @@ class CameraPhoto {
   }
 
   getDataUri (userConfig) {
-    let config = {
-      sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
-      imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
-      imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
-      isImageMirror: userConfig.isImageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.isImageMirror
-    };
+    // let config = {
+    //   sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
+    //   imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
+    //   imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
+    //   isImageMirror: userConfig.isImageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.isImageMirror
+    // };
 
-    let dataUri = MediaServices.getDataUri(this.videoElement, config);
-    return dataUri;
+    // let dataUri = MediaServices.getDataUri(this.videoElement, config);
+    return this.availableFillLightModes.then(fm => this.captureDevice.takePhoto({
+      fillLightMode: fm.includes("auto") ? "auto" : fm.includes("flash") ? "flash" : undefined
+    }))
+    // return dataUri;
   }
 
   stopCamera () {
