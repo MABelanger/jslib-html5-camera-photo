@@ -106,6 +106,14 @@ class CameraPhoto {
 
     alert(`fns: ${JSON.stringify(Object.getOwnPropertyNames(window.ImageCapture.prototype))}`)
 
+    if (typeof this.captureDevice.track !== 'undefined') {
+      this.captureDevice.track.applyConstraints({torch: true})
+      .then(r => alert(`applied ${r}`))
+      .catch(e => alert(`unable to apply constraints: ${err.message}`))
+    } else {
+      alert('track not available')
+    }
+
 
     this.availableFillLightModes.then(o => {
       // alert(`setOptions? ${typeof this.captureDevice.setOptions}`)
