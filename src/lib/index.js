@@ -14,7 +14,6 @@ class CameraPhoto {
     this.numberOfMaxResolutionTry = 1;
     this.settings = null;
     this.captureDevice = null;
-    this.photoCapabilities = null;
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -97,7 +96,6 @@ class CameraPhoto {
 
     const videoDevice = stream.getVideoTracks()[0];
     this.captureDevice = new ImageCapture(videoDevice, stream);
-    this.photoCapabilities = this.captureDevice.getPhotoCapabilities();
 
     this._setSettings(stream);
     this._setVideoSrc(stream);
@@ -105,10 +103,6 @@ class CameraPhoto {
 
   getCameraSettings () {
     return this.settings;
-  }
-
-  async getPhotoCapabilities() {
-    return this.photoCapabilities;
   }
 
   startCamera (idealFacingMode, idealResolution) {
@@ -136,10 +130,8 @@ class CameraPhoto {
   async getDataUri (userConfig) {
     const t = typeof this.captureDevice.track !== 'undefined' ? this.captureDevice.track : this.captureDevice.videoStreamTrack;
 
-    const caps = await this.photoCapabilities;
-
     try {
-      await t.applyConstraints({ advanced: [{ torch: (caps.torch && userConfig.torch) || false }] })
+      await t.applyConstraints({ advanced: [{ torch: userConfig.torch || false }] })
     } catch (e) {
       console.error(`unable to apply constraints: ${e.message}`)
     }
