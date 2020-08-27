@@ -53,19 +53,22 @@ function startCameraDefaultResolution () {
 }
 
 // function called by the buttons.
-function takePhoto () {
+async function takePhoto () {
   let sizeFactor = 1;
   let imageType = IMAGE_TYPES.JPG;
   let imageCompression = 1;
+  const torch = true;
 
   let config = {
     sizeFactor,
     imageType,
-    imageCompression
+    imageCompression,
+    torch
   };
 
-  let dataUri = cameraPhoto.getDataUri(config);
-  imgElement.src = dataUri;
+  let dataUri = await cameraPhoto.getDataUri(config);
+  console.log(dataUri);
+  imgElement.src = URL.createObjectURL(dataUri);
 }
 
 function showCameraSettings () {

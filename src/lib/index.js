@@ -13,6 +13,7 @@ class CameraPhoto {
     this.stream = null;
     this.numberOfMaxResolutionTry = 1;
     this.settings = null;
+    this.captureDevice = null;
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -92,6 +93,10 @@ class CameraPhoto {
 
   _gotStream (stream) {
     this.stream = stream;
+
+    const videoDevice = stream.getVideoTracks()[0];
+    this.captureDevice = new ImageCapture(videoDevice, stream);
+
     this._setSettings(stream);
     this._setVideoSrc(stream);
   }
@@ -122,16 +127,16 @@ class CameraPhoto {
       });
   }
 
-  getDataUri (userConfig) {
-    let config = {
-      sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
-      imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
-      imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
-      isImageMirror: userConfig.isImageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.isImageMirror
-    };
+  async getDataUri (userConfig) {
+    const t = typeof this.captureDevice.track !== 'undefined' ? this.captureDevice.track : this.captureDevice.videoStreamTrack;
 
-    let dataUri = MediaServices.getDataUri(this.videoElement, config);
-    return dataUri;
+    try {
+      await t.applyConstraints({ advanced: [{ torch: userConfig.torch || false }] })
+    } catch (e) {
+      console.error(`unable to apply constraints: ${e.message}`)
+    }
+
+    return this.captureDevice.takePhoto()
   }
 
   stopCamera () {

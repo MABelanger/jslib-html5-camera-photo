@@ -114,7 +114,10 @@ class MediaServices {
   }
 
   static getMaxResolutionConstraints (idealFacingMode = {}, numberOfMaxResolutionTry) {
-    let constraints = MediaServices.getIdealConstraints(idealFacingMode);
+    let constraints = MediaServices.getIdealConstraints(idealFacingMode, {
+      width: { min: 640, ideal: 3840 },
+      height: { min: 480, ideal: 2160 }
+    });
     const facingMode = constraints.video.facingMode;
 
     const VIDEO_ADVANCED_CONSTRANTS = [
@@ -134,8 +137,8 @@ class MediaServices {
     }
 
     // each number of try, we remove the last value of the array (the bigger minim width)
-    let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
-    constraints.video.advanced = advanced;
+    // let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
+    // constraints.video.advanced = advanced;
 
     return constraints;
   }
