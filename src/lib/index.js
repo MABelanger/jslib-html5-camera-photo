@@ -107,6 +107,10 @@ class CameraPhoto {
     return this.settings;
   }
 
+  async getPhotoCapabilities() {
+    return this.photoCapabilities;
+  }
+
   startCamera (idealFacingMode, idealResolution) {
     // stop the stream before playing it.
     return this.stopCamera()
