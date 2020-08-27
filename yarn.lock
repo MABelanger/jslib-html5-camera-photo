@@ -4066,11 +4066,6 @@ ignore@^3.3.3, ignore@^3.3.5, ignore@^3.3.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.3.10.tgz#0a97fb876986e8081c631160f8f9f389157f0043"
   integrity sha512-Pgs951kaMm5GXP7MOvxERINe3gsaVjUWFm+UZPSq9xYriQAksyhg0csnS0KXSNRD5NmNdapXEpjxG49+AKh/ug==
 
-image-capture@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/image-capture/-/image-capture-0.4.0.tgz#67b96608d0b58ecb1337ee335e4492733f6c11ee"
-  integrity sha512-6RWTfqC4ij0AldG+6sQ51XSHTSbwfqMSjVl1GtwNBzbW4UrcfGZeB1Kn749BccvtLb04g5+jSTf1D7q3qHcxpA==
-
 import-lazy@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/import-lazy/-/import-lazy-2.1.0.tgz#05698e3d45c88e8d7e9d92cb0584e77f096f3e43"

@@ -1,5 +1,4 @@
 import MediaServices from './MediaServices';
-// import 'image-capture';
 
 import {
   DEFAULT_SIZE_FACTOR,
@@ -15,7 +14,7 @@ class CameraPhoto {
     this.numberOfMaxResolutionTry = 1;
     this.settings = null;
     this.captureDevice = null;
-    this.availableFillLightModes = [];
+    this.photoCapabilities = null;
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -98,6 +97,7 @@ class CameraPhoto {
 
     const videoDevice = stream.getVideoTracks()[0];
     this.captureDevice = new ImageCapture(videoDevice, stream);
+    this.photoCapabilities = this.captureDevice.getPhotoCapabilities();
 
     this._setSettings(stream);
     this._setVideoSrc(stream);
@@ -129,12 +129,18 @@ class CameraPhoto {
       });
   }
 
-  getDataUri (userConfig) {
+  async getDataUri (userConfig) {
     const t = typeof this.captureDevice.track !== 'undefined' ? this.captureDevice.track : this.captureDevice.videoStreamTrack;
 
-    return t.applyConstraints({ advanced: [{ torch: userConfig.torch || false }] })
-      .catch(e => console.error(`unable to apply constraints: ${e.message}`))
-      .then(() => this.captureDevice.takePhoto())
+    const caps = await this.photoCapabilities;
+
+    try {
+      await t.applyConstraints({ advanced: [{ torch: (caps.torch && userConfig.torch) || false }] })
+    } catch (e) {
+      console.error(`unable to apply constraints: ${e.message}`)
+    }
+
+    return this.captureDevice.takePhoto()
   }
 
   stopCamera () {
