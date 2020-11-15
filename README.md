@@ -150,6 +150,23 @@ if (cameraSettigs) {
   console.log(settingsStr);
 }
 ```
+
+#### Get the input video device infos
+the function return empty array [] if no input video device exist. In order to read the video devices, the browser need to start the camera with with `startCamera()` or `startCameraMaxResolution()` before calling the function `getInputVideoDeviceInfos()` it return a list of objects with the device info attributes of (kind, label, deviceId).
+```js
+let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
+inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
+  let {kind, label, deviceId} = inputVideoDeviceInfo;
+  let inputVideoDeviceInfoStr = `
+        kind: ${kind}
+        label: ${label}
+        deviceId: ${deviceId}
+    `;
+  console.log(inputVideoDeviceInfoStr)
+});
+
+```
+
 #### Stop the camera
 Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we start the camera, it internally using this stop function to be able to apply new constraints.
 ```js

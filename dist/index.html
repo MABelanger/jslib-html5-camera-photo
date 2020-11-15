@@ -17,8 +17,11 @@
       <button id="startMaxResolutionId">startMaxResolution</button>
       <button id="takePhotoButtonId">takePhoto</button>
       <button id="stopCameraButtonId">stopCamera</button>
+      <button id="showInputVideoDeviceInfosButtonId">showInputVideoDeviceInfos</button>
+
       <br/>
       <div id="cameraSettingsId"></div>
+      <div id="inputVideoDeviceInfosId"></div>
       <video id="videoId" autoplay="true" playsInline></video>
       <img alt="imgId" id="imgId">
     </div>
@@ -48,6 +51,10 @@
             document.getElementById('stopCameraButtonId');
         var cameraSettingElement =
             document.getElementById('cameraSettingsId');
+        var showInputVideoDeviceInfosButtonElement =
+          document.getElementById('showInputVideoDeviceInfosButtonId');
+        var inputVideoDeviceInfosElement =
+            document.getElementById('inputVideoDeviceInfosId');
 
         // instantiate JslibHtml5CameraPhoto with the videoElement
         var cameraPhoto = new JslibHtml5CameraPhoto.default(videoElement);
@@ -113,6 +120,27 @@
           cameraSettingElement.innerHTML = innerHTML;
         }
 
+        function showInputVideoDeviceInfos () {
+          var inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
+
+          // by default is no inputVideoDeviceInfo...
+          var innerHTML = 'No inputVideoDeviceInfo';
+          if (inputVideoDeviceInfos) {
+            innerHTML = '';
+            inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
+              var {kind, label, deviceId} = inputVideoDeviceInfo;
+              var inputVideoDeviceInfoHTML = `
+                    kind: ${kind}
+                    label: ${label}
+                    deviceId: ${deviceId}
+                    <br/>
+                `;
+              innerHTML += inputVideoDeviceInfoHTML;
+            });
+          }
+          inputVideoDeviceInfosElement.innerHTML = innerHTML;
+        }
+
         function stopCamera () {
           cameraPhoto.stopCamera()
             .then(() => {
@@ -149,6 +177,7 @@
           startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
           takePhotoButtonElement.onclick = takePhoto;
           stopCameraButtonElement.onclick = stopCamera;
+          showInputVideoDeviceInfosButtonElement.onclick = showInputVideoDeviceInfos;
         });
 
     </script>
