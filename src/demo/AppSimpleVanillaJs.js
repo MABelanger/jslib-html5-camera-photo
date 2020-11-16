@@ -20,6 +20,10 @@ let stopCameraButtonElement =
     document.getElementById('stopCameraButtonId');
 let cameraSettingElement =
     document.getElementById('cameraSettingsId');
+let showInputVideoDeviceInfosButtonElement =
+  document.getElementById('showInputVideoDeviceInfosButtonId');
+let inputVideoDeviceInfosElement =
+    document.getElementById('inputVideoDeviceInfosId');
 
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
@@ -85,6 +89,27 @@ function showCameraSettings () {
   cameraSettingElement.innerHTML = innerHTML;
 }
 
+function showInputVideoDeviceInfos () {
+  let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
+
+  // by default is no inputVideoDeviceInfo...
+  let innerHTML = 'No inputVideoDeviceInfo';
+  if (inputVideoDeviceInfos) {
+    innerHTML = '';
+    inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
+      let {kind, label, deviceId} = inputVideoDeviceInfo;
+      let inputVideoDeviceInfoHTML = `
+            kind: ${kind}
+            label: ${label}
+            deviceId: ${deviceId}
+            <br/>
+        `;
+      innerHTML += inputVideoDeviceInfoHTML;
+    });
+  }
+  inputVideoDeviceInfosElement.innerHTML = innerHTML;
+}
+
 function stopCamera () {
   cameraPhoto.stopCamera()
     .then(() => {
@@ -121,4 +146,5 @@ document.addEventListener('DOMContentLoaded', function () {
   startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
   takePhotoButtonElement.onclick = takePhoto;
   stopCameraButtonElement.onclick = stopCamera;
+  showInputVideoDeviceInfosButtonElement.onclick = showInputVideoDeviceInfos;
 });

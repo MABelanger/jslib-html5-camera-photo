@@ -13,6 +13,7 @@ class CameraPhoto {
     this.stream = null;
     this.numberOfMaxResolutionTry = 1;
     this.settings = null;
+    this.inputVideoDeviceInfos = [];
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -27,7 +28,14 @@ class CameraPhoto {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
-          resolve(stream);
+          this._getInputVideoDeviceInfosPromise()
+            .then((inputVideoDeviceInfos) => {
+              this.inputVideoDeviceInfos = inputVideoDeviceInfos;
+            })
+            .catch(() => {})
+            .then(() => {
+              resolve(stream);
+            });
         })
         .catch((error) => {
           // let {name, constraint, message} = error;
@@ -51,7 +59,14 @@ class CameraPhoto {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
-          resolve(stream);
+          this._getInputVideoDeviceInfosPromise()
+            .then((inputVideoDeviceInfos) => {
+              this.inputVideoDeviceInfos = inputVideoDeviceInfos;
+            })
+            .catch(() => {})
+            .then(() => {
+              resolve(stream);
+            });
         })
         .catch((error) => {
           // let {name, constraint, message} = error;
@@ -90,6 +105,26 @@ class CameraPhoto {
     }
   }
 
+  _getInputVideoDeviceInfosPromise () {
+    return new Promise((resolve, reject) => {
+      // only make shure the camera is sarted
+
+      let inputVideoDeviceInfos = [];
+      this.mediaDevices.enumerateDevices()
+        .then(function (devices) {
+          devices.forEach(function (device) {
+            if (device.kind === 'videoinput') {
+              inputVideoDeviceInfos.push(device);
+            }
+          });
+          resolve(inputVideoDeviceInfos);
+        })
+        .catch(function (err) {
+          reject(err);
+        });
+    });
+  }
+
   _gotStream (stream) {
     this.stream = stream;
     this._setSettings(stream);
@@ -98,6 +133,9 @@ class CameraPhoto {
 
   getCameraSettings () {
     return this.settings;
+  }
+  getInputVideoDeviceInfos () {
+    return this.inputVideoDeviceInfos;
   }
 
   startCamera (idealFacingMode, idealResolution) {

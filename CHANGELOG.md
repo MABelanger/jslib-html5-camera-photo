@@ -1,6 +1,9 @@
 # Change Log
 
-### Bug Fixes
+### Bug Fixes & add features
+
+#### 3.1.4
+- \#29 Add getInputVideoDeviceInfos() method
 
 #### 3.1.2
 - \#9 fix startCameraMaxResolution console error when permission denied
