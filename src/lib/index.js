@@ -20,10 +20,10 @@ class CameraPhoto {
     this.mediaDevices = MediaServices.getNavigatorMediaDevices();
   }
 
-  _getStreamDevice (idealFacingMode, idealResolution) {
+  _getStreamDevice (idealFacingMode, idealResolution, idealDeviceId) {
     return new Promise((resolve, reject) => {
       let constraints =
-          MediaServices.getIdealConstraints(idealFacingMode, idealResolution);
+          MediaServices.getIdealConstraints(idealFacingMode, idealResolution, idealDeviceId);
 
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
@@ -138,14 +138,14 @@ class CameraPhoto {
     return this.inputVideoDeviceInfos;
   }
 
-  startCamera (idealFacingMode, idealResolution) {
+  startCamera (idealFacingMode, idealResolution, idealDeviceId) {
     // stop the stream before playing it.
     return this.stopCamera()
       .then(() => {})
       .catch(() => {})
       // Always called (when the promise is done)
       .then(() => {
-        return this._getStreamDevice(idealFacingMode, idealResolution);
+        return this._getStreamDevice(idealFacingMode, idealResolution, idealDeviceId);
       });
   }
 

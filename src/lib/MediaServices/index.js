@@ -77,37 +77,36 @@ class MediaServices {
     return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
   }
 
-  static getIdealConstraints (idealFacingMode, idealResolution) {
+  static getIdealConstraints (idealFacingMode, idealResolution, idealDeviceId) {
     // default idealConstraints
     let idealConstraints = {
       audio: false,
       video: {}
     };
 
-    if (isMinimumConstraints(idealFacingMode, idealResolution)) {
+    if (isMinimumConstraints(idealFacingMode, idealResolution, idealDeviceId)) {
       return MINIMUM_CONSTRAINTS;
     }
 
     const supports = navigator.mediaDevices.getSupportedConstraints();
     /* eslint-env browser */
-    // alert(JSON.stringify(supports));
-    if (!supports.width || !supports.height || !supports.facingMode) {
-      console.error('Constraint width height or facingMode not supported!');
-      return MINIMUM_CONSTRAINTS;
-    }
 
     // If is valid facingMode
-    if (idealFacingMode && SUPPORTED_FACING_MODES.includes(idealFacingMode)) {
+    if (idealFacingMode && supports.facingMode && SUPPORTED_FACING_MODES.includes(idealFacingMode)) {
       // idealConstraints.video.facingMode = { ideal: idealFacingMode };
       idealConstraints.video.facingMode = idealFacingMode;
     }
 
-    if (idealResolution && idealResolution.width) {
+    if (idealResolution && supports.width && idealResolution.width) {
       idealConstraints.video.width = idealResolution.width;
     }
 
-    if (idealResolution && idealResolution.height) {
+    if (idealResolution && supports.height && idealResolution.height) {
       idealConstraints.video.height = idealResolution.height;
+    }
+
+    if (idealDeviceId && supports.deviceId) {
+      idealConstraints.video.deviceId = idealDeviceId;
     }
 
     return idealConstraints;
