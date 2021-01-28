@@ -73,6 +73,6 @@ function _isEmptyObject (obj) {
   return true;
 }
 
-export function isMinimumConstraints (idealFacingMode, idealResolution) {
-  return !(idealFacingMode || (idealResolution && !_isEmptyObject(idealResolution)));
+export function isMinimumConstraints (idealFacingMode, idealResolution, idealDeviceId) {
+  return !(idealFacingMode || idealDeviceId || (idealResolution && !_isEmptyObject(idealResolution)));
 }

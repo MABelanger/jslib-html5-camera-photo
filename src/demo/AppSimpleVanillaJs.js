@@ -24,6 +24,8 @@ let showInputVideoDeviceInfosButtonElement =
   document.getElementById('showInputVideoDeviceInfosButtonId');
 let inputVideoDeviceInfosElement =
     document.getElementById('inputVideoDeviceInfosId');
+let rotateInputDeviceElement =
+  document.getElementById('rotateInputDeviceId');
 
 // instantiate CameraPhoto with the videoElement
 let cameraPhoto = new CameraPhoto(videoElement);
@@ -78,12 +80,13 @@ function showCameraSettings () {
   // by default is no camera...
   let innerHTML = 'No camera';
   if (settings) {
-    let {aspectRatio, frameRate, height, width} = settings;
+    let {aspectRatio, deviceId, frameRate, height, width} = settings;
     innerHTML = `
         aspectRatio:${aspectRatio}
         frameRate: ${frameRate}
         height: ${height}
         width: ${width}
+        deviceId: ${deviceId}
     `;
   }
   cameraSettingElement.innerHTML = innerHTML;
@@ -102,12 +105,26 @@ function showInputVideoDeviceInfos () {
             kind: ${kind}
             label: ${label}
             deviceId: ${deviceId}
+            <button class="selectDeviceButton" data-device-id="${deviceId}">switch</button>
             <br/>
         `;
       innerHTML += inputVideoDeviceInfoHTML;
     });
   }
   inputVideoDeviceInfosElement.innerHTML = innerHTML;
+
+  for (const elt of document.querySelectorAll('button.selectDeviceButton')) {
+    elt.addEventListener('click', () => {
+      cameraPhoto.startCamera(undefined, undefined, elt.dataset.deviceId)
+        .then(() => {
+          var log = `Camera started with deviceId ${elt.dataset.deviceId}`;
+          console.log(log);
+        })
+        .catch((error) => {
+          console.error('Camera not started!', error);
+        });
+    });
+  }
 }
 
 function stopCamera () {
@@ -134,6 +151,37 @@ function startCameraMaxResolution () {
     });
 }
 
+function rotateInputDevice () {
+  let { deviceId } = cameraPhoto.getCameraSettings();
+  if (!deviceId) {
+    console.error('Camera not started!');
+    return;
+  }
+
+  let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
+  if (!inputVideoDeviceInfos) {
+    console.error('Video device information not available, or no cameras found');
+    return;
+  }
+
+  if (inputVideoDeviceInfos.length < 2) {
+    console.error('There are no other cameras to select');
+    return;
+  }
+
+  let currentDeviceOffset = inputVideoDeviceInfos.findIndex((di) => di.deviceId === deviceId);
+  let newDeviceOffset = (currentDeviceOffset + 1) % inputVideoDeviceInfos.length;
+  let newDeviceId = inputVideoDeviceInfos[newDeviceOffset].deviceId;
+  cameraPhoto.startCamera(undefined, undefined, newDeviceId)
+    .then(() => {
+      var log = `Camera started with deviceId ${newDeviceId}`;
+      console.log(log);
+    })
+    .catch((error) => {
+      console.error('Camera not started!', error);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   // update camera setting
   setInterval(() => {
@@ -147,4 +195,5 @@ document.addEventListener('DOMContentLoaded', function () {
   takePhotoButtonElement.onclick = takePhoto;
   stopCameraButtonElement.onclick = stopCamera;
   showInputVideoDeviceInfosButtonElement.onclick = showInputVideoDeviceInfos;
+  rotateInputDeviceElement.onclick = rotateInputDevice;
 });

@@ -98,6 +98,16 @@ cameraPhoto.startCameraMaxResolution(facingMode)
   .catch((error)=>{/* ... */});
 ```
 
+#### Start with a user-selected video input
+if the user has multiple cameras you can get a list of them using `getInputVideoDeviceInfos()`.  When the user selects
+a camera you can start the camera with the `deviceId` of the video input they selected as the third parameter, e.g.
+
+    cameraPhoto.startCamera(undefined, undefined, input.deviceId)
+
+You can determine which device is currently in use by calling `getInputVideoDeviceInfos()` and checking the `deviceId`
+in that object.  So if you wanted to have a button that simply rotated among inputs, you can thus figure out which
+device is currently in use, find its position in the `getInputVideoDeviceInfos()` result, and select the next one.
+
 #### getDataUri()
 Function that return the `dataUri` of the current frame of the camera.
 To use that function build the configuration object with the corresponding properties. To use the default value, just ommit the properties:
