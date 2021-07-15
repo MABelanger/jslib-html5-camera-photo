@@ -2,6 +2,9 @@
 
 ### Bug Fixes & add features
 
+#### 3.1.5
+- \#47 Add polyfilled version of navigator.mediaDevices
+
 #### 3.1.4
 - \#29 Add getInputVideoDeviceInfos() method
 
