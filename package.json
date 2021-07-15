@@ -1,6 +1,6 @@
 {
   "name": "jslib-html5-camera-photo",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "js lib HTML5 Camera Photo",
   "main": "build/index.js",
   "scripts": {
@@ -130,5 +130,13 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  }
+  },
+  "files": [
+    "LICENSE",
+    "CHANGELOG.md",
+    "README.md",
+    "package.json",
+    "CONTRIBUTING.md",
+    "build"
+  ]
 }
