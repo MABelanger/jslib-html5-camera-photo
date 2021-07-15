@@ -88,7 +88,7 @@ class MediaServices {
       return MINIMUM_CONSTRAINTS;
     }
 
-    const supports = navigator.mediaDevices.getSupportedConstraints();
+    const supports = MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
     /* eslint-env browser */
     // alert(JSON.stringify(supports));
     if (!supports.width || !supports.height || !supports.facingMode) {
