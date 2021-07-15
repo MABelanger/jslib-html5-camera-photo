@@ -2,7 +2,7 @@
 
 ### Bug Fixes & add features
 
-#### 3.1.5
+#### 3.1.7
 - \#47 Add polyfilled version of navigator.mediaDevices
 
 #### 3.1.4
