@@ -14,8 +14,8 @@ class AppReact extends React.Component {
     this.cameraPhoto = new CameraPhoto(this.refs.video);
   }
 
-  startCamera (idealFacingMode, idealResolution) {
-    this.cameraPhoto.startCamera(idealFacingMode, idealResolution)
+  startCamera (idealCameraDevice, idealResolution) {
+    this.cameraPhoto.startCamera(idealCameraDevice, idealResolution)
       .then(() => {
         console.log('camera is started !');
       })
@@ -41,25 +41,37 @@ class AppReact extends React.Component {
   render () {
     return (
       <div>
-        <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.ENVIRONMENT;
-          let idealResolution = { width: 640, height: 480 };
-          this.startCamera(facingMode, idealResolution);
-        }}> Start environment facingMode resolution ideal 640x480 </button>
+        <button
+          onClick={() => {
+            let facingMode = this.cameraPhoto.FACING_MODES.ENVIRONMENT;
+            let idealResolution = { width: 640, height: 480 };
+            this.startCamera(facingMode, idealResolution);
+          }}
+        >
+          {' '}
+          Start environment facingMode resolution ideal 640x480{' '}
+        </button>
 
-        <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.USER;
-          this.startCamera(facingMode, {});
-        }}> Start user facingMode resolution default </button>
+        <button
+          onClick={() => {
+            let facingMode = this.cameraPhoto.FACING_MODES.USER;
+            this.startCamera(facingMode, {});
+          }}
+        >
+          {' '}
+          Start user facingMode resolution default{' '}
+        </button>
 
-        <button onClick={ () => {
-          this.stopCamera();
-        }}> Stop </button>
+        <button
+          onClick={() => {
+            this.stopCamera();
+          }}
+        >
+          {' '}
+          Stop{' '}
+        </button>
 
-        <video
-          ref="video"
-          autoPlay="true"
-        />
+        <video ref="video" autoPlay="true" />
       </div>
     );
   }

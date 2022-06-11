@@ -81,6 +81,15 @@ cameraPhoto.startCamera(FACING_MODES.USER, {})
   .catch((error)=>{/* ... */});
 ```
 
+#### Start with a user-selected video input
+
+if the user has multiple cameras instead of facing mode, you can specify the deviceId that you want to use. To know the device id you can get a list of them using see `getInputVideoDeviceInfos()`. When the user selects
+a camera you can start the camera with the `deviceId` instead of facing mode, e.g.
+
+```js
+cameraPhoto.startCamera(deviceId, {});
+```
+
 #### Start with ideal (facing Mode & resolution)
 ```js
 // example of ideal resolution 640 x 480
@@ -88,6 +97,18 @@ cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
   .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
+
+#### API
+```js
+cameraPhoto.startCamera(cameraDevice, resolution)
+```
+
+| parameters   | Description                                              |
+| ------------ | -------------------------------------------------------- |
+| cameraDevice | Is the `string` of facingMode or deviceId                |
+| resolution   | Is the `object` resolution `{ width: 640, height: 480 }` |
+
+
 
 #### Start with the maximum resolution
 it will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `3840`px if it can't, `2560`px and so on ... until the fall back of the default value of the camera. The facingMode is optional.

@@ -2,6 +2,9 @@
 
 ### Bug Fixes & add features
 
+#### 3.1.9
+- \#35 Add support for selecting a camera by deviceId
+
 #### 3.1.7
 - \#47 Add polyfilled version of navigator.mediaDevices
 
