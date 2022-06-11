@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
 
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -17,31 +20,34 @@
     <title>jslib-html5-camera-photo</title>
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
 
     <div id="divId">
       <label for="facingModeSelectId">facingMode</label>
       <select id="facingModeSelectId" name="facingMode">
-       <option value="ENVIRONMENT" selected="selected">environment</option>
-       <option value="USER">user</option>
+        <option value="ENVIRONMENT" selected="selected">environment</option>
+        <option value="USER">user</option>
       </select>
       <button id="startDefaultAllButtonId">startDefaultAll</button>
-      <button id="startDefaultResolutionButtonId">startDefaultResolution</button>
+      <button id="startDefaultResolutionButtonId">
+        startDefaultResolution
+      </button>
       <button id="startMaxResolutionId">startMaxResolution</button>
       <button id="takePhotoButtonId">takePhoto</button>
       <button id="stopCameraButtonId">stopCamera</button>
-      <button id="showInputVideoDeviceInfosButtonId">showInputVideoDeviceInfos</button>
+      <button id="showInputVideoDeviceInfosButtonId">
+        showInputVideoDeviceInfos
+      </button>
 
-      <br/>
+      <br />
       <div id="cameraSettingsId"></div>
       <div id="inputVideoDeviceInfosId"></div>
-      <video id="videoId" autoplay="true" playsInline></video>
-      <img alt="imgId" id="imgId">
+      <div id="containerButtonsId"></div>
+
+      <video id="videoId" autoplay="true" playsinline></video>
+      <img alt="imgId" id="imgId" />
     </div>
-    <div id="root">
-    </div>
+    <div id="root"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

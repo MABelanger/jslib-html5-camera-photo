@@ -1,4 +1,4 @@
-import {getImageSize, getDataUri, isMinimumConstraints} from './helper';
+import { getImageSize, getDataUri, isMinimumConstraints } from './helper';
 
 import {
   SUPPORTED_FACING_MODES,
@@ -8,11 +8,15 @@ import {
 } from './constants';
 
 class MediaServices {
-  static getDataUri (videoElement, config) {
+  static getDataUri(videoElement, config) {
     let { sizeFactor, imageType, imageCompression, isImageMirror } = config;
 
-    let {videoWidth, videoHeight} = videoElement;
-    let {imageWidth, imageHeight} = getImageSize(videoWidth, videoHeight, sizeFactor);
+    let { videoWidth, videoHeight } = videoElement;
+    let { imageWidth, imageHeight } = getImageSize(
+      videoWidth,
+      videoHeight,
+      sizeFactor
+    );
 
     // Build the canvas size et draw the image to context from videoElement
     let canvas = document.createElement('canvas');
@@ -32,23 +36,29 @@ class MediaServices {
     return dataUri;
   }
 
-  static getWindowURL () {
-    let windowURL = window.URL || window.webkitURL || window.mozURL || window.msURL;
+  static getWindowURL() {
+    let windowURL =
+      window.URL || window.webkitURL || window.mozURL || window.msURL;
     return windowURL;
   }
 
   /*
   Inspiration : https://github.com/jhuckaby/webcamjs/blob/master/webcam.js
   */
-  static getNavigatorMediaDevices () {
+  static getNavigatorMediaDevices() {
     let NMDevice = null;
-    let isNewAPI = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-    let isOldAPI = !!(navigator.mozGetUserMedia || navigator.webkitGetUserMedia);
+    let isNewAPI = !!(
+      navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+    );
+    let isOldAPI = !!(
+      navigator.mozGetUserMedia || navigator.webkitGetUserMedia
+    );
 
     if (isNewAPI) {
       NMDevice = navigator.mediaDevices;
     } else if (isOldAPI) {
-      let NMDeviceOld = navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
+      let NMDeviceOld =
+        navigator.mozGetUserMedia || navigator.webkitGetUserMedia;
       // Setup getUserMedia, with polyfill for older browsers
       // Adapted from: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 
@@ -61,9 +71,7 @@ class MediaServices {
       };
 
       // Overwrite getUserMedia() with the polyfill
-      NMDevice = Object.assign(NMDeviceOld,
-        polyfillGetUserMedia
-      );
+      NMDevice = Object.assign(NMDeviceOld, polyfillGetUserMedia);
     }
 
     // If is no navigator.mediaDevices || navigator.mozGetUserMedia || navigator.webkitGetUserMedia
@@ -72,34 +80,41 @@ class MediaServices {
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/API/Media_Streams_API/Constraints
-  static isSupportedFacingMode () {
+  static isSupportedFacingMode() {
     // navigator.mediaDevices
-    return MediaServices.getNavigatorMediaDevices().getSupportedConstraints().facingMode;
+    return MediaServices.getNavigatorMediaDevices().getSupportedConstraints()
+      .facingMode;
   }
 
-  static getIdealConstraints (idealFacingMode, idealResolution) {
+  static getIdealConstraints(idealCameraDevice, idealResolution) {
     // default idealConstraints
     let idealConstraints = {
       audio: false,
       video: {}
     };
 
-    if (isMinimumConstraints(idealFacingMode, idealResolution)) {
+    if (isMinimumConstraints(idealCameraDevice, idealResolution)) {
       return MINIMUM_CONSTRAINTS;
     }
 
-    const supports = MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
-    /* eslint-env browser */
-    // alert(JSON.stringify(supports));
-    if (!supports.width || !supports.height || !supports.facingMode) {
-      console.error('Constraint width height or facingMode not supported!');
+    const supports =
+      MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
+    if (!supports.width || !supports.height) {
+      console.error(
+        'Constraint width or height not supported! fallback to default resolution'
+      );
       return MINIMUM_CONSTRAINTS;
     }
 
-    // If is valid facingMode
-    if (idealFacingMode && SUPPORTED_FACING_MODES.includes(idealFacingMode)) {
-      // idealConstraints.video.facingMode = { ideal: idealFacingMode };
-      idealConstraints.video.facingMode = idealFacingMode;
+    // If is valid idealCameraDevice
+    if (idealCameraDevice) {
+      const isFacingMode = SUPPORTED_FACING_MODES.includes(idealCameraDevice);
+      if (isFacingMode) {
+        idealConstraints.video.facingMode = idealCameraDevice;
+      } else {
+        // the idealCameraDevice is a deviceId
+        idealConstraints.video.deviceId = idealCameraDevice;
+      }
     }
 
     if (idealResolution && idealResolution.width) {
@@ -113,20 +128,30 @@ class MediaServices {
     return idealConstraints;
   }
 
-  static getMaxResolutionConstraints (idealFacingMode = {}, numberOfMaxResolutionTry) {
-    let constraints = MediaServices.getIdealConstraints(idealFacingMode);
+  static getMaxResolutionConstraints(
+    idealCameraDevice = '',
+    numberOfMaxResolutionTry
+  ) {
+    let constraints = MediaServices.getIdealConstraints(idealCameraDevice);
     const facingMode = constraints.video.facingMode;
+    const deviceId = constraints.video.deviceId;
 
+    let deviceConstraint = {};
+    if (facingMode) {
+      deviceConstraint = { ideal: { facingMode: facingMode } };
+    } else if (deviceId) {
+      deviceConstraint = { deviceId: { exact: deviceId } };
+    }
     const VIDEO_ADVANCED_CONSTRANTS = [
-      {'width': {'min': 640}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 800}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 900}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 1024}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 1080}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 1280}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 1920}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 2560}, 'ideal': {'facingMode': facingMode}},
-      {'width': {'min': 3840}, 'ideal': {'facingMode': facingMode}}
+      { width: { min: 640 }, ...deviceConstraint },
+      { width: { min: 800 }, ...deviceConstraint },
+      { width: { min: 900 }, ...deviceConstraint },
+      { width: { min: 1024 }, ...deviceConstraint },
+      { width: { min: 1080 }, ...deviceConstraint },
+      { width: { min: 1280 }, ...deviceConstraint },
+      { width: { min: 1920 }, ...deviceConstraint },
+      { width: { min: 2560 }, ...deviceConstraint },
+      { width: { min: 3840 }, ...deviceConstraint }
     ];
 
     if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
@@ -134,17 +159,20 @@ class MediaServices {
     }
 
     // each number of try, we remove the last value of the array (the bigger minim width)
-    let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
+    let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(
+      0,
+      -numberOfMaxResolutionTry
+    );
     constraints.video.advanced = advanced;
 
     return constraints;
   }
 
-  static get FACING_MODES () {
+  static get FACING_MODES() {
     return FACING_MODES;
   }
 
-  static get IMAGE_TYPES () {
+  static get IMAGE_TYPES() {
     return IMAGE_TYPES;
   }
 }

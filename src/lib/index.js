@@ -3,12 +3,13 @@ import MediaServices from './MediaServices';
 import {
   DEFAULT_SIZE_FACTOR,
   DEFAULT_IMAGE_COMPRESSION,
-  DEFAULT_IMAGE_MIRROR } from './constants';
+  DEFAULT_IMAGE_MIRROR
+} from './constants';
 
 const DEFAULT_IMAGE_TYPE = MediaServices.IMAGE_TYPES.PNG;
 
 class CameraPhoto {
-  constructor (videoElement) {
+  constructor(videoElement) {
     this.videoElement = videoElement;
     this.stream = null;
     this.numberOfMaxResolutionTry = 1;
@@ -20,19 +21,22 @@ class CameraPhoto {
     this.mediaDevices = MediaServices.getNavigatorMediaDevices();
   }
 
-  _getStreamDevice (idealFacingMode, idealResolution) {
+  _getStreamDevice(idealCameraDevice, idealResolution) {
     return new Promise((resolve, reject) => {
-      let constraints =
-          MediaServices.getIdealConstraints(idealFacingMode, idealResolution);
+      let constraints = MediaServices.getIdealConstraints(
+        idealCameraDevice,
+        idealResolution
+      );
 
-      this.mediaDevices.getUserMedia(constraints)
+      this.mediaDevices
+        .getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
           this._getInputVideoDeviceInfosPromise()
             .then((inputVideoDeviceInfos) => {
               this.inputVideoDeviceInfos = inputVideoDeviceInfos;
             })
-            .catch(() => {})
+            .catch(() => { })
             .then(() => {
               resolve(stream);
             });
@@ -45,25 +49,28 @@ class CameraPhoto {
     });
   }
 
-  _getStreamDeviceMaxResolution (idealFacingMode) {
-    let constraints =
-        MediaServices.getMaxResolutionConstraints(idealFacingMode, this.numberOfMaxResolutionTry);
+  _getStreamDeviceMaxResolution(idealCameraDevice) {
+    let constraints = MediaServices.getMaxResolutionConstraints(
+      idealCameraDevice,
+      this.numberOfMaxResolutionTry
+    );
 
     // all the trying is done...
     if (constraints == null) {
       let idealResolution = {};
-      return this._getStreamDevice(idealFacingMode, idealResolution);
+      return this._getStreamDevice(idealCameraDevice, idealResolution);
     }
 
     return new Promise((resolve, reject) => {
-      this.mediaDevices.getUserMedia(constraints)
+      this.mediaDevices
+        .getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
           this._getInputVideoDeviceInfosPromise()
             .then((inputVideoDeviceInfos) => {
               this.inputVideoDeviceInfos = inputVideoDeviceInfos;
             })
-            .catch(() => {})
+            .catch(() => { })
             .then(() => {
               resolve(stream);
             });
@@ -74,16 +81,15 @@ class CameraPhoto {
           // retry...
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;
-            this._getStreamDeviceMaxResolution(idealFacingMode)
-              .catch(() => {
-                reject(error);
-              });
+            this._getStreamDeviceMaxResolution(idealCameraDevice).catch(() => {
+              reject(error);
+            });
           }, 20);
         });
     });
   }
 
-  _setVideoSrc (stream) {
+  _setVideoSrc(stream) {
     if ('srcObject' in this.videoElement) {
       this.videoElement.srcObject = stream;
     } else {
@@ -93,24 +99,23 @@ class CameraPhoto {
     }
   }
 
-  _setSettings (stream) {
+  _setSettings(stream) {
     // default setting is null
     this.settings = null;
-    const tracks = (stream && stream.getTracks)
-      ? stream.getTracks()
-      : [];
+    const tracks = stream && stream.getTracks ? stream.getTracks() : [];
 
     if (tracks.length > 0 && tracks[0].getSettings) {
       this.settings = tracks[0].getSettings();
     }
   }
 
-  _getInputVideoDeviceInfosPromise () {
+  _getInputVideoDeviceInfosPromise() {
     return new Promise((resolve, reject) => {
       // only make shure the camera is sarted
 
       let inputVideoDeviceInfos = [];
-      this.mediaDevices.enumerateDevices()
+      this.mediaDevices
+        .enumerateDevices()
         .then(function (devices) {
           devices.forEach(function (device) {
             if (device.kind === 'videoinput') {
@@ -125,54 +130,70 @@ class CameraPhoto {
     });
   }
 
-  _gotStream (stream) {
+  _gotStream(stream) {
     this.stream = stream;
     this._setSettings(stream);
     this._setVideoSrc(stream);
   }
 
-  getCameraSettings () {
+  getCameraSettings() {
     return this.settings;
   }
-  getInputVideoDeviceInfos () {
+  getInputVideoDeviceInfos() {
     return this.inputVideoDeviceInfos;
   }
 
-  startCamera (idealFacingMode, idealResolution) {
+  startCamera(idealCameraDevice, idealResolution) {
     // stop the stream before playing it.
-    return this.stopCamera()
-      .then(() => {})
-      .catch(() => {})
-      // Always called (when the promise is done)
-      .then(() => {
-        return this._getStreamDevice(idealFacingMode, idealResolution);
-      });
+    return (
+      this.stopCamera()
+        .then(() => { })
+        .catch(() => { })
+        // Always called (when the promise is done)
+        .then(() => {
+          return this._getStreamDevice(idealCameraDevice, idealResolution);
+        })
+    );
   }
 
-  startCameraMaxResolution (idealFacingMode = {}) {
+  startCameraMaxResolution(idealCameraDevice = '') {
     // stop the stream before playing it.
-    return this.stopCamera()
-      .then(() => {})
-      .catch(() => {})
-      // Always called (when the promise is done)
-      .then(() => {
-        return this._getStreamDeviceMaxResolution(idealFacingMode);
-      });
+    return (
+      this.stopCamera()
+        .then(() => { })
+        .catch(() => { })
+        // Always called (when the promise is done)
+        .then(() => {
+          return this._getStreamDeviceMaxResolution(idealCameraDevice);
+        })
+    );
   }
 
-  getDataUri (userConfig) {
+  getDataUri(userConfig) {
     let config = {
-      sizeFactor: userConfig.sizeFactor === undefined ? DEFAULT_SIZE_FACTOR : userConfig.sizeFactor,
-      imageType: userConfig.imageType === undefined ? DEFAULT_IMAGE_TYPE : userConfig.imageType,
-      imageCompression: userConfig.imageCompression === undefined ? DEFAULT_IMAGE_COMPRESSION : userConfig.imageCompression,
-      isImageMirror: userConfig.isImageMirror === undefined ? DEFAULT_IMAGE_MIRROR : userConfig.isImageMirror
+      sizeFactor:
+        userConfig.sizeFactor === undefined
+          ? DEFAULT_SIZE_FACTOR
+          : userConfig.sizeFactor,
+      imageType:
+        userConfig.imageType === undefined
+          ? DEFAULT_IMAGE_TYPE
+          : userConfig.imageType,
+      imageCompression:
+        userConfig.imageCompression === undefined
+          ? DEFAULT_IMAGE_COMPRESSION
+          : userConfig.imageCompression,
+      isImageMirror:
+        userConfig.isImageMirror === undefined
+          ? DEFAULT_IMAGE_MIRROR
+          : userConfig.isImageMirror
     };
 
     let dataUri = MediaServices.getDataUri(this.videoElement, config);
     return dataUri;
   }
 
-  stopCamera () {
+  stopCamera() {
     return new Promise((resolve, reject) => {
       if (this.stream) {
         this.stream.getTracks().forEach(function (track) {

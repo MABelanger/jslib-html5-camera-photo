@@ -3,19 +3,20 @@ import CameraPhoto from '../lib';
 import './styles.css';
 
 class AppReact extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props, context);
     this.cameraPhoto = null;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // We need to instantiate CameraPhoto inside componentDidMount because we
     // need the refs.video to get the videoElement.
     this.cameraPhoto = new CameraPhoto(this.refs.video);
   }
 
-  startCamera (idealFacingMode, idealResolution) {
-    this.cameraPhoto.startCamera(idealFacingMode, idealResolution)
+  startCamera(idealCameraDevice, idealResolution) {
+    this.cameraPhoto
+      .startCamera(idealCameraDevice, idealResolution)
       .then(() => {
         console.log('camera is started !');
       })
@@ -24,12 +25,13 @@ class AppReact extends React.Component {
       });
   }
 
-  getDataUri (sizeFactor) {
+  getDataUri(sizeFactor) {
     return this.cameraPhoto.getDataUri(sizeFactor);
   }
 
-  stopCamera () {
-    this.cameraPhoto.stopCamera()
+  stopCamera() {
+    this.cameraPhoto
+      .stopCamera()
       .then(() => {
         console.log('Camera stoped!');
       })
@@ -38,28 +40,40 @@ class AppReact extends React.Component {
       });
   }
 
-  render () {
+  render() {
     return (
       <div>
-        <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.ENVIRONMENT;
-          let idealResolution = { width: 640, height: 480 };
-          this.startCamera(facingMode, idealResolution);
-        }}> Start environment facingMode resolution ideal 640x480 </button>
+        <button
+          onClick={() => {
+            let facingMode = this.cameraPhoto.FACING_MODES.ENVIRONMENT;
+            let idealResolution = { width: 640, height: 480 };
+            this.startCamera(facingMode, idealResolution);
+          }}
+        >
+          {' '}
+          Start environment facingMode resolution ideal 640x480{' '}
+        </button>
 
-        <button onClick={ () => {
-          let facingMode = this.cameraPhoto.FACING_MODES.USER;
-          this.startCamera(facingMode, {});
-        }}> Start user facingMode resolution default </button>
+        <button
+          onClick={() => {
+            let facingMode = this.cameraPhoto.FACING_MODES.USER;
+            this.startCamera(facingMode, {});
+          }}
+        >
+          {' '}
+          Start user facingMode resolution default{' '}
+        </button>
 
-        <button onClick={ () => {
-          this.stopCamera();
-        }}> Stop </button>
+        <button
+          onClick={() => {
+            this.stopCamera();
+          }}
+        >
+          {' '}
+          Stop{' '}
+        </button>
 
-        <video
-          ref="video"
-          autoPlay="true"
-        />
+        <video ref="video" autoPlay="true" />
       </div>
     );
   }
