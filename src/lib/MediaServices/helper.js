@@ -1,18 +1,20 @@
-import {
-  SUPPORTED_IMAGE_TYPES,
-  FORMAT_TYPES,
-  IMAGE_TYPES
-} from './constants';
+import { SUPPORTED_IMAGE_TYPES, FORMAT_TYPES, IMAGE_TYPES } from './constants';
 
 function _validateImgParam (imageType, imageCompression) {
   // validate the imageCompression
   if (!(imageCompression >= 0 && imageCompression <= 1)) {
-    throw new Error(imageCompression + ' is invalid imageCompression, choose between: [0, 1]');
+    throw new Error(
+      imageCompression + ' is invalid imageCompression, choose between: [0, 1]'
+    );
   }
 
   // validate the imageType
   if (!SUPPORTED_IMAGE_TYPES.includes(imageType)) {
-    throw new Error(imageType + ' is invalid imageType, choose between: ' + SUPPORTED_IMAGE_TYPES.join(', '));
+    throw new Error(
+      imageType +
+      ' is invalid imageType, choose between: ' +
+      SUPPORTED_IMAGE_TYPES.join(', ')
+    );
   }
   return true;
 }
@@ -73,6 +75,8 @@ function _isEmptyObject (obj) {
   return true;
 }
 
-export function isMinimumConstraints (idealFacingMode, idealResolution) {
-  return !(idealFacingMode || (idealResolution && !_isEmptyObject(idealResolution)));
+export function isMinimumConstraints (idealCameraDevice, idealResolution) {
+  const hasConstraints = idealCameraDevice || (idealResolution && !_isEmptyObject(idealResolution));
+
+  return !hasConstraints;
 }
