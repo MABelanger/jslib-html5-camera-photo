@@ -103,7 +103,7 @@ export class MediaServices {
         idealConstraints.video.facingMode = idealCameraDevice;
       } else {
         // the idealCameraDevice is a deviceId
-        idealConstraints.video.deviceId = idealCameraDevice;
+        idealConstraints.video.deviceId = { exact: idealCameraDevice };
       }
     }
 
@@ -118,27 +118,19 @@ export class MediaServices {
     return idealConstraints;
   }
 
-  static getMaxResolutionConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
+  static getMaxResolutionFallBackConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
     let constraints = MediaServices.getIdealConstraints(idealCameraDevice);
-    const facingMode = constraints.video.facingMode;
-    const deviceId = constraints.video.deviceId;
 
-    let deviceConstraint = {};
-    if (facingMode) {
-      deviceConstraint = { ideal: { facingMode: facingMode } };
-    } else if (deviceId) {
-      deviceConstraint = { deviceId: { exact: deviceId } };
-    }
     const VIDEO_ADVANCED_CONSTRANTS = [
-      { width: { min: 640 }, ...deviceConstraint },
-      { width: { min: 800 }, ...deviceConstraint },
-      { width: { min: 900 }, ...deviceConstraint },
-      { width: { min: 1024 }, ...deviceConstraint },
-      { width: { min: 1080 }, ...deviceConstraint },
-      { width: { min: 1280 }, ...deviceConstraint },
-      { width: { min: 1920 }, ...deviceConstraint },
-      { width: { min: 2560 }, ...deviceConstraint },
-      { width: { min: 3840 }, ...deviceConstraint }
+      { width: { min: 640 } },
+      { width: { min: 800 } },
+      { width: { min: 900 } },
+      { width: { min: 1024 } },
+      { width: { min: 1080 } },
+      { width: { min: 1280 } },
+      { width: { min: 1920 } },
+      { width: { min: 2560 } },
+      { width: { min: 3840 } }
     ];
 
     if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
@@ -148,6 +140,22 @@ export class MediaServices {
     // each number of try, we remove the last value of the array (the bigger minim width)
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
+
+    return constraints;
+  }
+
+  static getMaxResolutionConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
+    if (numberOfMaxResolutionTry > 1) {
+      return MediaServices.getMaxResolutionFallBackConstraints(idealCameraDevice, numberOfMaxResolutionTry);
+    }
+
+    // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
+    let idealResolution = {
+      width: { min: 640, ideal: 3840 },
+      height: { min: 480, ideal: 2160 }
+    };
+
+    let constraints = MediaServices.getIdealConstraints(idealCameraDevice, idealResolution);
 
     return constraints;
   }
