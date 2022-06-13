@@ -7,7 +7,7 @@ import {
   MINIMUM_CONSTRAINTS
 } from './constants';
 
-class MediaServices {
+export class MediaServices {
   static getDataUri (videoElement, config) {
     let { sizeFactor, imageType, imageCompression, isImageMirror } = config;
 
@@ -160,5 +160,3 @@ class MediaServices {
     return IMAGE_TYPES;
   }
 }
-
-export default MediaServices;

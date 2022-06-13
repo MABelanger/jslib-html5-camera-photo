@@ -5,7 +5,7 @@ The first objective of this package comes from the need to have a js library tha
 Another js camera ? Yes! I found [webcamjs](https://github.com/jhuckaby/webcamjs/) and [jpeg_camera](https://github.com/amw/jpeg_camera) but i need to switch easily from camera `environment` and `user`. You need to build the constraint for getUserMedia()... Another need is to have a `sizeFactor` instead of a fixing 'width' and 'height' that can not fit with the ratio of the resolution that camera can pick.
 
 ## Features of the library.
-1. Choose between `environment` or `user` camera, fall back to the default camera.
+1. Choose between `facing mode` or `deviceId` camera, fall back to the default camera.
 2. Set `ideal resolution`, fall back to the default resolution.
 3. Get the `maximum resolution` of the camera, fall back to the default resolution.
 4. Choose dataURI `image format` type between `jpg` or `png`.
@@ -44,7 +44,6 @@ npm install --save jslib-html5-camera-photo
 ```bash
 yarn add jslib-html5-camera-photo
 ```
-Both Yarn and npm download packages from the npm registry.
 
 ### Usage
 
@@ -58,6 +57,16 @@ let videoElement = document.getElementById('videoId');
 // pass the video element to the constructor.
 let cameraPhoto = new CameraPhoto(videoElement);
 ```
+
+#### parameters of startCamera
+```js
+cameraPhoto.startCamera(cameraDevice, resolution)
+```
+
+| parameters   | Description                                                   |
+| ------------ | ------------------------------------------------------------- |
+| cameraDevice | Is the `string` of the camera facingMode or deviceId          |
+| resolution   | Is the `object` resolution ex:. `{ width: 640, height: 480 }` |
 
 #### Start the default mode (facing Mode & resolution)
 If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream if you want to use it. If it fail, it will give you the error.
@@ -81,13 +90,15 @@ cameraPhoto.startCamera(FACING_MODES.USER, {})
   .catch((error)=>{/* ... */});
 ```
 
-#### Start with a user-selected video input
-
-if the user has multiple cameras instead of facing mode, you can specify the deviceId that you want to use. To know the device id you can get a list of them using see `getInputVideoDeviceInfos()`. When the user selects
-a camera you can start the camera with the `deviceId` instead of facing mode, e.g.
+#### Start with a user-selected deviceId & default resolution
+Instead of facing mode, you can specify the deviceId (camera) that you want to use. To know the device id you can get a list of them using see [Get the input video device infos](#get-the-input-video-device-infos), so you can start the camera with the `deviceId` instead of facing mode, e.g.
 
 ```js
-cameraPhoto.startCamera(deviceId, {});
+// OR specify the deviceId (use a specific camera)
+const deviceId = 'the_string_of_device_id';
+cameraPhoto.startCamera(deviceId, {})
+  .then((stream)=>{/* ... */})
+  .catch((error)=>{/* ... */});
 ```
 
 #### Start with ideal (facing Mode & resolution)
@@ -98,32 +109,20 @@ cameraPhoto.startCamera(facingMode, {width: 640, height: 480})
   .catch((error)=>{/* ... */});
 ```
 
-#### API
-```js
-cameraPhoto.startCamera(cameraDevice, resolution)
-```
-
-| parameters   | Description                                              |
-| ------------ | -------------------------------------------------------- |
-| cameraDevice | Is the `string` of facingMode or deviceId                |
-| resolution   | Is the `object` resolution `{ width: 640, height: 480 }` |
-
-
-
 #### Start with the maximum resolution
-it will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `3840`px if it can't, `2560`px and so on ... until the fall back of the default value of the camera. The facingMode is optional.
+It will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 640, default]` px to take the maximum width of `3840`px if it can't, `2560`px and so on ... until the fall back of the default value of the camera. The facingMode is optional.
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
-cameraPhoto.startCameraMaxResolution(facingMode)
+cameraPhoto.startCameraMaxResolution(cameraDevice)
   .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
 #### getDataUri()
 Function that return the `dataUri` of the current frame of the camera.
-To use that function build the configuration object with the corresponding properties. To use the default value, just ommit the properties:
+To use that function build the configuration object with the corresponding properties. To use the default value, just ommit the parameter:
 
-##### Parameters
+##### Parameter (object config)
 - **sizeFactor** (Number): Used to get a desired resolution. Example, a sizeFactor of `1` get the same resolution of the camera while sizeFactor of `0.5` get the half resolution of the camera. The sizeFactor can be between range of `]0, 1]` and the default value is `1`.
 
 - **imageType** (String): Used to get the desired image type between `jpg` or `png`. to specify the imageType use the constant IMAGE_TYPES, for example to specify jpg format use IMAGE_TYPES.JPG. The default imageType is `png`.
@@ -146,7 +145,6 @@ let dataUri = cameraPhoto.getDataUri(config);
 // OR
 
 // Specify sizeFactor, imageType, imageCompression, isImageMirror
-
 const config = {
   sizeFactor : 1;
   imageType : IMAGE_TYPES.JPG
@@ -173,7 +171,7 @@ if (cameraSettigs) {
 ```
 
 #### Get the input video device infos
-the function return empty array [] if no input video device exist. In order to read the video devices, the browser need to start the camera with with `startCamera()` or `startCameraMaxResolution()` before calling the function `getInputVideoDeviceInfos()` it return a list of objects with the device info attributes of (kind, label, deviceId).
+The function return empty array [] if no input video device exist. In order to read the video devices, the browser need to start the camera with with `startCamera()` or `startCameraMaxResolution()` before calling the function `getInputVideoDeviceInfos()` it return a list of objects with the device info attributes of (kind, label, deviceId).
 ```js
 let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
 inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
@@ -187,6 +185,24 @@ inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
 });
 
 ```
+
+#### plugin - download photo
+You can download photo of the dataUri that you took and pass it to `downloadPhoto()` function. 
+```js
+import { downloadPhoto } from 'jslib-html5-camera-photo';
+
+let dataUri = cameraPhoto.getDataUri(config);
+downloadPhoto(dataUri, prefixFileName, number);
+// The filename will be saved as the format : 
+`${prefixFileName}-${number}.jpg|png}`
+```
+the parameters of the `downloadPhoto()` function
+| parameters     | Description                                                   |
+| -------------- | ------------------------------------------------------------- |
+| dataUri        | Is dataUri of the photo                                       |
+| prefixFileName | Is the `string` prefix of the fileName                        |
+| number         | Is the `integer` number prefix of the fileName with 0 padding |
+
 
 #### Stop the camera
 Function that stop the camera. If it success, no value is returned. It can fail if they is no camera to stop because the camera has already been stopped or never started. It will give a parameter of `Error('no stream to stop!')`. Note that each time we start the camera, it internally using this stop function to be able to apply new constraints.
