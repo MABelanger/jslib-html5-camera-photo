@@ -2,6 +2,9 @@
 
 ### Bug Fixes & add features
 
+#### 3.1.10
+- Add plugin downloadPhoto and fix README.md
+
 #### 3.1.9
 - \#35 Add support for selecting a camera by deviceId
 

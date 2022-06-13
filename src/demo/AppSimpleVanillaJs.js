@@ -1,4 +1,4 @@
-import CameraPhoto, { FACING_MODES, IMAGE_TYPES } from '../lib';
+import CameraPhoto, { FACING_MODES, IMAGE_TYPES, downloadPhoto } from '../lib';
 import './styles.css';
 
 // get video and image elements
@@ -17,6 +17,7 @@ let startMaxResolutionButtonElement = document.getElementById(
   'startMaxResolutionId'
 );
 let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
+let takePhotoAndDownloadButtonElement = document.getElementById('takePhotoAndDownloadButtonId');
 let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 let cameraSettingElement = document.getElementById('cameraSettingsId');
 let showInputVideoDeviceInfosButtonElement = document.getElementById(
@@ -82,6 +83,22 @@ function takePhoto () {
   };
 
   let dataUri = cameraPhoto.getDataUri(config);
+  imgElement.src = dataUri;
+}
+
+function takePhotoAndDownload () {
+  let sizeFactor = 1;
+  let imageType = IMAGE_TYPES.JPG;
+  let imageCompression = 1;
+
+  let config = {
+    sizeFactor,
+    imageType,
+    imageCompression
+  };
+
+  let dataUri = cameraPhoto.getDataUri(config);
+  downloadPhoto(dataUri, 'myPhoto', 1);
   imgElement.src = dataUri;
 }
 
@@ -188,6 +205,7 @@ document.addEventListener('DOMContentLoaded', function () {
   startDefaultResolutionButtonElement.onclick = startCameraDefaultResolution;
   startMaxResolutionButtonElement.onclick = startCameraMaxResolution;
   takePhotoButtonElement.onclick = takePhoto;
+  takePhotoAndDownloadButtonElement.onclick = takePhotoAndDownload;
   stopCameraButtonElement.onclick = stopCamera;
   showInputVideoDeviceInfosButtonElement.onclick = showInputVideoDeviceInfos;
 });
