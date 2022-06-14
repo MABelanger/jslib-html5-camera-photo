@@ -2,6 +2,9 @@
 
 ### Bug Fixes & add features
 
+#### 3.1.11
+- \#25 Fix max resolution not working ios.
+
 #### 3.1.10
 - Add plugin downloadPhoto and fix README.md
 

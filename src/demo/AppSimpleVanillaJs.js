@@ -41,18 +41,6 @@ function startCameraDefaultAll () {
     });
 }
 
-function startCameraId (deviceId) {
-  console.log('startCameraId', deviceId);
-  cameraPhoto.startCamera(deviceId)
-    .then(() => {
-      let log = `Camera started with deviceId : ${deviceId}`;
-      console.log(log);
-    })
-    .catch((error) => {
-      console.error('Camera not started!', error);
-    });
-}
-
 // start the camera with prefered environment facingMode ie. ()
 // if the environment facingMode is not avalible, it will fallback
 // to the default camera avalible.
@@ -160,8 +148,7 @@ function showSwitchButtonsCamera () {
       `;
       (function (deviceId) {
         buttonElement.addEventListener('click', function () {
-          console.log(deviceId);
-          startCameraId(deviceId);
+          startCameraIdMaxResolution(deviceId);
         });
       })(deviceId);
       buttonsContainer.appendChild(buttonElement);
@@ -176,6 +163,19 @@ function stopCamera () {
     })
     .catch((error) => {
       console.log('No camera to stop!:', error);
+    });
+}
+
+function startCameraIdMaxResolution (deviceId) {
+  cameraPhoto.startCameraMaxResolution(deviceId)
+    .then(() => {
+      let log =
+        `Camera started with maximum resoluton and ` +
+        `prefered deviceId: ${deviceId} `;
+      console.log(log);
+    })
+    .catch((error) => {
+      console.error('Camera not started!', error);
     });
 }
 
