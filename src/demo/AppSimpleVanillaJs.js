@@ -20,11 +20,8 @@ let takePhotoButtonElement = document.getElementById('takePhotoButtonId');
 let takePhotoAndDownloadButtonElement = document.getElementById('takePhotoAndDownloadButtonId');
 let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 let cameraSettingElement = document.getElementById('cameraSettingsId');
-let showInputVideoDeviceInfosButtonElement = document.getElementById(
-  'showInputVideoDeviceInfosButtonId'
-);
-let inputVideoDeviceInfosElement = document.getElementById(
-  'inputVideoDeviceInfosId'
+let showSwitchCamerasButtonsElement = document.getElementById(
+  'showSwitchCameraButtonsId'
 );
 
 // instantiate CameraPhoto with the videoElement
@@ -94,10 +91,11 @@ function showCameraSettings () {
   let settings = cameraPhoto.getCameraSettings();
 
   // by default is no camera...
-  let innerHTML = 'No camera';
+  let innerHTML = 'No active camera';
   if (settings) {
     let { aspectRatio, frameRate, height, width } = settings;
     innerHTML = `
+        <b>Current active camera:</b>
         aspectRatio:${aspectRatio}
         frameRate: ${frameRate}
         height: ${height}
@@ -107,53 +105,34 @@ function showCameraSettings () {
   cameraSettingElement.innerHTML = innerHTML;
 }
 
-function showInputVideoDeviceInfos () {
-  let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
+function showSwitchCameraButtons () {
+  cameraPhoto.enumerateCameras().then((cameras) => {
+    if (cameras && cameras.length > 0) {
+      let cameraButtonsContainer = document.getElementById('cameraButtonsContainerId');
+      cameraButtonsContainer.innerHTML = '';
 
-  // by default is no inputVideoDeviceInfo...
-  let innerHTML = 'No inputVideoDeviceInfo';
-  if (inputVideoDeviceInfos) {
-    innerHTML = '';
-    inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
-      let { kind, label, deviceId } = inputVideoDeviceInfo;
-      let inputVideoDeviceInfoHTML = `
-            kind: ${kind}
-            label: ${label}
+      let h3Element = document.createElement('h3');
+      h3Element.innerText = 'Choose your camera :';
+      cameraButtonsContainer.appendChild(h3Element);
+
+      cameras.forEach((camera) => {
+        let { kind, label, deviceId } = camera;
+        const buttonElement = document.createElement('button');
+        buttonElement.innerHTML = `
+            kind: ${kind} <br/>
+            label: ${label} <br/>
             deviceId: ${deviceId}
-            <br/>
-        `;
-      innerHTML += inputVideoDeviceInfoHTML;
-    });
-  }
-  inputVideoDeviceInfosElement.innerHTML = innerHTML;
-}
-
-function showSwitchButtonsCamera () {
-  let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
-
-  if (inputVideoDeviceInfos && inputVideoDeviceInfos.length > 1) {
-    let buttonsContainer = document.getElementById('containerButtonsId');
-    buttonsContainer.innerHTML = '';
-    let h3Element = document.createElement('h3');
-    h3Element.innerText = 'Choose your camera';
-
-    buttonsContainer.appendChild(h3Element);
-    inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
-      let { kind, label, deviceId } = inputVideoDeviceInfo;
-      const buttonElement = document.createElement('button');
-      buttonElement.innerHTML = `
-        kind: ${kind} <br/>
-        label: ${label} <br/>
-        deviceId: ${deviceId}
-      `;
-      (function (deviceId) {
-        buttonElement.addEventListener('click', function () {
-          startCameraIdMaxResolution(deviceId);
-        });
-      })(deviceId);
-      buttonsContainer.appendChild(buttonElement);
-    });
-  }
+          `;
+        (function (deviceId) {
+          buttonElement.addEventListener('click', function () {
+            console.log('click on', deviceId);
+            startCameraIdMaxResolution(deviceId);
+          });
+        })(deviceId);
+        cameraButtonsContainer.appendChild(buttonElement);
+      });
+    }
+  });
 }
 
 function stopCamera () {
@@ -197,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // update camera setting
   setInterval(() => {
     showCameraSettings();
-    showSwitchButtonsCamera();
   }, 500);
 
   // bind the buttons to the right functions.
@@ -207,5 +185,5 @@ document.addEventListener('DOMContentLoaded', function () {
   takePhotoButtonElement.onclick = takePhoto;
   takePhotoAndDownloadButtonElement.onclick = takePhotoAndDownload;
   stopCameraButtonElement.onclick = stopCamera;
-  showInputVideoDeviceInfosButtonElement.onclick = showInputVideoDeviceInfos;
+  showSwitchCamerasButtonsElement.onclick = showSwitchCameraButtons;
 });

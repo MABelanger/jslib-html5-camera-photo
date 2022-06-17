@@ -14,7 +14,7 @@ export class CameraPhoto {
     this.stream = null;
     this.numberOfMaxResolutionTry = 1;
     this.settings = null;
-    this.inputVideoDeviceInfos = [];
+    this.cameras = [];
 
     // Set the right object depending on the browser.
     this.windowURL = MediaServices.getWindowURL();
@@ -28,18 +28,16 @@ export class CameraPhoto {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
-          this._getInputVideoDeviceInfosPromise()
-            .then((inputVideoDeviceInfos) => {
-              this.inputVideoDeviceInfos = inputVideoDeviceInfos;
+          this._enumerateCamerasPromise()
+            .then((cameras) => {
+              this.cameras = cameras;
             })
             .catch(() => { })
             .then(() => {
-              resolve(stream);
+              resolve(stream, this.cameras);
             });
         })
         .catch((error) => {
-          // let {name, constraint, message} = error;
-          // window.alert(name + ' ' + constraint + ' ' + message);
           reject(error);
         });
     });
@@ -58,13 +56,13 @@ export class CameraPhoto {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
-          this._getInputVideoDeviceInfosPromise()
-            .then((inputVideoDeviceInfos) => {
-              this.inputVideoDeviceInfos = inputVideoDeviceInfos;
+          this._enumerateCamerasPromise()
+            .then((cameras) => {
+              this.cameras = cameras;
             })
             .catch(() => { })
             .then(() => {
-              resolve(stream);
+              resolve(stream, this.cameras);
             });
         })
         .catch((error) => {
@@ -103,19 +101,19 @@ export class CameraPhoto {
     }
   }
 
-  _getInputVideoDeviceInfosPromise () {
+  _enumerateCamerasPromise () {
     return new Promise((resolve, reject) => {
       // only make shure the camera is sarted
 
-      let inputVideoDeviceInfos = [];
+      let cameras = [];
       this.mediaDevices.enumerateDevices()
         .then(function (devices) {
           devices.forEach(function (device) {
-            if (device.kind === 'videoinput') {
-              inputVideoDeviceInfos.push(device);
+            if (device.kind === 'videoinput' && device.deviceId) {
+              cameras.push(device);
             }
           });
-          resolve(inputVideoDeviceInfos);
+          resolve(cameras);
         })
         .catch(function (err) {
           reject(err);
@@ -132,34 +130,70 @@ export class CameraPhoto {
   getCameraSettings () {
     return this.settings;
   }
+
+  /**
+   * @deprecated since version 3.2.0
+   * @param  {function} replacementFunction
+   * @param  {string} getInputVideoDeviceInfos
+   * @param  {string} enumerateCameras
+   * @return {function}
+   */
   getInputVideoDeviceInfos () {
-    return this.inputVideoDeviceInfos;
+    console.warn('Warning!: method getInputVideoDeviceInfos() is depreciate \n' +
+      'please use enumerateCameras()');
+    return this.cameras;
+  }
+
+  enumerateCameras () {
+    // If the camera is already started, return only the promise.
+    if (this.stream) {
+      return this._enumerateCamerasPromise();
+    }
+
+    // We don't know if the camera is granted so we need to start
+    // and stop the camera and then return the promise.
+    return this.stopCamera()
+      .then(() => { })
+      .catch(() => { })
+      .then(() => {
+        const constraints = { video: true };
+        return this.mediaDevices.getUserMedia(constraints)
+          .then((stream) => {
+            // Wait 20 ms before stop the camera.
+            setTimeout(() => {
+              stream.getTracks().forEach(function (track) {
+                track.stop();
+              });
+            }, 20);
+          })
+          .then(() => { })
+          .catch(() => { })
+          .then(() => {
+            return this._enumerateCamerasPromise();
+          });
+      });
   }
 
   startCamera (idealCameraDevice, idealResolution) {
     // stop the stream before playing it.
-    return (
-      this.stopCamera()
-        .then(() => { })
-        .catch(() => { })
-        // Always called (when the promise is done)
-        .then(() => {
-          return this._getStreamDevice(idealCameraDevice, idealResolution);
-        })
-    );
+    return this.stopCamera()
+      .then(() => { })
+      .catch(() => { })
+      // Always called (when the promise is done)
+      .then(() => {
+        return this._getStreamDevice(idealCameraDevice, idealResolution);
+      });
   }
 
   startCameraMaxResolution (idealCameraDevice = '') {
     // stop the stream before playing it.
-    return (
-      this.stopCamera()
-        .then(() => { })
-        .catch(() => { })
-        // Always called (when the promise is done)
-        .then(() => {
-          return this._getStreamDeviceMaxResolution(idealCameraDevice);
-        })
-    );
+    return this.stopCamera()
+      .then(() => { })
+      .catch(() => { })
+      // Always called (when the promise is done)
+      .then(() => {
+        return this._getStreamDeviceMaxResolution(idealCameraDevice);
+      });
   }
 
   getDataUri (userConfig) {
