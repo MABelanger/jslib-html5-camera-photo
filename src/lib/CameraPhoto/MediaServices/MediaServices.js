@@ -118,7 +118,19 @@ export class MediaServices {
     return idealConstraints;
   }
 
-  static getMaxResolutionFallBackConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
+  static getMaxResolutionConstraintsIphone (idealCameraDevice = '', numberOfMaxResolutionTry) {
+    // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
+    let idealResolution = {
+      width: { min: 640, ideal: 3840 },
+      height: { min: 480, ideal: 2160 }
+    };
+
+    let constraints = MediaServices.getIdealConstraints(idealCameraDevice, idealResolution);
+
+    return constraints;
+  }
+
+  static getMaxResolutionConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
     let constraints = MediaServices.getIdealConstraints(idealCameraDevice);
 
     const VIDEO_ADVANCED_CONSTRANTS = [
@@ -134,28 +146,13 @@ export class MediaServices {
     ];
 
     if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
-      return null;
+      console.warn('fallback to iphone constraints');
+      return MediaServices.getMaxResolutionConstraintsIphone(idealCameraDevice, numberOfMaxResolutionTry);
     }
 
     // each number of try, we remove the last value of the array (the bigger minim width)
     let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
     constraints.video.advanced = advanced;
-
-    return constraints;
-  }
-
-  static getMaxResolutionConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
-    if (numberOfMaxResolutionTry > 1) {
-      return MediaServices.getMaxResolutionFallBackConstraints(idealCameraDevice, numberOfMaxResolutionTry);
-    }
-
-    // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
-    let idealResolution = {
-      width: { min: 640, ideal: 3840 },
-      height: { min: 480, ideal: 2160 }
-    };
-
-    let constraints = MediaServices.getIdealConstraints(idealCameraDevice, idealResolution);
 
     return constraints;
   }
