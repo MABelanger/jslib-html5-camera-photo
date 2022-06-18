@@ -12,7 +12,7 @@ export class CameraPhoto {
   constructor (videoElement) {
     this.videoElement = videoElement;
     this.stream = null;
-    this.numberOfMaxResolutionTry = 1;
+    this.numberOfMaxResolutionTry = 0;
     this.settings = null;
     this.cameras = [];
 
@@ -157,6 +157,7 @@ export class CameraPhoto {
   }
 
   startCameraMaxResolution (idealCameraDevice = '') {
+    this.numberOfMaxResolutionTry = 0;
     // stop the stream before playing it.
     return this.stopCamera()
       .then(() => { })
