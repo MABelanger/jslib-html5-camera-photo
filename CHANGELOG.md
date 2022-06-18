@@ -2,6 +2,11 @@
 
 ### Bug Fixes & add features
 
+#### 3.2.0
+- \#73 Add list of cameras to the startCamera() and startCameraMaxResolution() and return promise with parameters resolve(stream, cameras).
+- enumerateCameras() return promises of resolve (cameras).
+- getInputVideoDeviceInfos() is now depreciated, use enumerateCameras() instead.
+
 #### 3.1.11
 - \#25 Fix max resolution not working ios.
 

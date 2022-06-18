@@ -69,11 +69,11 @@ cameraPhoto.startCamera(cameraDevice, resolution)
 | resolution   | Is the `object` resolution ex:. `{ width: 640, height: 480 }` |
 
 #### Start the default mode (facing Mode & resolution)
-If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream if you want to use it. If it fail, it will give you the error.
+If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream and the list of cameras if you want to use it. If it fail, it will give you the error. The list of camera is in the same format as [Enumerate the available cameras](#enumerate-the-available-cameras).
 ```js
 // default camera and resolution
 cameraPhoto.startCamera()
-  .then((stream)=>{/* ... */})
+  .then((stream, cameras)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
@@ -91,7 +91,7 @@ cameraPhoto.startCamera(FACING_MODES.USER, {})
 ```
 
 #### Start with a user-selected deviceId & default resolution
-Instead of facing mode, you can specify the deviceId (camera) that you want to use. To know the device id you can get a list of them using see [Get the input video device infos](#get-the-input-video-device-infos), so you can start the camera with the `deviceId` instead of facing mode, e.g.
+Instead of facing mode, you can specify the deviceId (camera) that you want to use. To know the device id you can get a list of them using see [Enumerate the available cameras](#enumerate-the-available-cameras), so you can start the camera with the `deviceId` instead of facing mode, e.g.
 
 ```js
 // OR specify the deviceId (use a specific camera)
@@ -114,7 +114,7 @@ It will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 6
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(cameraDevice)
-  .then((stream)=>{/* ... */})
+  .then((stream, cameras)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
@@ -170,20 +170,22 @@ if (cameraSettigs) {
 }
 ```
 
-#### Get the input video device infos
-The function return empty array [] if no input video device exist. In order to read the video devices, the browser need to start the camera with with `startCamera()` or `startCameraMaxResolution()` before calling the function `getInputVideoDeviceInfos()` it return a list of objects with the device info attributes of (kind, label, deviceId).
-```js
-let inputVideoDeviceInfos = cameraPhoto.getInputVideoDeviceInfos();
-inputVideoDeviceInfos.forEach((inputVideoDeviceInfo) => {
-  let {kind, label, deviceId} = inputVideoDeviceInfo;
-  let inputVideoDeviceInfoStr = `
-        kind: ${kind}
-        label: ${label}
-        deviceId: ${deviceId}
-    `;
-  console.log(inputVideoDeviceInfoStr)
-});
+#### Enumerate the available cameras
+`enumerateCameras()` Return a Promise that receives an array of MediaDeviceInfo ie:. `{kind, label, deviceId}` when the promise is fulfilled. Each object in the array describes one of the available camera (only device-types for which permission has been granted are "available"). The order is significant - the default capture devices will be listed first. If the camera is open, it will only return the promise. If the camera is close, it make sure that camera is granted before returning the promise ie:. do a start/stop cycle of the camera that goes on for 20 ms.
 
+```js
+cameraPhoto.enumerateCameras()
+  .then((cameras)=>{
+    cameras.forEach((camera) => {
+      let {kind, label, deviceId} = camera;
+      let cameraStr = `
+            kind: ${kind}
+            label: ${label}
+            deviceId: ${deviceId}
+        `;
+      console.log(cameraStr)
+    });
+})
 ```
 
 #### plugin - download photo
