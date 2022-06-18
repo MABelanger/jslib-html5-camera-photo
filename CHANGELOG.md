@@ -2,6 +2,10 @@
 
 ### Bug Fixes & add features
 
+#### 3.3.0
+- \#73 Remove list of cameras to the startCamera() and startCameraMaxResolution() and return only resolve(stream).
+- Remove getInputVideoDeviceInfos(), use enumerateCameras() instead.
+
 #### 3.2.0
 - \#73 Add list of cameras to the startCamera() and startCameraMaxResolution() and return promise with parameters resolve(stream, cameras).
 - enumerateCameras() return promises of resolve (cameras).

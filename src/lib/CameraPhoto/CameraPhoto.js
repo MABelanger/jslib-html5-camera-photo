@@ -12,7 +12,7 @@ export class CameraPhoto {
   constructor (videoElement) {
     this.videoElement = videoElement;
     this.stream = null;
-    this.numberOfMaxResolutionTry = 1;
+    this.numberOfMaxResolutionTry = 0;
     this.settings = null;
     this.cameras = [];
 
@@ -28,14 +28,7 @@ export class CameraPhoto {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
-          this._enumerateCamerasPromise()
-            .then((cameras) => {
-              this.cameras = cameras;
-            })
-            .catch(() => { })
-            .then(() => {
-              resolve(stream, this.cameras);
-            });
+          resolve(stream);
         })
         .catch((error) => {
           reject(error);
@@ -56,24 +49,15 @@ export class CameraPhoto {
       this.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           this._gotStream(stream);
-          this._enumerateCamerasPromise()
-            .then((cameras) => {
-              this.cameras = cameras;
-            })
-            .catch(() => { })
-            .then(() => {
-              resolve(stream, this.cameras);
-            });
+          resolve(stream);
         })
         .catch((error) => {
-          // let {name, constraint, message} = error;
-          // console.log(name + ' ' + constraint + ' ' + message);
-          // retry...
           setTimeout(() => {
             this.numberOfMaxResolutionTry += 1;
-            this._getStreamDeviceMaxResolution(idealCameraDevice).catch(() => {
-              reject(error);
-            });
+            this._getStreamDeviceMaxResolution(idealCameraDevice)
+              .catch(() => {
+                reject(error);
+              });
           }, 20);
         });
     });
@@ -131,19 +115,6 @@ export class CameraPhoto {
     return this.settings;
   }
 
-  /**
-   * @deprecated since version 3.2.0
-   * @param  {function} replacementFunction
-   * @param  {string} getInputVideoDeviceInfos
-   * @param  {string} enumerateCameras
-   * @return {function}
-   */
-  getInputVideoDeviceInfos () {
-    console.warn('Warning!: method getInputVideoDeviceInfos() is depreciate \n' +
-      'please use enumerateCameras()');
-    return this.cameras;
-  }
-
   enumerateCameras () {
     // If the camera is already started, return only the promise.
     if (this.stream) {
@@ -186,6 +157,7 @@ export class CameraPhoto {
   }
 
   startCameraMaxResolution (idealCameraDevice = '') {
+    this.numberOfMaxResolutionTry = 0;
     // stop the stream before playing it.
     return this.stopCamera()
       .then(() => { })

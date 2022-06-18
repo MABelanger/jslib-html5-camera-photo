@@ -69,11 +69,12 @@ cameraPhoto.startCamera(cameraDevice, resolution)
 | resolution   | Is the `object` resolution ex:. `{ width: 640, height: 480 }` |
 
 #### Start the default mode (facing Mode & resolution)
-If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream and the list of cameras if you want to use it. If it fail, it will give you the error. The list of camera is in the same format as [Enumerate the available cameras](#enumerate-the-available-cameras).
+If you do not specify any prefer resolution and facing mode, the default is used. The function return a promise. If the promises success it will give you the stream if you want to use it. If it fail, it will give you the error.
+
 ```js
 // default camera and resolution
 cameraPhoto.startCamera()
-  .then((stream, cameras)=>{/* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 
@@ -114,7 +115,7 @@ It will try the range of width `[3840, 2560, 1920, 1280, 1080, 1024, 900, 800, 6
 ```js
 // It will try the best to get the maximum resolution with the specified facingMode
 cameraPhoto.startCameraMaxResolution(cameraDevice)
-  .then((stream, cameras)=>{/* ... */})
+  .then((stream)=>{/* ... */})
   .catch((error)=>{/* ... */});
 ```
 

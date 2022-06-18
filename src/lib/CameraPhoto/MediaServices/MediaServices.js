@@ -102,7 +102,7 @@ export class MediaServices {
       if (isFacingMode) {
         idealConstraints.video.facingMode = idealCameraDevice;
       } else {
-        // the idealCameraDevice is a deviceId
+        // The idealCameraDevice is a deviceId
         idealConstraints.video.deviceId = { exact: idealCameraDevice };
       }
     }
@@ -145,16 +145,28 @@ export class MediaServices {
       { width: { min: 3840 } }
     ];
 
-    if (numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length) {
+    console.log('numberOfMaxResolutionTry', numberOfMaxResolutionTry);
+    if (numberOfMaxResolutionTry === 0) {
+      constraints.video.advanced = VIDEO_ADVANCED_CONSTRANTS;
+      return constraints;
+    }
+
+    if (numberOfMaxResolutionTry < VIDEO_ADVANCED_CONSTRANTS.length) {
+      // Each number of try, we remove the last value of the array (the bigger minim width)
+      let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
+      constraints.video.advanced = advanced;
+      return constraints;
+    }
+
+    // All the VIDEO_ADVANCED_CONSTRANTS has been tried.
+    if (numberOfMaxResolutionTry === VIDEO_ADVANCED_CONSTRANTS.length) {
       console.warn('fallback to iphone constraints');
       return MediaServices.getMaxResolutionConstraintsIphone(idealCameraDevice, numberOfMaxResolutionTry);
     }
 
-    // each number of try, we remove the last value of the array (the bigger minim width)
-    let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
-    constraints.video.advanced = advanced;
-
-    return constraints;
+    // Fallback all the possibility has been tried. ie:.
+    // numberOfMaxResolutionTry > VIDEO_ADVANCED_CONSTRANTS.length
+    return null;
   }
 
   static get FACING_MODES () {
