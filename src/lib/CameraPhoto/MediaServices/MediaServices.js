@@ -1,10 +1,10 @@
-import { getImageSize, getDataUri, isMinimumConstraints, isIphoneOrIpad } from './helper';
+import { getImageSize, getDataUri, hasConstraints, isIphoneOrIpad } from './helper';
 
 import {
   SUPPORTED_FACING_MODES,
   FACING_MODES,
   IMAGE_TYPES,
-  MINIMUM_CONSTRAINTS
+  NO_CONSTRAINTS
 } from './constants';
 
 export class MediaServices {
@@ -77,60 +77,46 @@ export class MediaServices {
   }
 
   static getIdealConstraints (idealCameraDevice, idealResolution) {
-    // default idealConstraints
-
-    let idealConstraints = MINIMUM_CONSTRAINTS;
-
-    if (isMinimumConstraints(idealCameraDevice, idealResolution)) {
-      return MINIMUM_CONSTRAINTS;
+    if (!hasConstraints(idealCameraDevice, idealResolution)) {
+      return NO_CONSTRAINTS;
     }
 
-    const supports = MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
-    if (!supports.width || !supports.height) {
+    const supConstraints = MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
+    if (!supConstraints.width || !supConstraints.height) {
       console.error(
         'Constraint width or height not supported! fallback to default resolution'
       );
-      return MINIMUM_CONSTRAINTS;
+      return NO_CONSTRAINTS;
     }
 
-    // If is valid idealCameraDevice
+    let facingMode;
+    let deviceId;
+
     if (idealCameraDevice) {
       const isFacingMode = SUPPORTED_FACING_MODES.includes(idealCameraDevice);
       if (isFacingMode) {
-        idealConstraints.video.facingMode = idealCameraDevice;
+        facingMode = idealCameraDevice;
       } else {
-        // The idealCameraDevice is a deviceId
-        idealConstraints.video.deviceId = { exact: idealCameraDevice };
+        deviceId = { exact: idealCameraDevice };
       }
     }
 
-    if (idealResolution && idealResolution.width) {
-      idealConstraints.video.width = idealResolution.width;
-    }
+    const width = idealResolution && idealResolution.width;
+    const height = idealResolution && idealResolution.height;
 
-    if (idealResolution && idealResolution.height) {
-      idealConstraints.video.height = idealResolution.height;
-    }
-
-    return idealConstraints;
-  }
-
-  static _getMaxResolutionConstraintsIphoneOrIpad (idealCameraDevice = '', numberOfMaxResolutionTry) {
-    // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
-    let idealResolution = {
-      width: { min: 640, ideal: 3840 },
-      height: { min: 480, ideal: 2160 }
+    return {
+      audio: false,
+      video: {
+        facingMode,
+        deviceId,
+        width,
+        height
+      }
     };
-
-    let constraints = MediaServices.getIdealConstraints(idealCameraDevice, idealResolution);
-
-    return constraints;
   }
 
   static getMaxResolutionConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
-    console.warn('numberOfMaxResolutionTry', numberOfMaxResolutionTry);
-
-    let constraints = MediaServices.getIdealConstraints(idealCameraDevice);
+    console.warn('getMaxResolutionConstraints() numberOfMaxResolutionTry:', numberOfMaxResolutionTry);
 
     const VIDEO_ADVANCED_CONSTRANTS = [
       { width: { min: 640 } },
@@ -144,20 +130,28 @@ export class MediaServices {
       { width: { min: 3840 } }
     ];
 
+    let stdConstraints = MediaServices.getIdealConstraints(idealCameraDevice, {});
+
     if (numberOfMaxResolutionTry === 0) {
       if (isIphoneOrIpad()) {
         console.warn('fallback to iPad/iPhone constraints');
-        return MediaServices._getMaxResolutionConstraintsIphoneOrIpad(idealCameraDevice, numberOfMaxResolutionTry);
+        // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
+        let iPhoneConstraints = MediaServices.getIdealConstraints(idealCameraDevice, {
+          width: { min: 640, ideal: 3840 },
+          height: { min: 480, ideal: 2160 }
+        });
+        return iPhoneConstraints;
       }
-      constraints.video.advanced = VIDEO_ADVANCED_CONSTRANTS;
-      return constraints;
+
+      stdConstraints.video.advanced = VIDEO_ADVANCED_CONSTRANTS;
+      return stdConstraints;
     }
 
     if (numberOfMaxResolutionTry < VIDEO_ADVANCED_CONSTRANTS.length) {
       // Each number of try, we remove the last value of the array (the bigger minim width)
       let advanced = VIDEO_ADVANCED_CONSTRANTS.slice(0, -numberOfMaxResolutionTry);
-      constraints.video.advanced = advanced;
-      return constraints;
+      stdConstraints.video.advanced = advanced;
+      return stdConstraints;
     }
 
     // Fallback all the possibility has been tried. ie:.

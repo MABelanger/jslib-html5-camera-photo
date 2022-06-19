@@ -63,22 +63,8 @@ export function getDataUri (canvas, imageType, imageCompression) {
   return canvas.toDataURL(FORMAT_TYPES[imageType]);
 }
 
-function _isEmptyObject (obj) {
-  if (typeof obj === 'object') {
-    for (var key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        return false;
-      }
-    }
-  }
-
-  return true;
-}
-
-export function isMinimumConstraints (idealCameraDevice, idealResolution) {
-  const hasConstraints = idealCameraDevice || (idealResolution && !_isEmptyObject(idealResolution));
-
-  return !hasConstraints;
+export function hasConstraints (idealCameraDevice, idealResolution) {
+  return idealCameraDevice || idealResolution;
 }
 
 export function isIphoneOrIpad () {
