@@ -78,17 +78,14 @@ export class MediaServices {
 
   static getIdealConstraints (idealCameraDevice, idealResolution) {
     // default idealConstraints
-    let idealConstraints = {
-      audio: false,
-      video: {}
-    };
+
+    let idealConstraints = MINIMUM_CONSTRAINTS;
 
     if (isMinimumConstraints(idealCameraDevice, idealResolution)) {
       return MINIMUM_CONSTRAINTS;
     }
 
-    const supports =
-      MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
+    const supports = MediaServices.getNavigatorMediaDevices().getSupportedConstraints();
     if (!supports.width || !supports.height) {
       console.error(
         'Constraint width or height not supported! fallback to default resolution'

@@ -27,5 +27,5 @@ export const FORMAT_TYPES = {
 
 export const MINIMUM_CONSTRAINTS = {
   audio: false,
-  video: true
+  video: {}
 };
