@@ -132,6 +132,8 @@ function showSwitchCameraButtons () {
         cameraButtonsContainer.appendChild(buttonElement);
       });
     }
+  }).catch((error) => {
+    console.log('Error could not enumerateCameras:', error);
   });
 }
 

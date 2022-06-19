@@ -80,3 +80,9 @@ export function isMinimumConstraints (idealCameraDevice, idealResolution) {
 
   return !hasConstraints;
 }
+
+export function isIphoneOrIpad () {
+  let userAgent = window.navigator.userAgent;
+
+  return (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i));
+}
