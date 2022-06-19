@@ -25,7 +25,7 @@ export const FORMAT_TYPES = {
   [PNG]: 'image/png'
 };
 
-export const MINIMUM_CONSTRAINTS = {
+export const NO_CONSTRAINTS = {
   audio: false,
-  video: {}
+  video: true
 };
