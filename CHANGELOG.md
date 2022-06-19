@@ -2,6 +2,9 @@
 
 ### Bug Fixes & add features
 
+#### 3.3.3
+- Fix stick on max resolution
+
 #### 3.3.2
 - Fix bug startCameraMaxResolution() without choosing camera.
 
