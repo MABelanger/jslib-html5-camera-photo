@@ -1,4 +1,4 @@
-import { getImageSize, getDataUri, isMinimumConstraints } from './helper';
+import { getImageSize, getDataUri, isMinimumConstraints, isIphoneOrIpad } from './helper';
 
 import {
   SUPPORTED_FACING_MODES,
@@ -118,7 +118,7 @@ export class MediaServices {
     return idealConstraints;
   }
 
-  static getMaxResolutionConstraintsIphone (idealCameraDevice = '', numberOfMaxResolutionTry) {
+  static _getMaxResolutionConstraintsIphoneOrIpad (idealCameraDevice = '', numberOfMaxResolutionTry) {
     // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
     let idealResolution = {
       width: { min: 640, ideal: 3840 },
@@ -131,6 +131,8 @@ export class MediaServices {
   }
 
   static getMaxResolutionConstraints (idealCameraDevice = '', numberOfMaxResolutionTry) {
+    console.warn('numberOfMaxResolutionTry', numberOfMaxResolutionTry);
+
     let constraints = MediaServices.getIdealConstraints(idealCameraDevice);
 
     const VIDEO_ADVANCED_CONSTRANTS = [
@@ -145,8 +147,11 @@ export class MediaServices {
       { width: { min: 3840 } }
     ];
 
-    console.log('numberOfMaxResolutionTry', numberOfMaxResolutionTry);
     if (numberOfMaxResolutionTry === 0) {
+      if (isIphoneOrIpad()) {
+        console.warn('fallback to iPad/iPhone constraints');
+        return MediaServices._getMaxResolutionConstraintsIphoneOrIpad(idealCameraDevice, numberOfMaxResolutionTry);
+      }
       constraints.video.advanced = VIDEO_ADVANCED_CONSTRANTS;
       return constraints;
     }
@@ -158,14 +163,8 @@ export class MediaServices {
       return constraints;
     }
 
-    // All the VIDEO_ADVANCED_CONSTRANTS has been tried.
-    if (numberOfMaxResolutionTry === VIDEO_ADVANCED_CONSTRANTS.length) {
-      console.warn('fallback to iphone constraints');
-      return MediaServices.getMaxResolutionConstraintsIphone(idealCameraDevice, numberOfMaxResolutionTry);
-    }
-
     // Fallback all the possibility has been tried. ie:.
-    // numberOfMaxResolutionTry > VIDEO_ADVANCED_CONSTRANTS.length
+    // numberOfMaxResolutionTry >= VIDEO_ADVANCED_CONSTRANTS.length
     return null;
   }
 
