@@ -36,6 +36,18 @@ function _getValidImgParam (imageType, imageCompression) {
   return imgParam;
 }
 
+function _getStringWithPlatform () {
+  // platform will be obsolete and will return empty string
+  const platform = window.navigator.platform;
+  const userAgent = window.navigator.userAgent;
+
+  return platform || userAgent;
+}
+
+function _getHasTouchEvents () {
+  return 'ontouchend' in document;
+}
+
 export function getImageSize (videoWidth, videoHeight, sizeFactor) {
   // calc the imageWidth
   let imageWidth = videoWidth * parseFloat(sizeFactor);
@@ -67,8 +79,32 @@ export function hasConstraints (idealCameraDevice, idealResolution) {
   return idealCameraDevice || idealResolution;
 }
 
-export function isIphoneOrIpad () {
-  let userAgent = window.navigator.userAgent;
+// Inspiration: https://stackoverflow.com/questions/9038625/detect-if-device-is-ios
+export function getIsIOS () {
+  const stringWithPlatform = _getStringWithPlatform();
 
-  return (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i));
+  if (/iPad|iPhone|iPod/.test(stringWithPlatform)) {
+    return true;
+  }
+
+  // The new iPad return MacIntel as platform and Macintosh as userAgent
+  // so the way to differentiate iPad vs mac is by checking if
+  // Touch Events exist on the document
+  const hasTouchEvents = _getHasTouchEvents();
+  if (/Mac/.test(stringWithPlatform) && hasTouchEvents) {
+    return true;
+  }
+
+  return false;
+}
+
+// TODO : return an object with all usefull info of the device for debugging purpose.
+export function _getDebugPlatformInfo () {
+  return {
+    userAgent: window.navigator.userAgent,
+    platform: window.navigator.platform,
+    _getStringWithPlatform: _getStringWithPlatform(),
+    _getHasTouchEvents: _getHasTouchEvents(),
+    getIsIOS: getIsIOS()
+  };
 }
