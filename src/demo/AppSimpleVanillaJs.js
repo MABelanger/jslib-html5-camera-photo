@@ -1,4 +1,4 @@
-import CameraPhoto, { FACING_MODES, IMAGE_TYPES, downloadPhoto } from '../lib';
+import CameraPhoto, { FACING_MODES, IMAGE_TYPES, downloadPhoto, _getDebugPlatformInfo } from '../lib';
 import './styles.css';
 
 // get video and image elements
@@ -22,6 +22,9 @@ let stopCameraButtonElement = document.getElementById('stopCameraButtonId');
 let cameraSettingElement = document.getElementById('cameraSettingsId');
 let showSwitchCamerasButtonsElement = document.getElementById(
   'showSwitchCameraButtonsId'
+);
+let showDebugPlatformInfoButtonElement = document.getElementById(
+  'showDebugPlatformInfoButtonId'
 );
 
 // instantiate CameraPhoto with the videoElement
@@ -174,6 +177,11 @@ function startCameraMaxResolution () {
     });
 }
 
+function showDebugPlatformInfo () {
+  let debugPlatformInfoElement = document.getElementById('debugPlatformInfoId');
+  debugPlatformInfoElement.innerHTML = JSON.stringify(_getDebugPlatformInfo(), null, 2);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   // update camera setting
   setInterval(() => {
@@ -188,4 +196,5 @@ document.addEventListener('DOMContentLoaded', function () {
   takePhotoAndDownloadButtonElement.onclick = takePhotoAndDownload;
   stopCameraButtonElement.onclick = stopCamera;
   showSwitchCamerasButtonsElement.onclick = showSwitchCameraButtons;
+  showDebugPlatformInfoButtonElement.onclick = showDebugPlatformInfo;
 });

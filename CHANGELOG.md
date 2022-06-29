@@ -2,6 +2,9 @@
 
 ### Bug Fixes & add features
 
+#### 3.3.4
+- Fix detect ios, (new iPad)
+
 #### 3.3.3
 - Fix stick on max resolution
 

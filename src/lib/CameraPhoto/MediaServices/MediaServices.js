@@ -1,4 +1,4 @@
-import { getImageSize, getDataUri, hasConstraints, isIphoneOrIpad } from './helper';
+import { getImageSize, getDataUri, hasConstraints, getIsIOS } from './helper';
 
 import {
   SUPPORTED_FACING_MODES,
@@ -133,8 +133,8 @@ export class MediaServices {
     let stdConstraints = MediaServices.getIdealConstraints(idealCameraDevice, {});
 
     if (numberOfMaxResolutionTry === 0) {
-      if (isIphoneOrIpad()) {
-        console.warn('fallback to iPad/iPhone constraints');
+      if (getIsIOS()) {
+        console.warn('fallback to iOS constraints');
         // inspiration : https://www.w3.org/TR/mediacapture-streams/#example-3
         let iPhoneConstraints = MediaServices.getIdealConstraints(idealCameraDevice, {
           width: { min: 640, ideal: 3840 },
