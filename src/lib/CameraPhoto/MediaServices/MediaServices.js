@@ -135,6 +135,7 @@ export class MediaServices {
       { width: { min: 2560 } }, // 16:9
       { width: { min: 2880 } }, // 3K UHD (16:9), 4K UHD (4:3)
       { width: { min: 3072 } }, // 3K (16:9), 4K (4:3)
+      { width: { min: 3264 } }, // 8MP (4:3)
       { width: { min: 3840 } }, // 4K UHD (16:9), 5K (4:3)
       { width: { min: 4096 } }, // 4K (16:9)
       { width: { min: 4608 } }, // 6K (4:3)
