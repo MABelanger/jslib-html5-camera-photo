@@ -122,12 +122,28 @@ export class MediaServices {
       { width: { min: 640 } },
       { width: { min: 800 } },
       { width: { min: 900 } },
+      { width: { min: 960 } }, // 720p (4:3)
       { width: { min: 1024 } },
       { width: { min: 1080 } },
-      { width: { min: 1280 } },
-      { width: { min: 1920 } },
-      { width: { min: 2560 } },
-      { width: { min: 3840 } }
+      { width: { min: 1280 } }, // 720p (16:9)
+      { width: { min: 1440 } }, // 1080p (4:3)
+      { width: { min: 1536 } }, // 2K (4:3)
+      { width: { min: 1920 } }, // 1080p (16:9)
+      { width: { min: 2048 } }, // 2K (16:9)
+      { width: { min: 2160 } }, // 3K UHD (4:3)
+      { width: { min: 2304 } }, // 3K (4:3)
+      { width: { min: 2560 } }, // 16:9
+      { width: { min: 2880 } }, // 3K UHD (16:9), 4K UHD (4:3)
+      { width: { min: 3072 } }, // 3K (16:9), 4K (4:3)
+      { width: { min: 3264 } }, // 8MP (4:3)
+      { width: { min: 3840 } }, // 4K UHD (16:9), 5K (4:3)
+      { width: { min: 4096 } }, // 4K (16:9)
+      { width: { min: 4608 } }, // 6K (4:3)
+      { width: { min: 5120 } }, // 5K (16:9)
+      { width: { min: 5760 } }, // 8K UHD (4:3)
+      { width: { min: 6144 } }, // 8k (4:3), 6K (16:9)
+      { width: { min: 7680 } }, // 8K UHD (16:9)
+      { width: { min: 8192 } } // 8K (16:9)
     ];
 
     let stdConstraints = MediaServices.getIdealConstraints(idealCameraDevice, {});
